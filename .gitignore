@@ -1,0 +1,16 @@
+/Utilitarios/*.*
+/Schemas/*.*
+/XML/*.*
+*.dcu
+*.drc
+*.exe
+*.FDB
+*.ident
+*.identcache
+*.local
+*.map
+*.mes
+*.res
+*.stat
+*.vlb
+*.tvsconfig

@@ -1,0 +1,411 @@
+unit UViewPDV;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Buttons, System.UITypes,
+
+  ACBrUtil,
+
+  UPanelCupomFiscal, UGWCommerce, UEstoque, UViewBase, UViewConsultaPreco;
+
+type
+  TViewPDV = class(TViewBase)
+    pnlPesquisaItem: TPanel;
+    pnlRodape: TPanel;
+    pnlDisplayValores: TPanel;
+    pnlRodapeEsquerdo1: TPanel;
+    pnlFecharCupom: TPanel;
+    Splitter1: TSplitter;
+    pnlConsultarPreco: TPanel;
+    Splitter2: TSplitter;
+    pnlFecharDinheiro: TPanel;
+    Splitter3: TSplitter;
+    pnlDesconto: TPanel;
+    Splitter4: TSplitter;
+    pnlEsc: TPanel;
+    cbbPesquisa: TComboBox;
+    spl1: TSplitter;
+    pnlIniciarVenda: TPanel;
+    btnIniciarVenda: TSpeedButton;
+    btnFecharCupom: TSpeedButton;
+    btnConsultaPreco: TSpeedButton;
+    btnFecharDinheiro: TSpeedButton;
+    btnDesconto: TSpeedButton;
+    btnEsc: TSpeedButton;
+    pnlQuantidade: TPanel;
+    lbl1: TLabel;
+    edtItemQuantidade: TEdit;
+    pnlPreco: TPanel;
+    lbl2: TLabel;
+    edtItemPrecoUnitario: TEdit;
+    pnlTotalItem: TPanel;
+    lbl3: TLabel;
+    edtItemValorTotal: TEdit;
+    pnlPreRodape: TPanel;
+    CupomFiscal: TPanelCupomFiscal;
+    spl2: TSplitter;
+    pnlOpcoes: TPanel;
+    btnOpcoes: TSpeedButton;
+    spl3: TSplitter;
+    pnlFinalizarVenda: TPanel;
+    btnFinalizarVenda: TSpeedButton;
+    spl4: TSplitter;
+    pnlCancelarNotas: TPanel;
+    btnCancelarNota: TSpeedButton;
+    spl5: TSplitter;
+    pnl1: TPanel;
+    pnl2: TPanel;
+    pnl3: TPanel;
+    pnl4: TPanel;
+    pnl5: TPanel;
+    pnl6: TPanel;
+    pnl7: TPanel;
+    pnl8: TPanel;
+    pnlIdentificarCliente: TPanel;
+    spl6: TSplitter;
+    btnIdentificarCliente: TSpeedButton;
+    procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure cbbPesquisaKeyPress(Sender: TObject; var Key: Char);
+    procedure cbbPesquisaKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure cbbPesquisaChange(Sender: TObject);
+    procedure btnIniciarVendaClick(Sender: TObject);
+    procedure btnFecharDinheiroClick(Sender: TObject);
+    procedure btnDescontoClick(Sender: TObject);
+    procedure btnEscClick(Sender: TObject);
+    procedure btnOpcoesClick(Sender: TObject);
+    procedure btnFecharCupomClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure btnConsultaPrecoClick(Sender: TObject);
+    procedure btnCancelarNotaClick(Sender: TObject);
+    procedure btnFinalizarVendaClick(Sender: TObject);
+    procedure btnIdentificarClienteClick(Sender: TObject);
+  private
+    { Private declarations }
+    FGWCommerce: TGWCommerce;
+
+//    procedure Arredondar_Controle(AControle: TWinControl);
+    procedure Excluir_Item(ASender: TObject);
+    procedure Pegar_Fator_Multiplicador(ASender: TObject; AParametro: String);
+    procedure Sair_Da_Aplicacao();
+//    procedure Verificar_Venda_Pendente();
+
+  public
+    { Public declarations }
+    procedure Limpar_Valores_Tela();
+  end;
+
+var
+  ViewPDV: TViewPDV;
+
+implementation
+  uses
+    UModelBase;
+
+{$R *.dfm}
+
+{procedure TViewPDV.Arredondar_Controle(AControle: TWinControl);
+var
+   Rect: TRect;
+   Rgn: HRGN;
+
+begin
+  with AControle do
+  begin
+    Rect:= ClientRect;
+    rgn := CreateRoundRectRgn(Rect.Left, Rect.Top, Rect.Right, Rect.Bottom, 30, 30) ;
+    Perform(EM_GETRECT, 0, lParam(@Rect)) ;
+    InflateRect(Rect, - 10, - 10) ;
+    Perform(EM_SETRECTNP, 0, lParam(@Rect)) ;
+    SetWindowRgn(Handle, rgn, True) ;
+    Invalidate;
+  end;
+end;}
+
+procedure TViewPDV.btnCancelarNotaClick(Sender: TObject);
+begin
+  FGWCommerce.Exibir_Venda_Para_Cancelar();
+end;
+
+procedure TViewPDV.btnConsultaPrecoClick(Sender: TObject);
+var
+  View: TViewConsultaPreco;
+
+begin
+  View := TViewConsultaPreco.Create(nil);
+  try
+     if not FGWCommerce.VendaIniciada then
+       dmDados.Abrir_Tabela_Estoque(FGWCommerce.Emitente.Registro);
+
+    View.Exibir(False);
+  finally
+    FreeAndNil(View);
+  end;
+end;
+
+procedure TViewPDV.btnDescontoClick(Sender: TObject);
+begin
+  FGWCommerce.Aplicar_Desconto();
+end;
+
+procedure TViewPDV.btnEscClick(Sender: TObject);
+begin
+  Sair_Da_Aplicacao();
+end;
+
+procedure TViewPDV.btnFecharCupomClick(Sender: TObject);
+begin
+  FGWCommerce.Fechar_No_F3();
+end;
+
+procedure TViewPDV.btnFecharDinheiroClick(Sender: TObject);
+begin
+  FGWCommerce.Fechar_No_F7();
+end;
+
+procedure TViewPDV.btnFinalizarVendaClick(Sender: TObject);
+begin
+  FGWCommerce.Fechar_No_F12();
+end;
+
+procedure TViewPDV.btnIdentificarClienteClick(Sender: TObject);
+begin
+  FGWCommerce.Identificar_Cliente();
+end;
+
+procedure TViewPDV.btnIniciarVendaClick(Sender: TObject);
+begin
+//  Limpar_Valores_Tela();
+  FGWCommerce.Iniciar();
+end;
+
+procedure TViewPDV.btnOpcoesClick(Sender: TObject);
+begin
+  FGWCommerce.Acessar_Opcoes();
+end;
+
+procedure TViewPDV.cbbPesquisaChange(Sender: TObject);
+var
+  ValorUnitario: Double;
+
+  Estoque: TEstoque;
+
+begin
+  try
+    FGWCommerce.Validar_Venda_Aberta();
+
+    Estoque := FGWCommerce.Estoque.Pegar_Selecionado();
+
+    if Estoque <> nil then
+//    begin
+//      if Estoque.LancamentoPorPeso.LancouPorPeso then
+//        FGWCommerce.FatorMultiplicador := (Estoque.LancamentoPorPeso.Total / 100) * Estoque.PrecoVenda;
+      ValorUnitario := Estoque.PrecoVenda
+//    end
+    else
+      ValorUnitario := 0;
+
+    edtItemQuantidade.Text    := FloatToStr(FGWCommerce.FatorMultiplicador);
+    edtItemPrecoUnitario.Text := FormatFloat('#0.00', ValorUnitario);
+    edtItemValorTotal.Text    := FormatFloat('#0.00', RoundABNT(FGWCommerce.FatorMultiplicador * ValorUnitario, -2));
+  except on E: Exception do
+    MessageDlg(Format('Erro: %s', [E.Message]), mtError, [mbOK], 0);
+  end;
+end;
+
+procedure TViewPDV.cbbPesquisaKeyPress(Sender: TObject; var Key: Char);
+var
+  ValorUnitario: Double;
+
+  Estoque: TEstoque;
+
+begin
+  TComboBox(Sender).DroppedDown := (TComboBox(Sender).Items.Count > 0) and (Key <> #27);
+
+  if Key = #13 then
+  begin
+    try
+      FGWCommerce.Validar_Venda_Aberta();
+
+      Estoque := FGWCommerce.Estoque.Pegar_Selecionado();
+
+      if Estoque <> nil then
+      begin
+        if Estoque.LancamentoPorPeso.LancouPorPeso then
+          FGWCommerce.FatorMultiplicador := (Estoque.LancamentoPorPeso.Total / 100) / Estoque.PrecoVenda;
+//          FGWCommerce.FatorMultiplicador := (Estoque.LancamentoPorPeso.Total / 100) * Estoque.PrecoVenda;
+        ValorUnitario := Estoque.PrecoVenda;
+      end
+      else
+        ValorUnitario := 0;
+
+      edtItemQuantidade.Text    := FloatToStr(FGWCommerce.FatorMultiplicador);
+      edtItemPrecoUnitario.Text := FormatFloat('#0.00', ValorUnitario);
+      edtItemValorTotal.Text    := FormatFloat('#0.00', RoundABNT(FGWCommerce.FatorMultiplicador * ValorUnitario, -2));
+
+      FGWCommerce.Inserir_Item();
+    except on Ex: Exception do
+      MessageDlg(Format('Erro ao inserir o item na venda: %s', [Ex.Message]), mtError, [mbOK], 0);
+    end;
+  end;
+end;
+
+procedure TViewPDV.cbbPesquisaKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case Key of
+    VK_MULTIPLY: Pegar_Fator_Multiplicador(Sender, '*');
+    VK_SUBTRACT: Excluir_Item(Sender);
+  end;
+end;
+
+procedure TViewPDV.Excluir_Item(ASender: TObject);
+begin
+  cbbPesquisa.DroppedDown := False;
+  Pegar_Fator_Multiplicador(ASender, '-');
+
+  try
+    if TComboBox(ASender).Tag = 0 then
+    begin
+      FGWCommerce.Venda.Excluir_Item(Trunc(FGWCommerce.FatorMultiplicador));
+      CupomFiscal.Exibir_Venda(FGWCommerce);
+      FGWCommerce.FatorMultiplicador := 1;
+    end;
+  except on E: Exception do
+    MessageDlg(Format('Erro: %s', [E.Message]), mtError, [mbOK], 0);
+  end;
+end;
+
+procedure TViewPDV.FormActivate(Sender: TObject);
+begin
+{  if (not FGWCommerce.VendaIniciada) and (FGWCommerce.Verificar_Tem_Venda_Pendente()) then
+//    if Application.MessageBox('O sistema identificou venda em aberto'#13#10 +
+//      'Deseja recarregar os itens?', 'Confirme', MB_YESNO + MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON1) = ID_YES then
+    begin
+      FGWCommerce.Iniciar();
+      FGWCommerce.Venda.Carregar(FGWCommerce.Emitente.Registro);
+      CupomFiscal.Exibir_Venda(FGWCommerce);
+      cbbPesquisa.SetFocus();
+    end
+  else
+    pnlRodape.SetFocus(); }
+end;
+
+procedure TViewPDV.FormCreate(Sender: TObject);
+begin
+  FGWCommerce := TGWCommerce.Create();
+end;
+
+procedure TViewPDV.FormDestroy(Sender: TObject);
+begin
+  FGWCommerce.Free();
+end;
+
+procedure TViewPDV.FormKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case Key of
+    VK_F2     : FGWCommerce.Iniciar();
+    VK_F3     : FGWCommerce.Fechar_No_F3();
+    VK_F4     : FGWCommerce.Identificar_Cliente();
+    VK_F5     : btnConsultaPrecoClick(Sender);
+    VK_F6     : FGWCommerce.Exibir_Venda_Para_Cancelar();
+    VK_F7     : FGWCommerce.Fechar_No_F7();
+    VK_F8     : FGWCommerce.Aplicar_Desconto();
+    VK_F10    : FGWCommerce.Acessar_Opcoes();
+    VK_F12    : FGWCommerce.Fechar_No_F12();
+    VK_ESCAPE : Sair_Da_Aplicacao();
+  end;
+end;
+
+procedure TViewPDV.FormShow(Sender: TObject);
+var
+  I: Integer;
+
+begin
+  Maximizar();
+
+  cbbPesquisa.Width       := Trunc((Self.Width * 98) / 100);
+  pnlDisplayValores.Width := Trunc((Self.Width * 35) / 100);
+  CupomFiscal.Width       := Trunc((Self.Width * 60) / 100);
+
+  Arredondar_Controle(cbbPesquisa);
+  Arredondar_Controle(edtItemQuantidade);
+  Arredondar_Controle(edtItemPrecoUnitario);
+  Arredondar_Controle(edtItemValorTotal);
+
+  for I := 0 to pnlRodape.ControlCount -1 do
+    if pnlRodape.Controls[I] is TPanel then
+    begin
+      if pnlRodape.Controls[I].Tag = 1 then
+        TWinControl(pnlRodape.Controls[I]).Width := 90;
+
+      Arredondar_Controle(TWinControl(pnlRodape.Controls[I]));
+    end;
+
+  CupomFiscal.Caption      := '';
+  pnlRodapeEsquerdo1.Width := Screen.Width - (12 * pnlIniciarVenda.Width) - (11 * Splitter1.Width);
+  if pnlRodapeEsquerdo1.Width = 0 then
+    pnlRodapeEsquerdo1.Width := 25;
+
+  Definir_Titulo_Tela('(Caixa)');
+  Limpar_Valores_Tela();
+
+  if (not FGWCommerce.VendaIniciada) and (FGWCommerce.Verificar_Tem_Venda_Pendente()) then
+//    if Application.MessageBox('O sistema identificou venda em aberto'#13#10 +
+//      'Deseja recarregar os itens?', 'Confirme', MB_YESNO + MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON1) = ID_YES then
+    begin
+      FGWCommerce.Iniciar();
+      FGWCommerce.Venda.Carregar(FGWCommerce.Emitente.Registro);
+      CupomFiscal.Exibir_Venda(FGWCommerce);
+      cbbPesquisa.SetFocus();
+    end
+  else
+    pnlRodape.SetFocus();
+end;
+
+procedure TViewPDV.Limpar_Valores_Tela;
+begin
+  edtItemQuantidade.Text    := '0,00';
+  edtItemPrecoUnitario.Text := edtItemQuantidade.Text;
+  edtItemValorTotal.Text    := edtItemQuantidade.Text;
+  cbbPesquisa.Text          := 'CAIXA LIVRE';
+  cbbPesquisa.Color         := clSilver;
+  cbbPesquisa.Enabled       := False;
+end;
+
+procedure TViewPDV.Pegar_Fator_Multiplicador(ASender: TObject; AParametro: String);
+var
+  Fator: Double;
+
+begin
+  try
+    TComboBox(ASender).Tag := 1;
+    FGWCommerce.Validar_Venda_Aberta();
+    Fator := 1;
+
+    if (not TryStrToFloat(StringReplace(TComboBox(ASender).Text, AParametro, '', [rfReplaceAll]),
+     Fator)) or (Fator <= 0) then
+       raise Exception.Create('Valor informado incorreto para o item.');
+
+    TComboBox(ASender).Tag         := 0;
+    FGWCommerce.FatorMultiplicador := Fator;
+    TComboBox(ASender).Text        := '';
+  except on E: Exception do
+    MessageDlg(Format('Erro: %s', [E.Message]), mtError, [mbOK], 0);
+  end;
+end;
+
+procedure TViewPDV.Sair_Da_Aplicacao;
+begin
+  if Application.MessageBox('Deseja realmente fechar o sistema?', 'Confirme', MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2) = ID_YES then
+    Application.Terminate();
+end;
+
+end.
