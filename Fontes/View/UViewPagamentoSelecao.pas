@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages,
 
   System.SysUtils, System.Variants, System.Classes, System.UITypes,
-  System.Generics.Collections,
+  System.Generics.Collections, System.Math,
 
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Graphics,
 
@@ -530,7 +530,7 @@ begin
 
   Liquido := (FGWCommerce.Venda.Total - FGWCommerce.Venda.Desconto);
 
-  if Valor < Liquido then
+  if CompareValue(Valor, Liquido, 0.001) < 0 then
     raise Exception.Create('O total das formas de pagamento é menor que o total da venda.');
 end;
 

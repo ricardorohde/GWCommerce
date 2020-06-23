@@ -1401,6 +1401,7 @@ var
 begin
   Venda        := AVenda as TVenda;
   Venda.Codigo := Gerar_Id('GEN_VENDA_CODIGO');
+  Venda.MD5    := Venda.Gerar_MD5();
 
   Insert := Format(
     'INSERT INTO VENDA (CODIGO, CODIGO_PRODUTO, DESCRICAO_PRODUTO, MEDIDA, '#13#10 +

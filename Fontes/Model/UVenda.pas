@@ -20,6 +20,7 @@ type
     FOrdem,
     FRegistroEmitente: Int64;
 
+    FMD5,
     FMedida,
     FDescricaoProduto: String;
 
@@ -28,13 +29,15 @@ type
     FDesconto: TDesconto;
 
     function GetValorBruto: Double;
-    function GetMD5: String;
+//    function GetMD5: String;
 
   public
     constructor Create(); overload;
     constructor Create(ACodigo: Int64); overload;
 
     destructor Destroy(); override;
+
+    function Gerar_MD5(): String;
 
     procedure Filtrar_No_Banco(AFiltro: String);
 
@@ -45,7 +48,7 @@ type
     property DataHora: TDateTime read FDataHora write FDataHora;
     property Desconto: TDesconto read FDesconto write FDesconto;
     property DescricaoProduto: String read FDescricaoProduto write FDescricaoProduto;
-    property MD5: String read GetMD5;
+    property MD5: String read FMD5 write FMD5;
     property Medida: String read FMedida write FMedida;
     property Ordem: Int64 read FOrdem write FOrdem;
     property Quantidade: Double read FQuantidade write FQuantidade;
@@ -69,6 +72,7 @@ begin
   Codigo                := 0;
   CodigoProduto         := 0;
   CodigoProdutoExibicao := 0;
+  MD5                   := '';
   Medida                := '';
   Ordem                 := 0;
   DescricaoProduto      := '';
@@ -94,6 +98,7 @@ begin
     DataHora              := dmDados.cliVendaDATA_HORA_VENDA.AsDateTime;
     RegistroEmitente      := dmDados.cliVendaREGISTRO_EMITENTE.AsLargeInt;
     CodigoProdutoExibicao := dmDados.cliVendaCODIGO_PRODUTO_EXIBICAO.AsLargeInt;
+    FMD5                  := dmDados.cliVendaMD5.AsString;
   end;
 
   dmDados.cliVenda.Filtered := False;
@@ -110,7 +115,22 @@ begin
   dmDados.cliVenda.Filtered := True;
 end;
 
-function TVenda.GetMD5: String;
+{function TVenda.GetMD5: String;
+var
+  Gerador: TACBrEAD;
+
+begin
+  Gerador := TACBrEAD.Create(nil);
+  try
+    Result := String( Gerador.CalcularHash(
+      AnsiString(Format('%d|%d|%s', [FCodigoProduto, FRegistroEmitente,
+        FormatDateTime('dd/MM/yyyy hh:MM:ss.zzz', FDataHora)])), dgstMD5));
+  finally
+    Gerador.Free();
+  end;
+end;}
+
+function TVenda.Gerar_MD5: String;
 var
   Gerador: TACBrEAD;
 
