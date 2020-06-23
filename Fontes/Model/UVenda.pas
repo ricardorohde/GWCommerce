@@ -83,17 +83,17 @@ begin
 
   if dmDados.cliVenda.RecordCount > 0 then
   begin
-    Desconto.Valor  := dmDados.cliVendaDESCONTO.AsFloat;
-    Quantidade      := dmDados.cliVendaQUANTIDADE.AsFloat;
-    ValorUnitario   := dmDados.cliVendaVALOR_UNITARIO.AsFloat;
-    Codigo          := dmDados.cliVendaCODIGO.AsLargeInt;
-    CodigoProduto   := dmDados.cliVendaCODIGO_PRODUTO.AsLargeInt;
-    Medida          := dmDados.cliVendaMEDIDA.AsString;
-    Ordem           := 0;
-    DescricaoProduto:= dmDados.cliVendaDESCRICAO_PRODUTO.AsString;
-    DataHora        := dmDados.cliVendaDATA_HORA_VENDA.AsDateTime;
-    RegistroEmitente:= dmDados.cliVendaREGISTRO_EMITENTE.AsLargeInt;
-    CodigoProdutoExibicao := CodigoProduto;
+    Desconto.Valor        := dmDados.cliVendaDESCONTO.AsFloat;
+    Quantidade            := dmDados.cliVendaQUANTIDADE.AsFloat;
+    ValorUnitario         := dmDados.cliVendaVALOR_UNITARIO.AsFloat;
+    Codigo                := dmDados.cliVendaCODIGO.AsLargeInt;
+    CodigoProduto         := dmDados.cliVendaCODIGO_PRODUTO.AsLargeInt;
+    Medida                := dmDados.cliVendaMEDIDA.AsString;
+    Ordem                 := 0;
+    DescricaoProduto      := dmDados.cliVendaDESCRICAO_PRODUTO.AsString;
+    DataHora              := dmDados.cliVendaDATA_HORA_VENDA.AsDateTime;
+    RegistroEmitente      := dmDados.cliVendaREGISTRO_EMITENTE.AsLargeInt;
+    CodigoProdutoExibicao := dmDados.cliVendaCODIGO_PRODUTO_EXIBICAO.AsLargeInt;
   end;
 
   dmDados.cliVenda.Filtered := False;

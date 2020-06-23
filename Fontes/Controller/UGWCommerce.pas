@@ -365,25 +365,29 @@ var
   View: TViewPDV;
 
 begin
-  if FVendaIniciada then
-    raise Exception.Create('Venda já Iniciada');
+  try
+    if FVendaIniciada then
+      raise Exception.Create('Venda já Iniciada');
 
-  FEstoque.Carregar(FEmitente.Registro);
-  FVenda.Liberar();
-  FVenda.Liberar_Pagamentos();
-  FCliente.Cadastrado := True;
+    FEstoque.Carregar(FEmitente.Registro);
+    FVenda.Liberar();
+    FVenda.Liberar_Pagamentos();
+    FCliente.Cadastrado := True;
 
-  dmDados.Abrir_Tabela_Venda(FEmitente.Registro);
+    dmDados.Abrir_Tabela_Venda(FEmitente.Registro);
 
-  View := Screen.ActiveForm as TViewPDV;
+    View := Screen.ActiveForm as TViewPDV;
 
-  View.CupomFiscal.Abrir_Cupom();
-  View.cbbPesquisa.Enabled := True;
-  View.cbbPesquisa.Text    := '';
-  View.cbbPesquisa.Color   := View.edtItemQuantidade.Color;
-  View.cbbPesquisa.SetFocus();
+    View.CupomFiscal.Abrir_Cupom();
+    View.cbbPesquisa.Enabled := True;
+    View.cbbPesquisa.Text    := '';
+    View.cbbPesquisa.Color   := View.edtItemQuantidade.Color;
+    View.cbbPesquisa.SetFocus();
 
-  FVendaIniciada := True;
+    FVendaIniciada := True;
+  except on E: Exception do
+    MessageDlg(Format('Erro: %s', [E.Message]), mtError, [mbOK], 0);
+  end;
 end;
 
 procedure TGWCommerce.Inserir_Item();

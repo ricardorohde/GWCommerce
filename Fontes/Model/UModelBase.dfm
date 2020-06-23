@@ -671,6 +671,9 @@ object dmDados: TdmDados
       FieldName = 'REGISTRO_EMITENTE'
       Required = True
     end
+    object cliVendaCODIGO_PRODUTO_EXIBICAO: TLargeintField
+      FieldName = 'CODIGO_PRODUTO_EXIBICAO'
+    end
   end
   object uptVenda: TSQLQuery
     MaxBlobSize = -1

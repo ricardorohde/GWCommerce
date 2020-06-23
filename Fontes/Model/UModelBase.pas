@@ -972,6 +972,7 @@ type
     cliFuncionariosOS: TLargeintField;
     cliFuncionariosVENDA: TLargeintField;
     delPagamentosAposCancelar: TSQLQuery;
+    cliVendaCODIGO_PRODUTO_EXIBICAO: TLargeintField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cliEstoquePRECO_VENDAGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);

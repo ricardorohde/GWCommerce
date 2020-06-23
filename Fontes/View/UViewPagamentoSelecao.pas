@@ -506,6 +506,7 @@ end;
 
 procedure TViewPagamentoSelecao.Validar;
 var
+  Liquido,
   Valor: Double;
 
   Pagamento: TPagamento;
@@ -527,7 +528,9 @@ begin
   for Pagamento in FPagamentos do
     Valor := Valor + Pagamento.Cartao.Valor + Pagamento.Prazo + Pagamento.Cheque + Pagamento.Dinheiro;
 
-  if Valor < (FGWCommerce.Venda.Total - FGWCommerce.Venda.Desconto) then
+  Liquido := (FGWCommerce.Venda.Total - FGWCommerce.Venda.Desconto);
+
+  if Valor < Liquido then
     raise Exception.Create('O total das formas de pagamento é menor que o total da venda.');
 end;
 
