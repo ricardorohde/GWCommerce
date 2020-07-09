@@ -38,8 +38,6 @@ object ViewEmitente: TViewEmitente
       Align = alClient
       Caption = 'IDENTIFICA'#199#195'O'
       TabOrder = 0
-      ExplicitLeft = 14
-      ExplicitWidth = 684
       object lbl1: TLabel
         Left = 3
         Top = 24
@@ -123,9 +121,6 @@ object ViewEmitente: TViewEmitente
       Color = clWhite
       ParentBackground = False
       TabOrder = 1
-      ExplicitLeft = 8
-      ExplicitTop = 16
-      ExplicitHeight = 41
     end
     object pnl6: TPanel
       Left = 706
@@ -137,7 +132,6 @@ object ViewEmitente: TViewEmitente
       Color = clWhite
       ParentBackground = False
       TabOrder = 2
-      ExplicitLeft = 529
     end
   end
   object pnlContato: TPanel
@@ -158,8 +152,6 @@ object ViewEmitente: TViewEmitente
       Align = alClient
       Caption = 'CONTATOS'
       TabOrder = 0
-      ExplicitLeft = 14
-      ExplicitWidth = 684
       object lbl3: TLabel
         Left = 55
         Top = 24
@@ -235,9 +227,6 @@ object ViewEmitente: TViewEmitente
       Color = clWhite
       ParentBackground = False
       TabOrder = 2
-      ExplicitLeft = 176
-      ExplicitTop = 43
-      ExplicitHeight = 41
     end
   end
   object pnlEndereco: TPanel
@@ -258,8 +247,6 @@ object ViewEmitente: TViewEmitente
       Align = alClient
       Caption = 'ENDERE'#199'O'
       TabOrder = 0
-      ExplicitLeft = 14
-      ExplicitWidth = 684
       object lbl6: TLabel
         Left = 48
         Top = 20
@@ -426,7 +413,6 @@ object ViewEmitente: TViewEmitente
       Color = clWhite
       ParentBackground = False
       TabOrder = 2
-      ExplicitLeft = 529
     end
   end
   object pnlDocumentos: TPanel
@@ -447,8 +433,6 @@ object ViewEmitente: TViewEmitente
       Align = alClient
       Caption = 'DOCUMENTOS'
       TabOrder = 0
-      ExplicitLeft = 14
-      ExplicitWidth = 689
       object lbl14: TLabel
         Left = 69
         Top = 24
@@ -527,7 +511,6 @@ object ViewEmitente: TViewEmitente
       Color = clWhite
       ParentBackground = False
       TabOrder = 1
-      ExplicitLeft = 16
     end
     object pnl12: TPanel
       Left = 706
@@ -539,9 +522,6 @@ object ViewEmitente: TViewEmitente
       Color = clWhite
       ParentBackground = False
       TabOrder = 2
-      ExplicitLeft = 502
-      ExplicitTop = 15
-      ExplicitHeight = 64
     end
   end
   object pnlConfiguracoes: TPanel
@@ -565,8 +545,6 @@ object ViewEmitente: TViewEmitente
       ParentBackground = False
       ParentColor = False
       TabOrder = 0
-      ExplicitLeft = 12
-      ExplicitWidth = 689
       object grp6: TGroupBox
         Left = 6
         Top = 12
@@ -760,7 +738,6 @@ object ViewEmitente: TViewEmitente
       Color = clWhite
       ParentBackground = False
       TabOrder = 1
-      ExplicitLeft = 529
     end
     object pnl14: TPanel
       Left = 0
@@ -794,9 +771,6 @@ object ViewEmitente: TViewEmitente
       Color = 8180311
       ParentBackground = False
       TabOrder = 0
-      ExplicitLeft = 416
-      ExplicitTop = 16
-      ExplicitHeight = 41
       object btnConfirmar: TSpeedButton
         Left = 0
         Top = 0
@@ -827,9 +801,6 @@ object ViewEmitente: TViewEmitente
       Color = 8180311
       ParentBackground = False
       TabOrder = 1
-      ExplicitLeft = 155
-      ExplicitTop = 15
-      ExplicitHeight = 42
       object btnCancelar: TSpeedButton
         Left = 0
         Top = 0
@@ -872,7 +843,6 @@ object ViewEmitente: TViewEmitente
       Color = clWhite
       ParentBackground = False
       TabOrder = 3
-      ExplicitTop = 29
     end
     object pnl3: TPanel
       Left = 0
@@ -884,7 +854,6 @@ object ViewEmitente: TViewEmitente
       Color = clWhite
       ParentBackground = False
       TabOrder = 4
-      ExplicitHeight = 54
     end
     object pnl4: TPanel
       Left = 706
@@ -896,8 +865,6 @@ object ViewEmitente: TViewEmitente
       Color = clWhite
       ParentBackground = False
       TabOrder = 5
-      ExplicitLeft = 529
-      ExplicitHeight = 54
     end
   end
 end

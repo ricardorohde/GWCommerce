@@ -17,16 +17,21 @@ type
     FWebService: TIdHTTP;
 
   protected
+    function Montar_URL(): String; virtual; abstract;
     function Pegar_ApiToken_Emitente(): String;
     function Pegar_CNPJ_Emitente(): String;
-    function Pegar_Servico(): String; virtual; abstract;
+    function Pegar_Parametro_Body(): String; virtual; abstract;
+//    function Pegar_Servico(): String; virtual; abstract;
 
   public
+    const
+      URL_BASE = 'https://www.gwcommerce.com.br';
+
     constructor Create(AIdEmitente: Int64);
 
     destructor Destroy(); override;
 
-    function Executar(): String;
+    function Executar(AModoGet: Boolean = True): String;
 
     property IdEmitente: Int64 read FIdEmitente;
     property WebService: TIdHTTP read FWebService write FWebService;
@@ -48,19 +53,19 @@ begin
   inherited;
 end;
 
-function TControllerWebService.Executar: String;
+function TControllerWebService.Executar(AModoGet: Boolean = True): String;
 var
-  CNPJ,
-  Retorno,
+  //CNPJ,
+  Retorno{,
   TokenApi,
-  Url: String;
+  Url}: String;
 
   Parametro1: TStringList;
 
   Parametro2: TStringStream;
 
 begin
-  CNPJ := Pegar_CNPJ_Emitente();
+{  CNPJ := Pegar_CNPJ_Emitente();
 
   if Trim(CNPJ) = '' then
     raise Exception.Create('CNPJ do Emitente não encontrado.');
@@ -68,19 +73,31 @@ begin
   TokenApi := Pegar_ApiToken_Emitente();
 
   if Trim(TokenApi) = '' then
-    raise Exception.Create('Token da API não encontrado.');
+    raise Exception.Create('Token da API não encontrado.');}
 
   Retorno    := '';
   Parametro1 := TStringList.Create();
-  Parametro2 := TStringStream.Create('');
   try
-    Url := Format('https://www.gwcommerce.com.br/%s/index.php?cnpj=%s&token=%s', [Pegar_Servico(), CNPJ, TokenApi]);
-    FWebService.Post(Url, Parametro1, Parametro2);
-    Retorno := Parametro2.DataString;
+    if not AModoGet then
+    begin
+      FWebService.Request.Accept      := 'application/json';
+      FWebService.Request.ContentType := 'application/json';
+      FWebService.Request.CharSet     := 'utf-8';
+
+      Parametro2 := TStringStream.Create(Pegar_Parametro_Body(), TEncoding.UTF8);
+      Retorno    := FWebService.Post(Montar_URL(), Parametro2);
+      Parametro2.Free();
+    end
+    else
+    begin
+      Parametro2 := TStringStream.Create('');
+      FWebService.Post(Montar_URL(), Parametro1, Parametro2);
+      Retorno := Parametro2.DataString;
+      Parametro2.Free();
+    end;
   finally
     Result := Retorno;
     Parametro1.Free();
-    Parametro2.Free();
   end;
 end;
 
@@ -92,6 +109,9 @@ begin
   Result := IfThen(dmDados.cliConfiguracao.RecordCount > 0, dmDados.cliConfiguracaoAPI_CONEXAO_TOKEN.AsString, '');
 
   dmDados.cliConfiguracao.Filtered := False;
+
+  if Trim(Result) = '' then
+    raise Exception.Create('Token da API não encontrado.');
 end;
 
 function TControllerWebService.Pegar_CNPJ_Emitente: String;
@@ -102,6 +122,9 @@ begin
   Result := IfThen(dmDados.cliEmitente.RecordCount > 0, dmDados.cliEmitenteCNPJ.AsString, '');
 
   dmDados.cliEmitente.Filtered := False;
+
+  if Trim(Result) = '' then
+    raise Exception.Create('CNPJ do Emitente não encontrado.');
 end;
 
 end.

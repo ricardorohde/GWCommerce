@@ -11,7 +11,9 @@ interface
 type
   TControllerWebServiceFuncionario = class(TControllerWebService)
     protected
-      function Pegar_Servico(): String; override;
+      function Montar_URL(): String; override;
+      function Pegar_Parametro_Body(): String; override;
+//      function Pegar_Servico(): String; override;
 
     public
       constructor Create(AIdEmitente: Int64);
@@ -75,9 +77,19 @@ begin
   end;
 end;
 
-function TControllerWebServiceFuncionario.Pegar_Servico: String;
+function TControllerWebServiceFuncionario.Montar_URL: String;
+begin
+  Result := Format('%s/envia_funcionarios/index.php?cnpj=%s&token=%s', [URL_BASE, Pegar_CNPJ_Emitente(), Pegar_ApiToken_Emitente()]);
+end;
+
+function TControllerWebServiceFuncionario.Pegar_Parametro_Body: String;
+begin
+  Result := '';
+end;
+
+{function TControllerWebServiceFuncionario.Pegar_Servico: String;
 begin
   Result := 'envia_funcionarios';
-end;
+end;}
 
 end.

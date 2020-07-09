@@ -43,9 +43,6 @@ object ViewOpcoes: TViewOpcoes
       ParentBackground = False
       ParentFont = False
       TabOrder = 0
-      ExplicitLeft = 296
-      ExplicitTop = 17
-      ExplicitHeight = 40
       object btnAcessar: TSpeedButton
         Left = 0
         Top = 0
@@ -70,9 +67,6 @@ object ViewOpcoes: TViewOpcoes
       Color = 8180311
       ParentBackground = False
       TabOrder = 1
-      ExplicitLeft = 41
-      ExplicitTop = 17
-      ExplicitHeight = 40
       object btnCancelar: TSpeedButton
         Left = 0
         Top = 0
@@ -104,8 +98,6 @@ object ViewOpcoes: TViewOpcoes
       Color = clWhite
       ParentBackground = False
       TabOrder = 2
-      ExplicitLeft = 144
-      ExplicitHeight = 41
     end
     object pnl7: TPanel
       Left = 0
@@ -117,9 +109,6 @@ object ViewOpcoes: TViewOpcoes
       Color = clWhite
       ParentBackground = False
       TabOrder = 3
-      ExplicitLeft = 1
-      ExplicitTop = 9
-      ExplicitHeight = 54
     end
     object pnl8: TPanel
       Left = 0
@@ -131,9 +120,6 @@ object ViewOpcoes: TViewOpcoes
       Color = clWhite
       ParentBackground = False
       TabOrder = 4
-      ExplicitLeft = 160
-      ExplicitTop = 24
-      ExplicitWidth = 185
     end
     object pnl9: TPanel
       Left = 0
@@ -145,9 +131,6 @@ object ViewOpcoes: TViewOpcoes
       Color = clWhite
       ParentBackground = False
       TabOrder = 5
-      ExplicitLeft = 1
-      ExplicitTop = 30
-      ExplicitWidth = 449
     end
   end
   object rgOpcoes: TRadioGroup
@@ -171,10 +154,6 @@ object ViewOpcoes: TViewOpcoes
     ParentColor = False
     ParentFont = False
     TabOrder = 1
-    ExplicitLeft = 40
-    ExplicitTop = 32
-    ExplicitWidth = 353
-    ExplicitHeight = 145
   end
   object pnl2: TPanel
     Left = 0
@@ -197,7 +176,6 @@ object ViewOpcoes: TViewOpcoes
     Color = clWhite
     ParentBackground = False
     TabOrder = 3
-    ExplicitHeight = 188
   end
   object pnl4: TPanel
     Left = 443
@@ -209,9 +187,6 @@ object ViewOpcoes: TViewOpcoes
     Color = clWhite
     ParentBackground = False
     TabOrder = 4
-    ExplicitLeft = 265
-    ExplicitTop = 55
-    ExplicitHeight = 41
   end
   object pnl5: TPanel
     Left = 0
@@ -223,8 +198,5 @@ object ViewOpcoes: TViewOpcoes
     Color = clWhite
     ParentBackground = False
     TabOrder = 5
-    ExplicitLeft = 224
-    ExplicitTop = 128
-    ExplicitWidth = 185
   end
 end

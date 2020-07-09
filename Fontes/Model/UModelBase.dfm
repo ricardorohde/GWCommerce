@@ -4200,4 +4200,665 @@ object dmDados: TdmDados
     Left = 712
     Top = 296
   end
+  object qryNfeIntegracaoApi: TSQLQuery
+    MaxBlobSize = -1
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'PREGISTRO_EMITENTE'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftUnknown
+        Name = 'PID_NFE'
+        ParamType = ptInput
+      end>
+    SQL.Strings = (
+      'SELECT *'
+      '  FROM NFE_INTEGRACAO_API'
+      'WHERE REGISTRO_EMITENTE = :PREGISTRO_EMITENTE'
+      '     AND ID_NFE = :PID_NFE')
+    SQLConnection = Conexao
+    Left = 56
+    Top = 280
+  end
+  object dspNfeIntegracaoApi: TDataSetProvider
+    DataSet = qryNfeIntegracaoApi
+    Left = 56
+    Top = 328
+  end
+  object cliNfeIntegracaoApi: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspNfeIntegracaoApi'
+    Left = 48
+    Top = 384
+    object cliNfeIntegracaoApiREGISTRO_EMITENTE: TLargeintField
+      FieldName = 'REGISTRO_EMITENTE'
+      Required = True
+    end
+    object cliNfeIntegracaoApiID_NFE: TLargeintField
+      FieldName = 'ID_NFE'
+      Required = True
+    end
+    object cliNfeIntegracaoApiSTATUS: TIntegerField
+      FieldName = 'STATUS'
+      Required = True
+    end
+    object cliNfeIntegracaoApiDATA_HORA_INTEGRACAO: TSQLTimeStampField
+      FieldName = 'DATA_HORA_INTEGRACAO'
+      Required = True
+    end
+    object cliNfeIntegracaoApiMENSAGEM: TStringField
+      FieldName = 'MENSAGEM'
+      Size = 255
+    end
+  end
+  object qryConsultaNotasEnviarApi: TSQLQuery
+    MaxBlobSize = 1
+    Params = <
+      item
+        DataType = ftLargeint
+        Name = 'PREGISTRO_EMITENTE'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftString
+        Name = 'PDATA'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftString
+        Name = 'PDATA'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftLargeint
+        Name = 'PREGISTRO_EMITENTE'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftString
+        Name = 'PDATA'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftString
+        Name = 'PDATA'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftLargeint
+        Name = 'PREGISTRO_EMITENTE'
+        ParamType = ptInput
+      end>
+    SQL.Strings = (
+      'SELECT NEWTABLE.*'
+      '  FROM (SELECT *                                          '
+      '                FROM NFE_CAB                                    '
+      '              WHERE REGISTRO_EMIT = :PREGISTRO_EMITENTE'
+      
+        '                   AND CD_STATUS IN (100, 150, 128, 135)        ' +
+        '  '
+      
+        '                   AND IDE_MOD = 65                             ' +
+        '  '
+      
+        '                   AND (CAST(IDE_DHEMI AS DATE) BETWEEN :PDATA A' +
+        'ND :PDATA)'
+      
+        '               UNION ALL                                        ' +
+        '  '
+      '              SELECT *                                          '
+      '                FROM NFE_CAB                                    '
+      '              WHERE REGISTRO_EMIT = :PREGISTRO_EMITENTE'
+      
+        '                   AND IDE_MOD = 90                             ' +
+        '  '
+      
+        '                   AND (CAST(IDE_DHEMI AS DATE) BETWEEN :PDATA A' +
+        'ND :PDATA)'
+      '                   AND (XML_APROVADO <> '#39#39')'
+      ') AS NEWTABLE'
+      'WHERE NEWTABLE.ID_NFE NOT IN (SELECT ID_NFE'
+      
+        '                                                             FRO' +
+        'M NFE_INTEGRACAO_API'
+      
+        '                                                           WHERE' +
+        ' REGISTRO_EMITENTE = :PREGISTRO_EMITENTE) '
+      'ORDER BY IDE_NNF')
+    SQLConnection = Conexao
+    Left = 176
+    Top = 288
+  end
+  object dspConsultaNotasEnviarApi: TDataSetProvider
+    DataSet = qryConsultaNotasEnviarApi
+    Left = 176
+    Top = 344
+  end
+  object cliConsultaNotasEnviarApi: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspConsultaNotasEnviarApi'
+    Left = 176
+    Top = 400
+    object cliConsultaNotasEnviarApiID_NFE: TLargeintField
+      FieldName = 'ID_NFE'
+      Required = True
+    end
+    object cliConsultaNotasEnviarApiREGISTRO_EMIT: TLargeintField
+      FieldName = 'REGISTRO_EMIT'
+    end
+    object cliConsultaNotasEnviarApiID_VENDEDOR: TLargeintField
+      FieldName = 'ID_VENDEDOR'
+    end
+    object cliConsultaNotasEnviarApiCHAVE: TStringField
+      FieldName = 'CHAVE'
+      Size = 44
+    end
+    object cliConsultaNotasEnviarApiIDE_CUF: TLargeintField
+      FieldName = 'IDE_CUF'
+    end
+    object cliConsultaNotasEnviarApiIDE_NATOP: TStringField
+      FieldName = 'IDE_NATOP'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiIDE_MOD: TLargeintField
+      FieldName = 'IDE_MOD'
+    end
+    object cliConsultaNotasEnviarApiIDE_SERIE: TLargeintField
+      FieldName = 'IDE_SERIE'
+    end
+    object cliConsultaNotasEnviarApiIDE_NNF: TLargeintField
+      FieldName = 'IDE_NNF'
+    end
+    object cliConsultaNotasEnviarApiIDE_DHEMI: TSQLTimeStampField
+      FieldName = 'IDE_DHEMI'
+    end
+    object cliConsultaNotasEnviarApiIDE_DHSAIENT: TSQLTimeStampField
+      FieldName = 'IDE_DHSAIENT'
+    end
+    object cliConsultaNotasEnviarApiIDE_TPNF: TStringField
+      FieldName = 'IDE_TPNF'
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiIDE_IDDEST: TLargeintField
+      FieldName = 'IDE_IDDEST'
+    end
+    object cliConsultaNotasEnviarApiIDE_CMUNFG: TStringField
+      FieldName = 'IDE_CMUNFG'
+      Size = 7
+    end
+    object cliConsultaNotasEnviarApiIDE_TP_IMP: TLargeintField
+      FieldName = 'IDE_TP_IMP'
+    end
+    object cliConsultaNotasEnviarApiIDE_TPEMIS: TStringField
+      FieldName = 'IDE_TPEMIS'
+      Size = 45
+    end
+    object cliConsultaNotasEnviarApiIDE_TPAMB: TLargeintField
+      FieldName = 'IDE_TPAMB'
+    end
+    object cliConsultaNotasEnviarApiIDE_FINNFE: TLargeintField
+      FieldName = 'IDE_FINNFE'
+    end
+    object cliConsultaNotasEnviarApiIDE_INDFINAL: TLargeintField
+      FieldName = 'IDE_INDFINAL'
+    end
+    object cliConsultaNotasEnviarApiIDE_INDPRES: TLargeintField
+      FieldName = 'IDE_INDPRES'
+    end
+    object cliConsultaNotasEnviarApiIDE_PROCEMI: TLargeintField
+      FieldName = 'IDE_PROCEMI'
+    end
+    object cliConsultaNotasEnviarApiIDE_VERPROC: TStringField
+      FieldName = 'IDE_VERPROC'
+    end
+    object cliConsultaNotasEnviarApiEMIT_CNPJ_CPF: TStringField
+      FieldName = 'EMIT_CNPJ_CPF'
+    end
+    object cliConsultaNotasEnviarApiEMIT_CPF: TStringField
+      FieldName = 'EMIT_CPF'
+      Size = 11
+    end
+    object cliConsultaNotasEnviarApiEMIT_XNOME: TStringField
+      FieldName = 'EMIT_XNOME'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiEMIT_XFANT: TStringField
+      FieldName = 'EMIT_XFANT'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiEMIT_XLGR: TStringField
+      FieldName = 'EMIT_XLGR'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiEMIT_NRO: TStringField
+      FieldName = 'EMIT_NRO'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiEMIT_XCPL: TStringField
+      FieldName = 'EMIT_XCPL'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiEMIT_XBAIRRO: TStringField
+      FieldName = 'EMIT_XBAIRRO'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiEMIT_CMUN: TStringField
+      FieldName = 'EMIT_CMUN'
+      Size = 7
+    end
+    object cliConsultaNotasEnviarApiEMIT_XMUN: TStringField
+      FieldName = 'EMIT_XMUN'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiEMIT_UF: TStringField
+      FieldName = 'EMIT_UF'
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiEMIT_CEP: TStringField
+      FieldName = 'EMIT_CEP'
+      Size = 8
+    end
+    object cliConsultaNotasEnviarApiEMIT_CPAIS: TLargeintField
+      FieldName = 'EMIT_CPAIS'
+    end
+    object cliConsultaNotasEnviarApiEMIT_XPAIS: TStringField
+      FieldName = 'EMIT_XPAIS'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiEMIT_FONE: TStringField
+      FieldName = 'EMIT_FONE'
+      Size = 14
+    end
+    object cliConsultaNotasEnviarApiEMIT_IE: TStringField
+      FieldName = 'EMIT_IE'
+      Size = 14
+    end
+    object cliConsultaNotasEnviarApiEMIT_IM: TStringField
+      FieldName = 'EMIT_IM'
+      Size = 15
+    end
+    object cliConsultaNotasEnviarApiEMIT_CNAE: TStringField
+      FieldName = 'EMIT_CNAE'
+      Size = 7
+    end
+    object cliConsultaNotasEnviarApiEMIT_CRT: TStringField
+      FieldName = 'EMIT_CRT'
+      Size = 45
+    end
+    object cliConsultaNotasEnviarApiID_CLIENTE: TLargeintField
+      FieldName = 'ID_CLIENTE'
+    end
+    object cliConsultaNotasEnviarApiDEST_CNPJ_CPF: TStringField
+      FieldName = 'DEST_CNPJ_CPF'
+    end
+    object cliConsultaNotasEnviarApiDEST_IDESTRANGEIRO: TStringField
+      FieldName = 'DEST_IDESTRANGEIRO'
+    end
+    object cliConsultaNotasEnviarApiDEST_XNOME: TStringField
+      FieldName = 'DEST_XNOME'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiDEST_XLGR: TStringField
+      FieldName = 'DEST_XLGR'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiDEST_NRO: TStringField
+      FieldName = 'DEST_NRO'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiDEST_XCPL: TStringField
+      FieldName = 'DEST_XCPL'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiDEST_XBAIRRO: TStringField
+      FieldName = 'DEST_XBAIRRO'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiDEST_CMUN: TStringField
+      FieldName = 'DEST_CMUN'
+      Size = 7
+    end
+    object cliConsultaNotasEnviarApiDEST_XMUN: TStringField
+      FieldName = 'DEST_XMUN'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiDEST_UF: TStringField
+      FieldName = 'DEST_UF'
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiDEST_CEP: TStringField
+      FieldName = 'DEST_CEP'
+      Size = 8
+    end
+    object cliConsultaNotasEnviarApiDEST_CPAIS: TLargeintField
+      FieldName = 'DEST_CPAIS'
+    end
+    object cliConsultaNotasEnviarApiDEST_XPAIS: TStringField
+      FieldName = 'DEST_XPAIS'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiDEST_FONE: TStringField
+      FieldName = 'DEST_FONE'
+      Size = 14
+    end
+    object cliConsultaNotasEnviarApiDEST_INDIEDEST: TLargeintField
+      FieldName = 'DEST_INDIEDEST'
+    end
+    object cliConsultaNotasEnviarApiDEST_IE: TStringField
+      FieldName = 'DEST_IE'
+      Size = 14
+    end
+    object cliConsultaNotasEnviarApiDEST_EMAIL: TStringField
+      FieldName = 'DEST_EMAIL'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiVBC: TFMTBCDField
+      FieldName = 'VBC'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVICMS: TFMTBCDField
+      FieldName = 'VICMS'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVICMSDESON: TFMTBCDField
+      FieldName = 'VICMSDESON'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVBCST: TFMTBCDField
+      FieldName = 'VBCST'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVST: TFMTBCDField
+      FieldName = 'VST'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVPROD: TFMTBCDField
+      FieldName = 'VPROD'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVFRETE: TFMTBCDField
+      FieldName = 'VFRETE'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVSEG: TFMTBCDField
+      FieldName = 'VSEG'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVDESC: TFMTBCDField
+      FieldName = 'VDESC'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVII: TFMTBCDField
+      FieldName = 'VII'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVIPI: TFMTBCDField
+      FieldName = 'VIPI'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVPIS: TFMTBCDField
+      FieldName = 'VPIS'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVCOFINS: TFMTBCDField
+      FieldName = 'VCOFINS'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVOUTRO: TFMTBCDField
+      FieldName = 'VOUTRO'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVNF: TFMTBCDField
+      FieldName = 'VNF'
+      OnGetText = cliConsultaNotasEnviarApiVNFGetText
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVTOTTRIB: TFMTBCDField
+      FieldName = 'VTOTTRIB'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiMODFRETE: TLargeintField
+      FieldName = 'MODFRETE'
+    end
+    object cliConsultaNotasEnviarApiID_TRANSP: TLargeintField
+      FieldName = 'ID_TRANSP'
+    end
+    object cliConsultaNotasEnviarApiTRANSP_CNPJ_CPF: TStringField
+      FieldName = 'TRANSP_CNPJ_CPF'
+      Size = 14
+    end
+    object cliConsultaNotasEnviarApiTRANSP_XNOME: TStringField
+      FieldName = 'TRANSP_XNOME'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiTRANSP_IE: TStringField
+      FieldName = 'TRANSP_IE'
+      Size = 14
+    end
+    object cliConsultaNotasEnviarApiTRANSP_XENDER: TStringField
+      FieldName = 'TRANSP_XENDER'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiTRANSP_XMUN: TStringField
+      FieldName = 'TRANSP_XMUN'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiTRANSP_UF: TStringField
+      FieldName = 'TRANSP_UF'
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVEIC_PLACA: TStringField
+      FieldName = 'VEIC_PLACA'
+      Size = 10
+    end
+    object cliConsultaNotasEnviarApiVEIC_UF: TStringField
+      FieldName = 'VEIC_UF'
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiVEIC_RNTC: TStringField
+      FieldName = 'VEIC_RNTC'
+    end
+    object cliConsultaNotasEnviarApiVOL_QVOL: TLargeintField
+      FieldName = 'VOL_QVOL'
+    end
+    object cliConsultaNotasEnviarApiVOL_ESP: TStringField
+      FieldName = 'VOL_ESP'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiVOL_MARCA: TStringField
+      FieldName = 'VOL_MARCA'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiVOL_NVOL: TStringField
+      FieldName = 'VOL_NVOL'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiVOL_PESOL: TFMTBCDField
+      FieldName = 'VOL_PESOL'
+      Precision = 18
+      Size = 3
+    end
+    object cliConsultaNotasEnviarApiVOL_PESOB: TFMTBCDField
+      FieldName = 'VOL_PESOB'
+      Precision = 18
+      Size = 3
+    end
+    object cliConsultaNotasEnviarApiINFADFISCO: TStringField
+      FieldName = 'INFADFISCO'
+      Size = 500
+    end
+    object cliConsultaNotasEnviarApiINFCPL: TStringField
+      FieldName = 'INFCPL'
+      Size = 500
+    end
+    object cliConsultaNotasEnviarApiREFNFE: TStringField
+      FieldName = 'REFNFE'
+      Size = 44
+    end
+    object cliConsultaNotasEnviarApiEXPORTA_UFEMARQ: TStringField
+      FieldName = 'EXPORTA_UFEMARQ'
+      Size = 2
+    end
+    object cliConsultaNotasEnviarApiEXPORTA_XLOCEMARQ: TStringField
+      FieldName = 'EXPORTA_XLOCEMARQ'
+      Size = 60
+    end
+    object cliConsultaNotasEnviarApiCD_STATUS: TLargeintField
+      FieldName = 'CD_STATUS'
+    end
+    object cliConsultaNotasEnviarApiPROTOCOLO_AUTORIZACAO: TStringField
+      FieldName = 'PROTOCOLO_AUTORIZACAO'
+      Size = 30
+    end
+    object cliConsultaNotasEnviarApiDT_AUTORIZACAO: TSQLTimeStampField
+      FieldName = 'DT_AUTORIZACAO'
+    end
+    object cliConsultaNotasEnviarApiMOTIVO_CANCELAMENTO: TStringField
+      FieldName = 'MOTIVO_CANCELAMENTO'
+      Size = 100
+    end
+    object cliConsultaNotasEnviarApiPROTOCOLO_CANCELAMENTO: TStringField
+      FieldName = 'PROTOCOLO_CANCELAMENTO'
+      Size = 30
+    end
+    object cliConsultaNotasEnviarApiDT_CANCELAMENTO: TSQLTimeStampField
+      FieldName = 'DT_CANCELAMENTO'
+    end
+    object cliConsultaNotasEnviarApiXML_APROVADO: TBlobField
+      FieldName = 'XML_APROVADO'
+      Size = 1
+    end
+    object cliConsultaNotasEnviarApiXML_CANCELADO: TStringField
+      FieldName = 'XML_CANCELADO'
+      Size = 8000
+    end
+  end
+  object qryInserirNotaIntegradaAPI: TSQLQuery
+    MaxBlobSize = -1
+    Params = <
+      item
+        DataType = ftLargeint
+        Name = 'PREGISTRO_EMITENTE'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftLargeint
+        Name = 'PID_NFE'
+        ParamType = ptInput
+      end>
+    SQL.Strings = (
+      'INSERT INTO NFE_INTEGRACAO_API'
+      
+        '     VALUES(:PREGISTRO_EMITENTE, :PID_NFE, 1, CURRENT_TIMESTAMP,' +
+        ' '#39'Integrado com Sucesso'#39')')
+    SQLConnection = Conexao
+    Left = 1008
+    Top = 152
+  end
+  object qryConsultaFormaPagamentoEnvioAPI: TSQLQuery
+    MaxBlobSize = -1
+    Params = <
+      item
+        DataType = ftLargeint
+        Name = 'PIDNFE'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftLargeint
+        Name = 'PREGISTROEMIT'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftString
+        Name = 'PINDPAGAMENTO'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftFloat
+        Name = 'PVPAGAMENTO'
+        ParamType = ptInput
+      end>
+    SQL.Strings = (
+      '   select *'
+      '     from nfe_pagamento'
+      '  where id_nfe = :PIDNFE'
+      '      and registro_emit = :PREGISTROEMIT'
+      '      and tpag = :PINDPAGAMENTO'
+      '      and vpag = :PVPAGAMENTO')
+    SQLConnection = Conexao
+    Left = 384
+    Top = 288
+  end
+  object dspConsultaFormaPagamentoEnvioAPI: TDataSetProvider
+    DataSet = qryConsultaFormaPagamentoEnvioAPI
+    Left = 384
+    Top = 344
+  end
+  object cliConsultaFormaPagamentoEnvioAPI: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspConsultaFormaPagamentoEnvioAPI'
+    Left = 384
+    Top = 400
+    object cliConsultaFormaPagamentoEnvioAPIID_NFE_PAG: TLargeintField
+      FieldName = 'ID_NFE_PAG'
+      Required = True
+    end
+    object cliConsultaFormaPagamentoEnvioAPIID_NFE: TLargeintField
+      FieldName = 'ID_NFE'
+    end
+    object cliConsultaFormaPagamentoEnvioAPIREGISTRO_EMIT: TLargeintField
+      FieldName = 'REGISTRO_EMIT'
+    end
+    object cliConsultaFormaPagamentoEnvioAPITPAG: TStringField
+      FieldName = 'TPAG'
+      Size = 11
+    end
+    object cliConsultaFormaPagamentoEnvioAPIVPAG: TFMTBCDField
+      FieldName = 'VPAG'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaFormaPagamentoEnvioAPIVTROCO: TFMTBCDField
+      FieldName = 'VTROCO'
+      Precision = 18
+      Size = 2
+    end
+    object cliConsultaFormaPagamentoEnvioAPIINDPAG: TLargeintField
+      FieldName = 'INDPAG'
+    end
+    object cliConsultaFormaPagamentoEnvioAPICNPJ_ADM: TStringField
+      FieldName = 'CNPJ_ADM'
+    end
+    object cliConsultaFormaPagamentoEnvioAPITBAND: TStringField
+      FieldName = 'TBAND'
+      Size = 2
+    end
+    object cliConsultaFormaPagamentoEnvioAPICAUT: TStringField
+      FieldName = 'CAUT'
+    end
+    object cliConsultaFormaPagamentoEnvioAPICAIXA_N: TLargeintField
+      FieldName = 'CAIXA_N'
+    end
+  end
 end

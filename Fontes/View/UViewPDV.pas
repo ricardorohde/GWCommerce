@@ -349,9 +349,14 @@ begin
       Arredondar_Controle(TWinControl(pnlRodape.Controls[I]));
     end;
 
-  CupomFiscal.Caption      := '';
-  pnlRodapeEsquerdo1.Width := Screen.Width - (12 * pnlIniciarVenda.Width) - (11 * Splitter1.Width);
-  if pnlRodapeEsquerdo1.Width = 0 then
+  CupomFiscal.Caption := '';
+
+  if Screen.Width > 1366 then
+    pnlRodapeEsquerdo1.Width := 180
+  else
+    pnlRodapeEsquerdo1.Width := Screen.Width - 100 - (12 * pnlIniciarVenda.Width) - (11 * Splitter1.Width);
+
+  if pnlRodapeEsquerdo1.Width <= 0 then
     pnlRodapeEsquerdo1.Width := 25;
 
   Definir_Titulo_Tela('(Caixa)');

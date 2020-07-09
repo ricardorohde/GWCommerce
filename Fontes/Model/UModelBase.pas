@@ -973,10 +973,143 @@ type
     cliFuncionariosVENDA: TLargeintField;
     delPagamentosAposCancelar: TSQLQuery;
     cliVendaCODIGO_PRODUTO_EXIBICAO: TLargeintField;
+    qryNfeIntegracaoApi: TSQLQuery;
+    dspNfeIntegracaoApi: TDataSetProvider;
+    cliNfeIntegracaoApi: TClientDataSet;
+    cliNfeIntegracaoApiREGISTRO_EMITENTE: TLargeintField;
+    cliNfeIntegracaoApiID_NFE: TLargeintField;
+    cliNfeIntegracaoApiSTATUS: TIntegerField;
+    cliNfeIntegracaoApiDATA_HORA_INTEGRACAO: TSQLTimeStampField;
+    cliNfeIntegracaoApiMENSAGEM: TStringField;
+    qryConsultaNotasEnviarApi: TSQLQuery;
+    dspConsultaNotasEnviarApi: TDataSetProvider;
+    cliConsultaNotasEnviarApi: TClientDataSet;
+    cliConsultaNotasEnviarApiID_NFE: TLargeintField;
+    cliConsultaNotasEnviarApiREGISTRO_EMIT: TLargeintField;
+    cliConsultaNotasEnviarApiID_VENDEDOR: TLargeintField;
+    cliConsultaNotasEnviarApiCHAVE: TStringField;
+    cliConsultaNotasEnviarApiIDE_CUF: TLargeintField;
+    cliConsultaNotasEnviarApiIDE_NATOP: TStringField;
+    cliConsultaNotasEnviarApiIDE_MOD: TLargeintField;
+    cliConsultaNotasEnviarApiIDE_SERIE: TLargeintField;
+    cliConsultaNotasEnviarApiIDE_NNF: TLargeintField;
+    cliConsultaNotasEnviarApiIDE_DHEMI: TSQLTimeStampField;
+    cliConsultaNotasEnviarApiIDE_DHSAIENT: TSQLTimeStampField;
+    cliConsultaNotasEnviarApiIDE_TPNF: TStringField;
+    cliConsultaNotasEnviarApiIDE_IDDEST: TLargeintField;
+    cliConsultaNotasEnviarApiIDE_CMUNFG: TStringField;
+    cliConsultaNotasEnviarApiIDE_TP_IMP: TLargeintField;
+    cliConsultaNotasEnviarApiIDE_TPEMIS: TStringField;
+    cliConsultaNotasEnviarApiIDE_TPAMB: TLargeintField;
+    cliConsultaNotasEnviarApiIDE_FINNFE: TLargeintField;
+    cliConsultaNotasEnviarApiIDE_INDFINAL: TLargeintField;
+    cliConsultaNotasEnviarApiIDE_INDPRES: TLargeintField;
+    cliConsultaNotasEnviarApiIDE_PROCEMI: TLargeintField;
+    cliConsultaNotasEnviarApiIDE_VERPROC: TStringField;
+    cliConsultaNotasEnviarApiEMIT_CNPJ_CPF: TStringField;
+    cliConsultaNotasEnviarApiEMIT_CPF: TStringField;
+    cliConsultaNotasEnviarApiEMIT_XNOME: TStringField;
+    cliConsultaNotasEnviarApiEMIT_XFANT: TStringField;
+    cliConsultaNotasEnviarApiEMIT_XLGR: TStringField;
+    cliConsultaNotasEnviarApiEMIT_NRO: TStringField;
+    cliConsultaNotasEnviarApiEMIT_XCPL: TStringField;
+    cliConsultaNotasEnviarApiEMIT_XBAIRRO: TStringField;
+    cliConsultaNotasEnviarApiEMIT_CMUN: TStringField;
+    cliConsultaNotasEnviarApiEMIT_XMUN: TStringField;
+    cliConsultaNotasEnviarApiEMIT_UF: TStringField;
+    cliConsultaNotasEnviarApiEMIT_CEP: TStringField;
+    cliConsultaNotasEnviarApiEMIT_CPAIS: TLargeintField;
+    cliConsultaNotasEnviarApiEMIT_XPAIS: TStringField;
+    cliConsultaNotasEnviarApiEMIT_FONE: TStringField;
+    cliConsultaNotasEnviarApiEMIT_IE: TStringField;
+    cliConsultaNotasEnviarApiEMIT_IM: TStringField;
+    cliConsultaNotasEnviarApiEMIT_CNAE: TStringField;
+    cliConsultaNotasEnviarApiEMIT_CRT: TStringField;
+    cliConsultaNotasEnviarApiID_CLIENTE: TLargeintField;
+    cliConsultaNotasEnviarApiDEST_CNPJ_CPF: TStringField;
+    cliConsultaNotasEnviarApiDEST_IDESTRANGEIRO: TStringField;
+    cliConsultaNotasEnviarApiDEST_XNOME: TStringField;
+    cliConsultaNotasEnviarApiDEST_XLGR: TStringField;
+    cliConsultaNotasEnviarApiDEST_NRO: TStringField;
+    cliConsultaNotasEnviarApiDEST_XCPL: TStringField;
+    cliConsultaNotasEnviarApiDEST_XBAIRRO: TStringField;
+    cliConsultaNotasEnviarApiDEST_CMUN: TStringField;
+    cliConsultaNotasEnviarApiDEST_XMUN: TStringField;
+    cliConsultaNotasEnviarApiDEST_UF: TStringField;
+    cliConsultaNotasEnviarApiDEST_CEP: TStringField;
+    cliConsultaNotasEnviarApiDEST_CPAIS: TLargeintField;
+    cliConsultaNotasEnviarApiDEST_XPAIS: TStringField;
+    cliConsultaNotasEnviarApiDEST_FONE: TStringField;
+    cliConsultaNotasEnviarApiDEST_INDIEDEST: TLargeintField;
+    cliConsultaNotasEnviarApiDEST_IE: TStringField;
+    cliConsultaNotasEnviarApiDEST_EMAIL: TStringField;
+    cliConsultaNotasEnviarApiVBC: TFMTBCDField;
+    cliConsultaNotasEnviarApiVICMS: TFMTBCDField;
+    cliConsultaNotasEnviarApiVICMSDESON: TFMTBCDField;
+    cliConsultaNotasEnviarApiVBCST: TFMTBCDField;
+    cliConsultaNotasEnviarApiVST: TFMTBCDField;
+    cliConsultaNotasEnviarApiVPROD: TFMTBCDField;
+    cliConsultaNotasEnviarApiVFRETE: TFMTBCDField;
+    cliConsultaNotasEnviarApiVSEG: TFMTBCDField;
+    cliConsultaNotasEnviarApiVDESC: TFMTBCDField;
+    cliConsultaNotasEnviarApiVII: TFMTBCDField;
+    cliConsultaNotasEnviarApiVIPI: TFMTBCDField;
+    cliConsultaNotasEnviarApiVPIS: TFMTBCDField;
+    cliConsultaNotasEnviarApiVCOFINS: TFMTBCDField;
+    cliConsultaNotasEnviarApiVOUTRO: TFMTBCDField;
+    cliConsultaNotasEnviarApiVNF: TFMTBCDField;
+    cliConsultaNotasEnviarApiVTOTTRIB: TFMTBCDField;
+    cliConsultaNotasEnviarApiMODFRETE: TLargeintField;
+    cliConsultaNotasEnviarApiID_TRANSP: TLargeintField;
+    cliConsultaNotasEnviarApiTRANSP_CNPJ_CPF: TStringField;
+    cliConsultaNotasEnviarApiTRANSP_XNOME: TStringField;
+    cliConsultaNotasEnviarApiTRANSP_IE: TStringField;
+    cliConsultaNotasEnviarApiTRANSP_XENDER: TStringField;
+    cliConsultaNotasEnviarApiTRANSP_XMUN: TStringField;
+    cliConsultaNotasEnviarApiTRANSP_UF: TStringField;
+    cliConsultaNotasEnviarApiVEIC_PLACA: TStringField;
+    cliConsultaNotasEnviarApiVEIC_UF: TStringField;
+    cliConsultaNotasEnviarApiVEIC_RNTC: TStringField;
+    cliConsultaNotasEnviarApiVOL_QVOL: TLargeintField;
+    cliConsultaNotasEnviarApiVOL_ESP: TStringField;
+    cliConsultaNotasEnviarApiVOL_MARCA: TStringField;
+    cliConsultaNotasEnviarApiVOL_NVOL: TStringField;
+    cliConsultaNotasEnviarApiVOL_PESOL: TFMTBCDField;
+    cliConsultaNotasEnviarApiVOL_PESOB: TFMTBCDField;
+    cliConsultaNotasEnviarApiINFADFISCO: TStringField;
+    cliConsultaNotasEnviarApiINFCPL: TStringField;
+    cliConsultaNotasEnviarApiREFNFE: TStringField;
+    cliConsultaNotasEnviarApiEXPORTA_UFEMARQ: TStringField;
+    cliConsultaNotasEnviarApiEXPORTA_XLOCEMARQ: TStringField;
+    cliConsultaNotasEnviarApiCD_STATUS: TLargeintField;
+    cliConsultaNotasEnviarApiPROTOCOLO_AUTORIZACAO: TStringField;
+    cliConsultaNotasEnviarApiDT_AUTORIZACAO: TSQLTimeStampField;
+    cliConsultaNotasEnviarApiMOTIVO_CANCELAMENTO: TStringField;
+    cliConsultaNotasEnviarApiPROTOCOLO_CANCELAMENTO: TStringField;
+    cliConsultaNotasEnviarApiDT_CANCELAMENTO: TSQLTimeStampField;
+    cliConsultaNotasEnviarApiXML_APROVADO: TBlobField;
+    cliConsultaNotasEnviarApiXML_CANCELADO: TStringField;
+    qryInserirNotaIntegradaAPI: TSQLQuery;
+    qryConsultaFormaPagamentoEnvioAPI: TSQLQuery;
+    dspConsultaFormaPagamentoEnvioAPI: TDataSetProvider;
+    cliConsultaFormaPagamentoEnvioAPI: TClientDataSet;
+    cliConsultaFormaPagamentoEnvioAPIID_NFE_PAG: TLargeintField;
+    cliConsultaFormaPagamentoEnvioAPIID_NFE: TLargeintField;
+    cliConsultaFormaPagamentoEnvioAPIREGISTRO_EMIT: TLargeintField;
+    cliConsultaFormaPagamentoEnvioAPITPAG: TStringField;
+    cliConsultaFormaPagamentoEnvioAPIVPAG: TFMTBCDField;
+    cliConsultaFormaPagamentoEnvioAPIVTROCO: TFMTBCDField;
+    cliConsultaFormaPagamentoEnvioAPIINDPAG: TLargeintField;
+    cliConsultaFormaPagamentoEnvioAPICNPJ_ADM: TStringField;
+    cliConsultaFormaPagamentoEnvioAPITBAND: TStringField;
+    cliConsultaFormaPagamentoEnvioAPICAUT: TStringField;
+    cliConsultaFormaPagamentoEnvioAPICAIXA_N: TLargeintField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cliEstoquePRECO_VENDAGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
     procedure cliConsultaNotasFiscaisVNFGetText(Sender: TField;
+      var Text: string; DisplayText: Boolean);
+    procedure cliConsultaNotasEnviarApiVNFGetText(Sender: TField;
       var Text: string; DisplayText: Boolean);
   private
 //    function Tratar_Chave_Nota_Fiscal(AChaveGerada: String): String;
@@ -1013,7 +1146,11 @@ type
     procedure Atualizar_Status_Nota_Fiscal(AChave: String; ACodigoStatus: Int64);
 //    procedure Finalizar_Venda_Com_F12(AGWCommerce: TObject; NFCe: TACBrNFe);
 //    procedure Gerar_Nota_Fiscal(AGWCommerce: TObject; NFCe: TACBrNFe);
+    procedure Consulta_Nota_Integrada(AIdRegistro, AIdNFe: Int64);
+    procedure Consultar_FormaPagamento_Para_Integrar_API(AIdEmitente, AIdNFe: Int64; AIndicePamento: String; AValor: Double);
+    procedure Consultar_Notas_Para_Integrar_API(AIdRegistro: Int64; AData: TDateTime);
     procedure Filtrar_Configuracao(AIdRegistroEmitente: Int64);
+    procedure Inserir_Nota_Integrada(AIdRegistroEmitente, AIdNFe: Int64);
     procedure Inserir_Venda(AVenda: TObject);
     procedure Integrar_Cliente(ACliente: TlkJSONobject; AIdEmitente: Int64);
     procedure Integrar_Estoque(AEstoque: TlkJSONobject; AIdEmitente: Int64);
@@ -1231,6 +1368,13 @@ begin
   uptAtualizaStatusNotaFiscal.ExecSQL();
 end;
 
+procedure TdmDados.cliConsultaNotasEnviarApiVNFGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  if Sender.AsFloat > 0 then
+    Text := FormatFloat('#,##0.00', Sender.AsFloat);
+end;
+
 procedure TdmDados.cliConsultaNotasFiscaisVNFGetText(Sender: TField;
   var Text: string; DisplayText: Boolean);
 begin
@@ -1252,6 +1396,44 @@ begin
   AQuery.SQL.Clear();
   AQuery.SQL.Add(ASql);
   AQuery.Open();
+end;
+
+procedure TdmDados.Consultar_FormaPagamento_Para_Integrar_API(AIdEmitente,
+  AIdNFe: Int64; AIndicePamento: String; AValor: Double);
+begin
+  qryConsultaFormaPagamentoEnvioAPI.Close();
+  qryConsultaFormaPagamentoEnvioAPI.ParamByName('PIDNFE').AsLargeInt        := AIdNFe;
+  qryConsultaFormaPagamentoEnvioAPI.ParamByName('PREGISTROEMIT').AsLargeInt := AIdEmitente;
+  qryConsultaFormaPagamentoEnvioAPI.ParamByName('PINDPAGAMENTO').AsString   := AIndicePamento;
+  qryConsultaFormaPagamentoEnvioAPI.ParamByName('PVPAGAMENTO').AsFloat      := AValor;
+  qryConsultaFormaPagamentoEnvioAPI.Open();
+
+  cliConsultaFormaPagamentoEnvioAPI.Close();
+  cliConsultaFormaPagamentoEnvioAPI.Open();
+  cliConsultaFormaPagamentoEnvioAPI.First();
+end;
+
+procedure TdmDados.Consultar_Notas_Para_Integrar_API(AIdRegistro: Int64;
+  AData: TDateTime);
+begin
+  qryConsultaNotasEnviarApi.Close();
+  qryConsultaNotasEnviarApi.ParamByName('PREGISTRO_EMITENTE').AsLargeInt := AIdRegistro;
+  qryConsultaNotasEnviarApi.ParamByName('PDATA').AsString                := FormatDateTime('yyyy-MM-dd', AData);
+  qryConsultaNotasEnviarApi.Open();
+
+  cliConsultaNotasEnviarApi.Close();
+  cliConsultaNotasEnviarApi.Open();
+end;
+
+procedure TdmDados.Consulta_Nota_Integrada(AIdRegistro, AIdNFe: Int64);
+begin
+  qryNfeIntegracaoApi.Close();
+  qryNfeIntegracaoApi.ParamByName('PREGISTRO_EMITENTE').AsLargeInt := AIdRegistro;
+  qryNfeIntegracaoApi.ParamByName('PID_NFE').AsLargeInt            := AIdNFe;
+  qryNfeIntegracaoApi.Open();
+
+  cliNfeIntegracaoApi.Close();
+  cliNfeIntegracaoApi.Open();
 end;
 
 procedure TdmDados.DataModuleCreate(Sender: TObject);
@@ -1391,6 +1573,14 @@ begin
     cliNfePagamento.ApplyUpdates(0);
   end;
 end;}
+
+procedure TdmDados.Inserir_Nota_Integrada(AIdRegistroEmitente, AIdNFe: Int64);
+begin
+  qryInserirNotaIntegradaAPI.Close();
+  qryInserirNotaIntegradaAPI.ParamByName('PREGISTRO_EMITENTE').AsLargeInt := AIdRegistroEmitente;
+  qryInserirNotaIntegradaAPI.ParamByName('PID_NFE').AsLargeInt            := AIdNFe;
+  qryInserirNotaIntegradaAPI.ExecSQL();
+end;
 
 procedure TdmDados.Inserir_Venda(AVenda: TObject);
 var

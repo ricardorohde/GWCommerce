@@ -37,6 +37,7 @@ type
     procedure Atualizar_Clientes();
     procedure Atualizar_Estoques();
     procedure Atualizar_Funcionarios();
+    procedure Enviar_Atualizacoes();
     procedure Receber_Atualizacoes();
 
   public
@@ -46,7 +47,7 @@ type
 
 implementation
 uses
-  UGWCommerce, UModelBase;
+  UGWCommerce, UModelBase, UViewEnvioNotasFiscais;
 
 {$R *.dfm}
 
@@ -59,7 +60,7 @@ var
 begin
   Emitente := TViewEmitente.Create(nil);
   try
-    Emitente.Exibir(TGWCommerce(FGWCommerce).Emitente.Registro);
+    Emitente.Exibir(TGWCommerce(FGWCommerce).Emitente.Registro, True);
   finally
     FreeAndNil(Emitente);
   end;
@@ -126,12 +127,26 @@ begin
     0: Acessar_Emitente();
     1: Acessar_Gerenciador_Notas();
     2: Receber_Atualizacoes();
+    3: Enviar_Atualizacoes();
   end;
 end;
 
 procedure TViewOpcoes.btnCancelarClick(Sender: TObject);
 begin
   Close();
+end;
+
+procedure TViewOpcoes.Enviar_Atualizacoes;
+var
+  EnvioNotas: TViewEnvioNotasFiscais;
+
+begin
+  EnvioNotas := TViewEnvioNotasFiscais.Create(nil);
+  try
+    EnvioNotas.Exibir(TGWCommerce(FGWCommerce).Emitente.Registro);
+  finally
+    FreeAndNil(EnvioNotas);
+  end;
 end;
 
 procedure TViewOpcoes.Exibir(AGWCommerce: TObject);
@@ -153,9 +168,14 @@ end;
 
 procedure TViewOpcoes.Receber_Atualizacoes;
 begin
-  Atualizar_Estoques();
-  Atualizar_Clientes();
-  Atualizar_Funcionarios();
+  Screen.Cursor := crSQLWait;
+  try
+    Atualizar_Estoques();
+    Atualizar_Clientes();
+    Atualizar_Funcionarios();
+  finally
+    Screen.Cursor := crDefault;
+  end;
 end;
 
 end.

@@ -78,4 +78,9 @@ object dmNFCe: TdmNFCe
     Left = 136
     Top = 24
   end
+  object ToBase64: TIdEncoderMIME
+    FillChar = '='
+    Left = 32
+    Top = 80
+  end
 end

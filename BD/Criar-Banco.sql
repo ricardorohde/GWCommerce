@@ -13271,6 +13271,14 @@ create table configuracao(
   registro_emitente bigint not null
 );
 
+create table nfe_integracao_api(
+  registro_emitente bigint not null,
+  id_nfe bigint not null,
+  status integer not null,
+  data_hora_integracao timestamp not null,
+  mensagem varchar(255) 
+);
+
 /*INSERT INTO ESTOQUE VALUES(57535, 11, 75, 'MACARRAO ESPAGUETE DONA BENTA 500G N8', 0, 'UND', '2.40', '1.90', '5.98', '0.00', '42.00', '0.00', '0.00', '2020-01-24', '2020-01-30', '2020-03-26', '', '0.00', '', '0.00', '0.00', '', '0', '0', '52', '', '001', '00', '500', '7896005286524', '19021100', '1704901', '4.20', '15.17', '12.00', '0.00', '0', 0, 0, '0.00', '0.00', '', '5405', 'S', '', '07', '0.00', '49', '65', '0.00', '0.00', '0.00', '', '', '', '0.00', '0.00', '0.00', '0.00', '', ''); INSERT INTO ESTOQUE VALUES
 (57615, 13, 75, 'FACA DE AÇO INOX 6PCS', 0, 'UND', '12.00', '5.89', '5.89', '0.00', '1.00', '0.00', '0.00', '2020-01-31', '2020-01-30', '2020-03-30', '', '0.00', '', '0.00', '0.00', '', '0', '0', '52', '', '001', '00', '500', '7892563905624', '82119100', '0801700', '10.09', '20.48', '18.00', '0.00', '0', 0, 0, '0.00', '0.00', '', '5405', 'S', '', '07', '0.00', '49', '65', '0.00', '0.00', '0.00', '', '', '', '0.00', '0.00', '0.00', '0.00', '', ''); INSERT INTO ESTOQUE VALUES
 (57616, 14, 75, 'CARRO POLICIA FRICCÃO NA BOLHA', 0, 'UND', '10.90', '6.29', '6.29', '0.00', '2.00', '0.00', '0.00', '2020-01-31', '2020-01-30', '2020-04-26', '', '0.00', '', '0.00', '0.00', '', '0', '0', '52', '', '001', '00', '500', '7899527139231', '95030098', '2806400', '6.92', '16.68', '18.00', '0.00', '0', 0, 0, '0.00', '0.00', '5405', '5405', 'S', '', '07', '0.00', '49', '65', '0.00', '0.00', '0.00', '', '', '', '0.00', '0.00', '0.00', '0.00', '', ''); INSERT INTO ESTOQUE VALUES
@@ -13998,4 +14006,7 @@ set term; ^
 -- TABELA CONFIGURACAO
 ALTER TABLE configuracao ADD CONSTRAINT fk_configuracao_1 FOREIGN KEY (registro_emitente) REFERENCES emitente (registro);
 ALTER TABLE configuracao ADD CONSTRAINT unq1_configuracao UNIQUE (registro_emitente);
+
+ALTER TABLE nfe_integracao_api ADD CONSTRAINT fk_nfe_integracao_api_1 FOREIGN KEY (registro_emitente) REFERENCES emitente (registro);
+ALTER TABLE nfe_integracao_api ADD CONSTRAINT fk_nfe_integracao_api_2 FOREIGN KEY (id_nfe) REFERENCES nfe_cab (id_nfe);
 COMMIT;

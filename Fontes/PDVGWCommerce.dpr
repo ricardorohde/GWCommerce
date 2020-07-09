@@ -41,7 +41,10 @@ uses
   UControllerWebServiceCliente in 'Controller\UControllerWebServiceCliente.pas',
   UControllerWebServiceFuncionario in 'Controller\UControllerWebServiceFuncionario.pas',
   UViewFuncionarios in 'View\UViewFuncionarios.pas' {ViewFuncionarios},
-  UViewIdentificarCliente in 'View\UViewIdentificarCliente.pas' {ViewIdentificarCliente};
+  UViewIdentificarCliente in 'View\UViewIdentificarCliente.pas' {ViewIdentificarCliente},
+  UControllerWebServiceEnvioNotas in 'Controller\UControllerWebServiceEnvioNotas.pas',
+  UControllerWebServiceConsultaEnvioNota in 'Controller\UControllerWebServiceConsultaEnvioNota.pas',
+  UViewEnvioNotasFiscais in 'View\UViewEnvioNotasFiscais.pas' {ViewEnvioNotasFiscais};
 
 {$R *.res}
 

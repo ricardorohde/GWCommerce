@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.UITypes,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.UITypes, System.StrUtils,
 
   UViewBase, Vcl.Buttons, Vcl.ExtCtrls, Vcl.StdCtrls, UViewSelecaoCertificado,
 
@@ -116,7 +116,7 @@ type
 
   public
     { Public declarations }
-    procedure Exibir(AIdRegistroEmitente: Int64);
+    procedure Exibir(AIdRegistroEmitente: Int64; APedirSenha: Boolean = False);
   end;
 
 implementation
@@ -231,7 +231,10 @@ begin
     btnConfirmarClick(Sender);
 end;
 
-procedure TViewEmitente.Exibir(AIdRegistroEmitente: Int64);
+procedure TViewEmitente.Exibir(AIdRegistroEmitente: Int64; APedirSenha: Boolean = False);
+var
+  Senha: String;
+
 begin
   //FIdRegistroEmitente := AIdRegistroEmitente;
   Arredondar_Controle(pnlConfirmar);
@@ -247,6 +250,16 @@ begin
 
   Exibir_Dados_Emitente();
   Exibir_Dados_Configuracao();
+
+  if APedirSenha then
+  begin
+    Senha := Trim(UpperCase(InputBox('Login', #31+'Informe a senha de acesso para acessar os dados do Emitente', '')));
+    if Senha <> 'GWC2020' then
+    begin
+      MessageDlg(IfThen(Senha = '', 'Senha é Obrigatório!', 'Senha de acesso incorreta!'), mtError, [mbOK], 0);
+      Exit();
+    end;
+  end;
 
   ShowModal();
 end;

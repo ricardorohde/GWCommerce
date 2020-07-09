@@ -11,7 +11,9 @@ uses
 type
   TControllerWebServiceEstoque = class(TControllerWebService)
     protected
-      function Pegar_Servico(): String; override;
+      function Montar_URL(): String; override;
+      function Pegar_Parametro_Body(): String; override;
+//      function Pegar_Servico(): String; override;
 
     public
       constructor Create(AIdEmitente: Int64);
@@ -84,9 +86,19 @@ begin
   end;
 end;
 
-function TControllerWebServiceEstoque.Pegar_Servico: String;
+function TControllerWebServiceEstoque.Montar_URL: String;
+begin
+  Result := Format('%s/envia_estoque/index.php?cnpj=%s&token=%s', [URL_BASE, Pegar_CNPJ_Emitente(), Pegar_ApiToken_Emitente()]);
+end;
+
+function TControllerWebServiceEstoque.Pegar_Parametro_Body: String;
+begin
+  Result := '';
+end;
+
+{function TControllerWebServiceEstoque.Pegar_Servico: String;
 begin
   Result := 'envia_estoque';
-end;
+end;}
 
 end.
