@@ -158,23 +158,9 @@ end;
 procedure TViewConsultaCliente.gridClientesDrawColumnCell(Sender: TObject;
   const [Ref] Rect: TRect; DataCol: Integer; Column: TColumn;
   State: TGridDrawState);
-//var
-//  Grid: TDBGrid;
 
 begin
   Colorir_DBGrid(Sender, Rect, DataCol, Column, State);
-{  Grid := Sender as TDBGrid;
-
-  if not (gdSelected in State) then
-  begin
-    if Odd(Grid.DataSource.DataSet.RecNo) then
-      Grid.Canvas.Brush.Color:= clWhite
-    else
-      Grid.Canvas.Brush.Color:= $0092E08B;
-
-    Grid.Canvas.FillRect(Rect);
-    Grid.Canvas.TextOut(Rect.Left + 2, Rect.Top, Column.Field.DisplayText);
-  end;}
 end;
 
 procedure TViewConsultaCliente.gridClientesKeyUp(Sender: TObject; var Key: Word;

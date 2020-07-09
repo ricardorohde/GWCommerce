@@ -80,8 +80,6 @@ type
     property Pais: String read FPais write FPais;
     property Registro: Int64 read FRegistro write FRegistro;
     property Telefone: String read FTelefone write FTelefone;
-//    property TokenIdNFCe: String read FTokenIdNFCe write FTokenIdNFCe;
-//    property TokenNFCe: String read FTokenNFCe write FTokenNFCe;
 
   end;
 

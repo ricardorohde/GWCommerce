@@ -49,14 +49,11 @@ var
   ViewDesconto: TViewDesconto;
 
 begin
-  GWCommerce := AVenda as TGWCommerce;
-
-//  ViewAviso    := TViewAviso.Create(nil);
+  GWCommerce   := AVenda as TGWCommerce;
   ViewDesconto := TViewDesconto.Create(nil);
   try
     ViewDesconto.Exibir(GWCommerce.Venda.Total);
 
-//    ViewAviso.Exibir('Calculando desconto.');
     if ViewDesconto.Desconto.ValorAplicado > 0 then
     begin
       ViewAviso := TViewAviso.Create(nil);
@@ -138,7 +135,6 @@ begin
       end;
     end;
   finally
-//    FreeAndNil(ViewAviso);
     FreeAndNil(ViewDesconto);
   end;
 end;

@@ -107,8 +107,6 @@ begin
 
   Application.Title := 'PDVGWCommerce';
   Application.CreateForm(TdmDados, dmDados);
-  //  Application.CreateForm(TViewPDV, ViewPDV);
-//  Application.CreateForm(TdmNFCe, dmNFCe);
 
   if dmDados.cliEmitente.RecordCount = 0 then
   begin

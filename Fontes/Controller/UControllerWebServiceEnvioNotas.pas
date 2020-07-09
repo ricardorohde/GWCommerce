@@ -76,7 +76,6 @@ end;
 
 function TControllerWebServiceEnvioNotas.Montar_URL: String;
 begin
-//  Result := Format('%s/recebe_vendas/index.php?{"xml":"%s"}', [URL_BASE, FXML]);
   Result := Format('%s/recebe_vendas/index.php', [URL_BASE]);
 end;
 

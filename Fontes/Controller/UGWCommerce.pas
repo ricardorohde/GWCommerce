@@ -26,7 +26,6 @@ type
 
     FEmitente: TEmitente;
 
-//    procedure Gravar_Venda(AVenda: TVenda);
     function Finalizar_Pagamento(): Boolean;
     function Pegar_IdVendedor(): Int64;
 
@@ -157,21 +156,6 @@ begin
     Emitente.Ambiente := taHomologacao;
 
   dmDados.cliConfiguracao.Filtered := False;
-
-{  Emitente.Registro     := 75;
-  Emitente.Estado       := 'MG';
-  Emitente.CDEstado     := '31';
-  Emitente.CDCidade     := '3160702';
-  Emitente.CNPJ         := '18991547000161';
-  Emitente.Nome         := 'ARAUJO SOUZA SUPERMERCADO LTDA';
-  Emitente.NomeFantasia := 'ARAUJO SOUZA SUPERMERCADO LTDA';
-  Emitente.Endereco     := 'RUA SANTO ANTONIO';
-  Emitente.Numero       := '98';
-  Emitente.Bairro       := 'Centro';
-  Emitente.Municipio    := 'ARACITABA';
-  Emitente.CEP          := '36255000';
-  Emitente.IE           := '6070196040055';//'0036454070050';
-  Emitente.CRT          := '1';}
 end;
 
 destructor TGWCommerce.Destroy;
@@ -312,32 +296,6 @@ begin
   end;
 end;
 
-{procedure TGWCommerce.Gravar_Venda(AVenda: TVenda);
-begin
-  dmDados.cliVenda.Append();
-  dmDados.cliVendaCODIGO.AsLargeInt          := -1;
-  dmDados.cliVendaCODIGO_PRODUTO.AsLargeInt  := AVenda.CodigoProduto;
-  dmDados.cliVendaDESCRICAO_PRODUTO.AsString := AVenda.DescricaoProduto;
-  dmDados.cliVendaVALOR_UNITARIO.AsFloat     := AVenda.ValorUnitario;
-  dmDados.cliVendaQUANTIDADE.AsFloat         := AVenda.Quantidade;
-  dmDados.cliVendaMEDIDA.AsString            := AVenda.Medida;
-  dmDados.cliVendaDESCONTO.AsFloat           := 0;
-  dmDados.cliVendaDATA_HORA_VENDA.AsDateTime := Now(); //Vai ser processado no banco de dados
-  dmDados.cliVendaMD5.AsString               := AVenda.MD5;
-  dmDados.cliVenda.Post();
-  dmDados.cliVenda.ApplyUpdates(0);
-
-//  dmDados.Abrir_Consulta_Venda();
-  if dmDados.qryVendaConsulta.Locate('MD5', AVenda.MD5, []) then
-  begin
-    AVenda.Codigo := dmDados.qryVendaConsultaCODIGO.AsLargeInt;
-    dmDados.cliVenda.Edit();
-    dmDados.cliVendaCODIGO.AsLargeInt := AVenda.Codigo;
-    dmDados.cliVenda.Post();
-    dmDados.cliVenda.ApplyUpdates(0);
-  end;
-end;}
-
 procedure TGWCommerce.Identificar_Cliente;
 var
   Identificacao: TViewIdentificarCliente;
@@ -430,7 +388,6 @@ begin
   Venda.DataHora              := Now();
 
   dmDados.Inserir_Venda(Venda);
-//  Gravar_Venda(Venda);
 
   Venda.Ordem := dmDados.cliVenda.RecordCount;
   FVenda.Itens.Add(Venda);
@@ -479,9 +436,6 @@ begin
   if ((FVenda.Total - FVenda.Desconto) > MAX_SEM_IDENTIFICACAO) and (Cliente.CodigoCliente <= 0) then
     raise Exception.Create(Format('Vendas acima de R$ %s é obrigatório identificar o cliente.',
       [FormatFloat('#,##0.00', MAX_SEM_IDENTIFICACAO)]));
-
-//   FVenda.Pagamentos.
-
 end;
 
 procedure TGWCommerce.Validar_Venda_Aberta;

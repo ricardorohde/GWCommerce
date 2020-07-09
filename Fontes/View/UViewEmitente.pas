@@ -108,7 +108,6 @@ type
     procedure btnSelecionarCertificadoClick(Sender: TObject);
   private
     { Private declarations }
-//    FIdRegistroEmitente: Int64;
     procedure Exibir_Dados_Configuracao();
     procedure Exibir_Dados_Emitente();
     procedure Salvar_Dados_Configuracao(AEmitente: Int64);
@@ -199,7 +198,7 @@ begin
       raise Exception.Create(MensagemErro);
 
     if StrToInt64(edtCodigo.Text) <= 0 then
-      raise Exception.Create('O Código do Emitente não pode ser menor ou igual a zero');      
+      raise Exception.Create('O Código do Emitente não pode ser menor ou igual a zero');
 
     Salvar_Dados_Emitente();
     Close();
@@ -236,7 +235,6 @@ var
   Senha: String;
 
 begin
-  //FIdRegistroEmitente := AIdRegistroEmitente;
   Arredondar_Controle(pnlConfirmar);
   Arredondar_Controle(pnlCancelar);
   Definir_Titulo_Tela('(Cadastro de Emitente)');
@@ -356,7 +354,7 @@ begin
   if dmDados.cliEmitente.RecordCount = 0 then
   begin
     dmDados.cliEmitente.Insert();
-    IdEmitente                             := StrToInt64(edtCodigo.Text); //dmDados.Gerar_Id('GEN_EMITENTE_REGISTRO');;
+    IdEmitente                             := StrToInt64(edtCodigo.Text);
     dmDados.cliEmitenteREGISTRO.AsLargeInt := IdEmitente;
   end
   else

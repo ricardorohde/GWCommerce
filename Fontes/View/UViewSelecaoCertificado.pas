@@ -101,11 +101,6 @@ begin
       cliCertificados.Post();
     end;
   end;
-
-{  frmSelecionarCertificado.ShowModal;
-
-  if frmSelecionarCertificado.ModalResult = mrOK then
-    edtNumSerie.Text := frmSelecionarCertificado.StringGrid1.Cells[0, frmSelecionarCertificado.StringGrid1.Row];}
 end;
 
 procedure TViewSelecaoCertificado.Exibir;

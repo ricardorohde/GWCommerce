@@ -22,8 +22,6 @@ type
 
     FTipo: TpcnFormaPagamento;
 
-//    function GetTroco: Double;
-
     procedure SetCheque(const Value: Double);
     procedure SetDinheiro(const Value: Double);
     procedure SetPrazo(const Value: Double);
@@ -37,10 +35,6 @@ type
 
     destructor Destroy(); override;
 
-    //function Pegar_Tipo(): String;
-    //function Pegar_Valor(): Double;
-
-//    procedure Clonar(APagamento: TPagamento);
     procedure Validar_Pagamento();
 
     property Cartao: TCartao read FCartao write FCartao;
@@ -49,22 +43,12 @@ type
     property Prazo: Double read FPrazo write SetPrazo;
     property Tipo: TpcnFormaPagamento read FTipo write FTipo;
     property Total: Double read FTotal write SetTotal;
-//    property Troco: Double read GetTroco;
 
   end;
 
 implementation
 
 { TPagamento }
-
-{procedure TPagamento.Clonar(APagamento: TPagamento);
-begin
-  Cartao   := APagamento.Cartao;
-  Cheque   := APagamento.Cheque;
-  Dinheiro := APagamento.Dinheiro;
-  Prazo    := APagamento.Prazo;
-  Total    := APagamento.Total;
-end;}
 
 constructor TPagamento.Create;
 begin
@@ -78,37 +62,8 @@ end;
 
 destructor TPagamento.Destroy;
 begin
-//  FCartao.Free();
+
 end;
-
-{function TPagamento.Pegar_Tipo: String;
-begin
-  case FTipo of
-    fpDinheiro     : Result := 'Dinheiro';
-    fpCheque       : Result := 'Cheque';
-    fpCartaoDebito : Result := 'Debito';
-    fpCartaoCredito: Result := 'Credito';
-    fpCreditoLoja  : Result := 'Prazo';
-  else
-    Result := 'Outro';
-  end;
-end;
-
-function TPagamento.Pegar_Valor: Double;
-begin
-  case FTipo of
-    fpCreditoLoja                   : Result := Prazo;
-    fpCheque                        : Result := Cheque;
-    fpCartaoDebito, fpCartaoCredito : Result := Cartao.Valor;
-  else
-    Result := Dinheiro;
-  end;
-end;}
-
-{function TPagamento.GetTroco: Double;
-begin
-  Result := FCartao.Valor + FPrazo + FCheque + FDinheiro - FTotal;
-end;}
 
 procedure TPagamento.SetCheque(const Value: Double);
 var

@@ -99,9 +99,6 @@ var
 begin
   RecebeEstoque := TControllerWebServiceEstoque.Create(TGWCommerce(FGWCommerce).Emitente.Registro);
   try
-//    if TGWCommerce(FGWCommerce).Estoque.Lista.Count = 0 then
-//      dmDados.Abrir_Tabela_Estoque(TGWCommerce(FGWCommerce).Emitente.Registro);
-
     RecebeEstoque.Integrar();
   finally
     RecebeEstoque.Free();

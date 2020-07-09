@@ -1112,20 +1112,13 @@ type
     procedure cliConsultaNotasEnviarApiVNFGetText(Sender: TField;
       var Text: string; DisplayText: Boolean);
   private
-//    function Tratar_Chave_Nota_Fiscal(AChaveGerada: String): String;
-
     procedure Abrir_Tabelas_NFe();
     procedure Apagar_Pagamento_Apos_Cancelar_Notas(AChave: String);
     procedure Consultar(AQuery: TSQLQuery; ASql: String);
-    //procedure Inserir_Itens(AIdNFe: Int64; AGWCommerce: TObject);
-//    procedure Inserir_Pagamentos(AIdNFe: Int64; AGWCommerce: TObject);
     procedure Preencher_Cliente(ARegistroEmitente: Int64; ACliente: TCliente);
     procedure Preencher_Emitente_Nota(ARegistroEmitente: Int64; ANotaFiscal: NotaFiscal);
-//    procedure Registrar_NFE_Itens(AIdNFe: Int64; AGWCommerce: TObject; ANotaFiscal: NotaFiscal);
     procedure Registrar_NFE_Itens(AIdNFe, AIdRegistroEmitente: Int64; ANotaFiscal: NotaFiscal);
     procedure Registrar_NFE_Pagamentos(AIdNFe, AIdRegistroEmitente: Int64; ANotaFiscal: NotaFiscal);
-//    procedure Inserir_Pagamentos(AIdNFe: Int64; AGWCommerce: TObject);
-//    function Pegar_Proxima_Nota(AEmitente, ASerie, AModelo: Int64): Int64;
 
   public
     function Gerar_Id(ANomeGenerator: String): Int64;
@@ -1144,8 +1137,6 @@ type
     procedure Atualizar_Dados_Apos_Cancelar_Nota_Fiscal(AChave, AMotivo, AXML, AProtocolo: String; AStatus: Int64);
     procedure Atualizar_Dados_Apos_Emitir_Nota_Fiscal(ANotaFiscal: NotaFiscal);
     procedure Atualizar_Status_Nota_Fiscal(AChave: String; ACodigoStatus: Int64);
-//    procedure Finalizar_Venda_Com_F12(AGWCommerce: TObject; NFCe: TACBrNFe);
-//    procedure Gerar_Nota_Fiscal(AGWCommerce: TObject; NFCe: TACBrNFe);
     procedure Consulta_Nota_Integrada(AIdRegistro, AIdNFe: Int64);
     procedure Consultar_FormaPagamento_Para_Integrar_API(AIdEmitente, AIdNFe: Int64; AIndicePamento: String; AValor: Double);
     procedure Consultar_Notas_Para_Integrar_API(AIdRegistro: Int64; AData: TDateTime);
@@ -1164,7 +1155,7 @@ var
 
 implementation
 uses
-  UGWCommerce, UVenda, UEstoque{, UPagamento};
+  UGWCommerce, UVenda, UEstoque;
 
 {$R *.dfm}
 
@@ -1311,21 +1302,8 @@ begin
 end;
 
 procedure TdmDados.Apagar_Pagamento_Apos_Cancelar_Notas(AChave: String);
-//var
-//  Deletar: String;
-
 begin
-{  Deletar := Format(
-    'DELETE                          '#13#10 +
-    '  FROM NFE_PAGAMENTO            '#13#10 +
-    ' WHERE ID_NFE IN (SELECT ID_NFE '#13#10 +
-     '                   FROM NFE_CAB'#13#10 +
-    '                   CHAVE = %s)',
-    [QuotedStr(AChave)]);                       }
-
   delPagamentosAposCancelar.Close();
- // delPagamentosAposCancelar.SQL.Clear();
- // delPagamentosAposCancelar.SQL.Add(Deletar);
   delPagamentosAposCancelar.ParamByName('PCHAVE').AsString := AChave;
   delPagamentosAposCancelar.ExecSQL();
 end;
@@ -1346,16 +1324,12 @@ end;
 
 procedure TdmDados.Atualizar_Dados_Apos_Emitir_Nota_Fiscal(
   ANotaFiscal: NotaFiscal);
-//var
-//  xml: String;
-
 begin
-//  xml := base64.EncodeString(ANotaFiscal.XMLAssinado);
   uptAtualizaDadosNotaFiscal.Close();
   uptAtualizaDadosNotaFiscal.ParamByName('PINFORMACAO_COMPLEMENTAR').AsString := ANotaFiscal.NFe.InfAdic.infCpl;
   uptAtualizaDadosNotaFiscal.ParamByName('PPROTOCOLO').AsString               := ANotaFiscal.NFe.procNFe.nProt;
-  uptAtualizaDadosNotaFiscal.ParamByName('PXML').AsString                     := base64.EncodeString(ANotaFiscal.XMLAssinado);//xml;
-  uptAtualizaDadosNotaFiscal.ParamByName('PCHAVE').AsString                   := ANotaFiscal.NumID; //Tratar_Chave_Nota_Fiscal(ANotaFiscal.NFe.infNFe.ID);
+  uptAtualizaDadosNotaFiscal.ParamByName('PXML').AsString                     := base64.EncodeString(ANotaFiscal.XMLAssinado);
+  uptAtualizaDadosNotaFiscal.ParamByName('PCHAVE').AsString                   := ANotaFiscal.NumID;
   uptAtualizaDadosNotaFiscal.ExecSQL();
 end;
 
@@ -1363,7 +1337,7 @@ procedure TdmDados.Atualizar_Status_Nota_Fiscal(AChave: String;
   ACodigoStatus: Int64);
 begin
   uptAtualizaStatusNotaFiscal.Close();
-  uptAtualizaStatusNotaFiscal.ParamByName('PCHAVE').AsString    := AChave;//Tratar_Chave_Nota_Fiscal(AChave);
+  uptAtualizaStatusNotaFiscal.ParamByName('PCHAVE').AsString    := AChave;
   uptAtualizaStatusNotaFiscal.ParamByName('PSTATUS').AsLargeInt := ACodigoStatus;
   uptAtualizaStatusNotaFiscal.ExecSQL();
 end;
@@ -1385,9 +1359,7 @@ end;
 procedure TdmDados.cliEstoquePRECO_VENDAGetText(Sender: TField;
   var Text: string; DisplayText: Boolean);
 begin
-//'#,##0.00'
   Text := FormatFloat('#,##0.00', Sender.AsFloat);
-//  Sender.DisplayText
 end;
 
 procedure TdmDados.Consultar(AQuery: TSQLQuery; ASql: String);
@@ -1451,41 +1423,6 @@ begin
   dmDados.cliConfiguracao.Filtered := True;
 end;
 
-{procedure TdmDados.Finalizar_Venda_Com_F12(AGWCommerce: TObject; NFCe: TACBrNFe);
-//var
-//  IdNFE: Int64;
-
-//  GWCommerce: TGWCommerce;
-
-begin
-  GWCommerce := AGWCommerce as TGWCommerce;
-
-  IdNFE := Gerar_Id('GEN_NFE_CAB_ID');
-
-  Abrir_Tabelas_NFe();
-
-  cliNfeCab.Append();
-  cliNfeCabID_NFE.AsLargeInt    := IdNFE;
-  cliNfeCabIDE_SERIE.AsLargeInt := 1;
-  cliNfeCabIDE_NNF.AsLargeInt   := Pegar_Proxima_Nota(GWCommerce.Emitente.Registro, cliNfeCabIDE_SERIE.AsLargeInt, 90);
-  cliNfeCabIDE_NATOP.AsString   := 'VENDA';
-  cliNfeCabIDE_MOD.AsLargeInt   := 90;
-
-  Preencher_Emitente_Nota(GWCommerce.Emitente.Registro);
-  Preencher_Cliente(GWCommerce.Emitente.Registro, GWCommerce.Cliente.Codigo_Cliente);
-
-  cliNfeCabVPROD.AsFloat        := GWCommerce.Venda.Total;
-  cliNfeCabVDESC.AsFloat        := GWCommerce.Venda.Desconto;
-  cliNfeCabVNF.AsFloat          := GWCommerce.Venda.Total - GWCommerce.Venda.Desconto;
-  cliNfeCabMODFRETE.AsLargeInt  := 0;
-  cliNfeCabCD_STATUS.AsLargeInt := 100;
-  cliNfeCab.Post();
-  cliNfeCab.ApplyUpdates(0);
-
-  Inserir_Itens(IdNFE, AGWCommerce);
-  Inserir_Pagamentos(IdNFE, AGWCommerce);
-end; }
-
 function TdmDados.Gerar_Id(ANomeGenerator: String): Int64;
 var
   Sql: String;
@@ -1502,77 +1439,6 @@ begin
 
   Result := qrySequence.FieldByName('GEN_ID').AsLargeInt;
 end;
-
-{procedure TdmDados.Gerar_Nota_Fiscal(AGWCommerce: TObject; NFCe: TACBrNFe);
-var
-  IdNFE: Int64;
-
-  GWCommerce: TGWCommerce;
-
-begin
-  GWCommerce := AGWCommerce as TGWCommerce;
-
-  IdNFE := Gerar_Id('GEN_NFE_CAB_ID');
-
-  Abrir_Tabelas_NFe();
-
-  cliNfeCab.Append();
-  cliNfeCabID_NFE.AsLargeInt    := IdNFE;
-  cliNfeCabIDE_SERIE.AsLargeInt := 1;
-  cliNfeCabIDE_NNF.AsLargeInt   := Pegar_Proxima_Nota(GWCommerce.Emitente.Registro, cliNfeCabIDE_SERIE.AsLargeInt, 90);
-  cliNfeCabIDE_NATOP.AsString   := 'VENDA';
-  cliNfeCabIDE_MOD.AsLargeInt   := 90;
-
-  Preencher_Emitente_Nota(GWCommerce.Emitente.Registro);
-  Preencher_Cliente(GWCommerce.Emitente.Registro, GWCommerce.Cliente.Codigo_Cliente);
-
-  cliNfeCabVPROD.AsFloat        := GWCommerce.Venda.Total;
-  cliNfeCabVDESC.AsFloat        := GWCommerce.Venda.Desconto;
-  cliNfeCabVNF.AsFloat          := GWCommerce.Venda.Total - GWCommerce.Venda.Desconto;
-  cliNfeCabMODFRETE.AsLargeInt  := 0;
-  cliNfeCabCD_STATUS.AsLargeInt := 100;
-  cliNfeCab.Post();
-  cliNfeCab.ApplyUpdates(0);
-
-  Inserir_Itens(IdNFE, AGWCommerce);
-  Inserir_Pagamentos(IdNFE, AGWCommerce);
-end;
-
-procedure TdmDados.Inserir_Itens(AIdNFe: Int64; AGWCommerce: TObject);
-begin
-
-end;
-
-procedure TdmDados.Inserir_Pagamentos(AIdNFe: Int64; AGWCommerce: TObject);
-var
-  GWCommerce: TGWCommerce;
-
-  Pagamento: TPagamento;
-
-begin
-  GWCommerce := AGWCommerce as TGWCommerce;
-
-  for Pagamento in GWCommerce.Venda.Pagamentos do
-  begin
-    cliNfePagamento.Append();
-    cliNfePagamentoID_NFE_PAG.AsLargeInt    := Gerar_Id('GEN_NFE_PAGAMENTO_ID');
-    cliNfePagamentoID_NFE.AsLargeInt        := AIdNFe;
-    cliNfePagamentoREGISTRO_EMIT.AsLargeInt := cliNfeCabREGISTRO_EMIT.AsLargeInt;
-    cliNfePagamentoTPAG.AsString            := Pagamento.Pegar_Tipo();
-    cliNfePagamentoVPAG.AsFloat             := Pagamento.Pegar_Valor();
-    cliNfePagamentoVTROCO.AsFloat           := GWCommerce.Venda.Troco;
-    cliNfePagamentoINDPAG.AsLargeInt        := IfThen(Pagamento.Prazo > 0, 1, 0);
-
-    if Pagamento.Tipo = fpCartaoCredito then
-    begin
-      cliNfePagamentoTBAND.AsString := Pagamento.Cartao.Pegar_Codigo_Bandeira();
-      cliNfePagamentoCAUT.AsString  := Pagamento.Cartao.CodigoAutorizacao
-    end;
-
-    cliNfePagamento.Post();
-    cliNfePagamento.ApplyUpdates(0);
-  end;
-end;}
 
 procedure TdmDados.Inserir_Nota_Integrada(AIdRegistroEmitente, AIdNFe: Int64);
 begin
@@ -1666,13 +1532,6 @@ begin
 end;
 
 procedure TdmDados.Integrar_Estoque(AEstoque: TlkJSONobject; AIdEmitente: Int64);
-{var
-  FloatValido: Double;
-
-  InteiroValido: Int64;
-
-  DataValida: TDateTime;  }
-
 begin
  NullStrictConvert := False;
 
@@ -1689,132 +1548,63 @@ begin
   cliEstoqueCODIGO.AsLargeInt         := AEstoque.Field['codigo'].Value;
   cliEstoqueREGISTRO_EMIT.AsLargeInt  := AEstoque.Field['registro_emit'].Value;
   cliEstoqueDESCRICAO.AsString        := AEstoque.Field['descricao'].Value;
-
-//  if TryStrToInt64(AEstoque.Field['fornecedor'].Value, InteiroValido) then
-    cliEstoqueFORNECEDOR.AsLargeInt := AEstoque.Field['fornecedor'].Value;
-
-  cliEstoqueMedida.AsString := AEstoque.Field['medida'].Value;
-
-//  if TryStrToFloat(AEstoque.Field['preco_venda'].Value, FloatValido) then
-    cliEstoquePRECO_VENDA.AsVariant := StringReplace(AEstoque.Field['preco_venda'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['custocompra'].Value, FloatValido) then
-    cliEstoqueCUSTOCOMPRA.AsVariant := StringReplace(AEstoque.Field['custocompra'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['customedio'].Value, FloatValido) then
-    cliEstoqueCUSTOMEDIO.AsVariant := StringReplace(AEstoque.Field['customedio'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['qtd_compra'].Value, FloatValido) then
-    cliEstoqueQTD_COMPRA.AsVariant := StringReplace(AEstoque.Field['qtd_compra'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['qtd_atual'].Value, FloatValido) then
-    cliEstoqueQTD_ATUAL.AsVariant := StringReplace(AEstoque.Field['qtd_atual'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['qtd_minima'].Value, FloatValido) then
-    cliEstoqueQTD_MINIMA.AsVariant := StringReplace(AEstoque.Field['qtd_minima'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['qtd_inicio'].Value, FloatValido) then
-    cliEstoqueQTD_INICIO.AsVariant := StringReplace(AEstoque.Field['qtd_inicio'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToDate(AEstoque.Field['data_inicio'].Value, DataValida) then
-    cliEstoqueDATA_INICIO.AsVariant := AEstoque.Field['data_inicio'].Value;
-
-//    if TryStrToDate(AEstoque.Field['ult_compra'].Value, DataValida) then
-      cliEstoqueULT_COMPRA.AsVariant := AEstoque.Field['ult_compra'].Value;
-
-//  if TryStrToDate(AEstoque.Field['ult_venda'].Value, DataValida) then
-    cliEstoqueULT_VENDA.AsVariant := AEstoque.Field['ult_venda'].Value;
-
-  cliEstoqueLOCAL.AsString := AEstoque.Field['local'].Value;
-
-//  if TryStrToFloat(AEstoque.Field['ipi'].Value, FloatValido) then
-    cliEstoqueIPI.AsVariant := StringReplace(AEstoque.Field['ipi'].Value, '.', ',', [rfReplaceAll]);
-
-  cliEstoqueST.AsString := AEstoque.Field['st'].Value;
-
-//  if TryStrToFloat(AEstoque.Field['comissao'].Value, FloatValido) then
-    cliEstoqueCOMISSAO.AsVariant :=  StringReplace(AEstoque.Field['comissao'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['margem_lucro'].Value, FloatValido) then
-    cliEstoqueMARGEM_LUCRO.AsVariant :=  StringReplace(AEstoque.Field['margem_lucro'].Value, '.', ',', [rfReplaceAll]);
-
-  cliEstoqueFOTO.AsVariant         := AEstoque.Field['foto'].Value;
-  cliEstoqueIAT.AsString           := AEstoque.Field['iat'].Value;
-  cliEstoqueIPPT.AsString          := AEstoque.Field['ippt'].Value;
-  cliEstoqueCST_IPI.AsString       := AEstoque.Field['cst_ipi'].Value;
-  cliEstoqueCODSELOIPI.AsString    := AEstoque.Field['codseloipi'].Value;
-  cliEstoqueCOD_ENQ_IPI.AsString   := AEstoque.Field['cod_enq_ipi'].Value;
-  cliEstoqueTIPO_ITEM.AsString     := AEstoque.Field['tipo_item'].Value;
-  cliEstoqueCSOSN.AsString         := AEstoque.Field['csosn'].Value;
-  cliEstoqueCODIGO_BARRAS.AsString := AEstoque.Field['codigo_barras'].Value;
-  cliEstoqueNCM.AsString           := AEstoque.Field['ncm'].Value;
-  cliEstoqueCEST.AsString          := AEstoque.Field['cest'].Value;
-
-//  if TryStrToFloat(AEstoque.Field['ibpt_f'].Value, FloatValido) then
-    cliEstoqueIBPT_F.AsVariant :=  StringReplace(AEstoque.Field['ibpt_f'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['ibpt_fi'].Value, FloatValido) then
-    cliEstoqueIBPT_FI.AsVariant :=  StringReplace(AEstoque.Field['ibpt_fi'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['ibpt_est'].Value, FloatValido) then
-    cliEstoqueIBPT_EST.AsVariant :=  StringReplace(AEstoque.Field['ibpt_est'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['ibpt_mun'].Value, FloatValido) then
-    cliEstoqueIBPT_MUn.AsVariant :=  StringReplace(AEstoque.Field['ibpt_mun'].Value, '.', ',', [rfReplaceAll]);
-
-  cliEstoqueORIGEM.AsString := AEstoque.Field['origem'].Value;
-
-//  if TryStrToFloat(AEstoque.Field['grupo'].Value, FloatValido) then
-    cliEstoqueGRUPO.AsLargeInt := AEstoque.Field['grupo'].Value;
-
-//  if TryStrToFloat(AEstoque.Field['marca'].Value, FloatValido) then
-    cliEstoqueMARCA.AsLargeInt := AEstoque.Field['marca'].Value;
-
-//  if TryStrToFloat(AEstoque.Field['desconto_maximo'].Value, FloatValido) then
-    cliEstoqueDESCONTO_MAXIMO.AsVariant := StringReplace(AEstoque.Field['desconto_maximo'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['mva'].Value, FloatValido) then
-    cliEstoqueMVA.AsVariant := StringReplace(AEstoque.Field['mva'].Value, '.', ',', [rfReplaceAll]);
-
-  cliEstoqueCFOP.AsString      := AEstoque.Field['cfop'].Value;
-  cliEstoqueCFOP_NFCE.AsString := AEstoque.Field['cfop_nfce'].Value;
-  cliEstoqueINDESCALA.AsString := AEstoque.Field['indEscala'].Value;
-  cliEstoqueCNPJFAB.AsString   := AEstoque.Field['CNPJFab'].Value;
-  cliEstoqueCODPIS.AsString    := AEstoque.Field['codpis'].Value;
-
-//  if TryStrToFloat(AEstoque.Field['porcpis'].Value, FloatValido) then
-    cliEstoquePORCPIS.AsVariant := StringReplace(AEstoque.Field['porcpis'].Value, '.', ',', [rfReplaceAll]);
-
-  cliEstoqueCODCOFINS.AsString     := AEstoque.Field['codcofins'].Value;
-  cliEstoquePISCOFINS_ENT.AsString := AEstoque.Field['piscofins_ent'].Value;
-
-//  if TryStrToFloat(AEstoque.Field['porpis_ent'].Value, FloatValido) then
-    cliEstoquePORPIS_ENT.AsVariant := StringReplace(AEstoque.Field['porpis_ent'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['porcofins_ent'].Value, FloatValido) then
-    cliEstoquePORCOFINS_ENT.AsVariant := StringReplace(AEstoque.Field['porcofins_ent'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['porcofins'].Value, FloatValido) then
-    cliEstoquePORCOFINS.AsVariant :=StringReplace(AEstoque.Field['porcofins'].Value, '.', ',', [rfReplaceAll]);
-
-  cliEstoqueCOD_BENEFICIO.AsString := AEstoque.Field['cod_beneficio'].Value;
-  cliEstoqueCPRODANP.AsString      := AEstoque.Field['cProdANP'].Value;
-  cliEstoqueDESCANP.AsString       := AEstoque.Field['descANP'].Value;
-
-//  if TryStrToFloat(AEstoque.Field['vPart'].Value, FloatValido) then
-    cliEstoqueVPART.AsVariant := StringReplace(AEstoque.Field['vPart'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['pGLP'].Value, FloatValido) then
-    cliEstoquePGLP.AsVariant := StringReplace(AEstoque.Field['pGLP'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['pGNn'].Value, FloatValido) then
-    cliEstoquePGNN.AsVariant := StringReplace(AEstoque.Field['pGNn'].Value, '.', ',', [rfReplaceAll]);
-
-//  if TryStrToFloat(AEstoque.Field['pGNi'].Value, FloatValido) then
-    cliEstoquePGNI.AsVariant := StringReplace(AEstoque.Field['pGNi'].Value, '.', ',', [rfReplaceAll]);
-
-  cliEstoqueCOD_ANVISA.AsString := AEstoque.Field['cod_anvisa'].Value;
-  cliEstoqueVALIDADE.AsString   := AEstoque.Field['validade'].Value;
+  cliEstoqueFORNECEDOR.AsLargeInt     := AEstoque.Field['fornecedor'].Value;
+  cliEstoqueMedida.AsString           := AEstoque.Field['medida'].Value;
+  cliEstoquePRECO_VENDA.AsVariant     := StringReplace(AEstoque.Field['preco_venda'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueCUSTOCOMPRA.AsVariant     := StringReplace(AEstoque.Field['custocompra'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueCUSTOMEDIO.AsVariant      := StringReplace(AEstoque.Field['customedio'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueQTD_COMPRA.AsVariant      := StringReplace(AEstoque.Field['qtd_compra'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueQTD_ATUAL.AsVariant       := StringReplace(AEstoque.Field['qtd_atual'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueQTD_MINIMA.AsVariant      := StringReplace(AEstoque.Field['qtd_minima'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueQTD_INICIO.AsVariant      := StringReplace(AEstoque.Field['qtd_inicio'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueDATA_INICIO.AsVariant     := AEstoque.Field['data_inicio'].Value;
+  cliEstoqueULT_COMPRA.AsVariant      := AEstoque.Field['ult_compra'].Value;
+  cliEstoqueULT_VENDA.AsVariant       := AEstoque.Field['ult_venda'].Value;
+  cliEstoqueLOCAL.AsString            := AEstoque.Field['local'].Value;
+  cliEstoqueIPI.AsVariant             := StringReplace(AEstoque.Field['ipi'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueST.AsString               := AEstoque.Field['st'].Value;
+  cliEstoqueCOMISSAO.AsVariant        :=  StringReplace(AEstoque.Field['comissao'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueMARGEM_LUCRO.AsVariant    :=  StringReplace(AEstoque.Field['margem_lucro'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueFOTO.AsVariant            := AEstoque.Field['foto'].Value;
+  cliEstoqueIAT.AsString              := AEstoque.Field['iat'].Value;
+  cliEstoqueIPPT.AsString             := AEstoque.Field['ippt'].Value;
+  cliEstoqueCST_IPI.AsString          := AEstoque.Field['cst_ipi'].Value;
+  cliEstoqueCODSELOIPI.AsString       := AEstoque.Field['codseloipi'].Value;
+  cliEstoqueCOD_ENQ_IPI.AsString      := AEstoque.Field['cod_enq_ipi'].Value;
+  cliEstoqueTIPO_ITEM.AsString        := AEstoque.Field['tipo_item'].Value;
+  cliEstoqueCSOSN.AsString            := AEstoque.Field['csosn'].Value;
+  cliEstoqueCODIGO_BARRAS.AsString    := AEstoque.Field['codigo_barras'].Value;
+  cliEstoqueNCM.AsString              := AEstoque.Field['ncm'].Value;
+  cliEstoqueCEST.AsString             := AEstoque.Field['cest'].Value;
+  cliEstoqueIBPT_F.AsVariant          :=  StringReplace(AEstoque.Field['ibpt_f'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueIBPT_FI.AsVariant         :=  StringReplace(AEstoque.Field['ibpt_fi'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueIBPT_EST.AsVariant        :=  StringReplace(AEstoque.Field['ibpt_est'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueIBPT_MUn.AsVariant        :=  StringReplace(AEstoque.Field['ibpt_mun'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueORIGEM.AsString           := AEstoque.Field['origem'].Value;
+  cliEstoqueGRUPO.AsLargeInt          := AEstoque.Field['grupo'].Value;
+  cliEstoqueMARCA.AsLargeInt          := AEstoque.Field['marca'].Value;
+  cliEstoqueDESCONTO_MAXIMO.AsVariant := StringReplace(AEstoque.Field['desconto_maximo'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueMVA.AsVariant             := StringReplace(AEstoque.Field['mva'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueCFOP.AsString             := AEstoque.Field['cfop'].Value;
+  cliEstoqueCFOP_NFCE.AsString        := AEstoque.Field['cfop_nfce'].Value;
+  cliEstoqueINDESCALA.AsString        := AEstoque.Field['indEscala'].Value;
+  cliEstoqueCNPJFAB.AsString          := AEstoque.Field['CNPJFab'].Value;
+  cliEstoqueCODPIS.AsString           := AEstoque.Field['codpis'].Value;
+  cliEstoquePORCPIS.AsVariant         := StringReplace(AEstoque.Field['porcpis'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueCODCOFINS.AsString        := AEstoque.Field['codcofins'].Value;
+  cliEstoquePISCOFINS_ENT.AsString    := AEstoque.Field['piscofins_ent'].Value;
+  cliEstoquePORPIS_ENT.AsVariant      := StringReplace(AEstoque.Field['porpis_ent'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoquePORCOFINS_ENT.AsVariant   := StringReplace(AEstoque.Field['porcofins_ent'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoquePORCOFINS.AsVariant       := StringReplace(AEstoque.Field['porcofins'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueCOD_BENEFICIO.AsString    := AEstoque.Field['cod_beneficio'].Value;
+  cliEstoqueCPRODANP.AsString         := AEstoque.Field['cProdANP'].Value;
+  cliEstoqueDESCANP.AsString          := AEstoque.Field['descANP'].Value;
+  cliEstoqueVPART.AsVariant           := StringReplace(AEstoque.Field['vPart'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoquePGLP.AsVariant            := StringReplace(AEstoque.Field['pGLP'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoquePGNN.AsVariant            := StringReplace(AEstoque.Field['pGNn'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoquePGNI.AsVariant            := StringReplace(AEstoque.Field['pGNi'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueCOD_ANVISA.AsString       := AEstoque.Field['cod_anvisa'].Value;
+  cliEstoqueVALIDADE.AsString         := AEstoque.Field['validade'].Value;
 
   cliEstoque.Post();
   cliEstoque.ApplyUpdates(0);
@@ -1886,21 +1676,6 @@ begin
   Result := ProximaNota;
 end;
 
-{function TdmDados.Pegar_Proxima_Nota(AEmitente, ASerie, AModelo: Int64): Int64;
-begin
-  qryProximaNota.Close();
-  qryProximaNota.ParamByName('PEMITENTE').AsLargeInt := AEmitente;
-  qryProximaNota.ParamByName('PSERIE').AsLargeInt    := ASerie;
-  qryProximaNota.ParamByName('PMODELO').AsLargeInt   := AModelo;
-  qryProximaNota.Open();
-
-  if (qryProximaNota.FieldByName('IDE_NNF').AsLargeInt = 0) or
-    (qryProximaNota.FieldByName('IDE_NNF').IsNull) then
-    Result := 1
-  else
-    Result := qryProximaNota.FieldByName('IDE_NNF').AsLargeInt + 1;
-end;}
-
 procedure TdmDados.Preencher_Cliente(ARegistroEmitente: Int64; ACliente: TCliente);
 begin
   try
@@ -1950,16 +1725,16 @@ begin
     cliNfeCabREGISTRO_EMIT.AsLargeInt := ARegistroEmitente;
     cliNfeCabIDE_CUF.AsLargeInt       := cliEmitenteCD_ESTADO.AsLargeInt;
     cliNfeCabIDE_DHEMI.AsDateTime     := Now();
-    cliNfeCabIDE_TPNF.AsLargeInt      := StrToInt(tpNFToStr(ANotaFiscal.NFe.Ide.tpNF));//Ord(ANotaFiscal.NFe.Ide.tpNF);
-    cliNfeCabIDE_IDDEST.AsLargeInt    := StrToInt(DestinoOperacaoToStr(ANotaFiscal.NFe.Ide.idDest));//Ord(ANotaFiscal.NFe.Ide.idDest) + 1;
+    cliNfeCabIDE_TPNF.AsLargeInt      := StrToInt(tpNFToStr(ANotaFiscal.NFe.Ide.tpNF));
+    cliNfeCabIDE_IDDEST.AsLargeInt    := StrToInt(DestinoOperacaoToStr(ANotaFiscal.NFe.Ide.idDest));
     cliNfeCabIDE_CMUNFG.AsString      := cliEmitenteCD_CIDADE.AsString;
-    cliNfeCabIDE_TP_IMP.AsLargeInt    := StrToInt(TpImpToStr(ANotaFiscal.NFe.Ide.tpImp));// Ord(ANotaFiscal.NFe.Ide.tpImp);
-    cliNfeCabIDE_TPEMIS.AsLargeInt    := StrToInt(TpEmisToStr(ANotaFiscal.NFe.Ide.tpEmis));//Ord(ANotaFiscal.NFe.Ide.tpEmis) + 1;
-    cliNfeCabIDE_TPAMB.AsLargeInt     := StrToInt(TpAmbToStr(ANotaFiscal.NFe.Ide.tpAmb));// Ord(ANotaFiscal.NFe.Ide.tpAmb) + 1;
-    cliNfeCabIDE_FINNFE.AsLargeInt    := StrToInt(FinNFeToStr(ANotaFiscal.NFe.Ide.finNFe));//Ord(ANotaFiscal.NFe.Ide.finNFe) + 1;
-    cliNfeCabIDE_INDFINAL.AsLargeInt  := StrToInt(ConsumidorFinalToStr(ANotaFiscal.NFe.Ide.indFinal));//Ord(ANotaFiscal.NFe.Ide.indFinal);
-    cliNfeCabIDE_INDPRES.AsLargeInt   := StrToInt(PresencaCompradorToStr(ANotaFiscal.NFe.Ide.indPres));//Ord(ANotaFiscal.NFe.Ide.indPres);
-    cliNfeCabIDE_PROCEMI.AsLargeInt   := StrToInt(procEmiToStr(ANotaFiscal.NFe.Ide.procEmi));//Ord(ANotaFiscal.NFe.Ide.procEmi);
+    cliNfeCabIDE_TP_IMP.AsLargeInt    := StrToInt(TpImpToStr(ANotaFiscal.NFe.Ide.tpImp));
+    cliNfeCabIDE_TPEMIS.AsLargeInt    := StrToInt(TpEmisToStr(ANotaFiscal.NFe.Ide.tpEmis));
+    cliNfeCabIDE_TPAMB.AsLargeInt     := StrToInt(TpAmbToStr(ANotaFiscal.NFe.Ide.tpAmb));
+    cliNfeCabIDE_FINNFE.AsLargeInt    := StrToInt(FinNFeToStr(ANotaFiscal.NFe.Ide.finNFe));
+    cliNfeCabIDE_INDFINAL.AsLargeInt  := StrToInt(ConsumidorFinalToStr(ANotaFiscal.NFe.Ide.indFinal));
+    cliNfeCabIDE_INDPRES.AsLargeInt   := StrToInt(PresencaCompradorToStr(ANotaFiscal.NFe.Ide.indPres));
+    cliNfeCabIDE_PROCEMI.AsLargeInt   := StrToInt(procEmiToStr(ANotaFiscal.NFe.Ide.procEmi));
     cliNfeCabEMIT_CNPJ_CPF.AsString   := cliEmitenteCNPJ.AsString;
     cliNfeCabEMIT_XNOME.AsString      := cliEmitenteNOME.AsString;
     cliNfeCabEMIT_XFANT.AsString      := cliEmitenteNOME_FANTASIA.AsString;
@@ -2004,15 +1779,15 @@ begin
   cliNfeCabIDE_NNF.AsLargeInt   := ANotaFiscal.NFe.Ide.nNF;
   cliNfeCabIDE_NATOP.AsString   := 'VENDA';
   cliNfeCabIDE_MOD.AsLargeInt   := ANotaFiscal.NFe.Ide.modelo;
-  cliNfeCabCHAVE.AsString       := ANotaFiscal.NumID; //Tratar_Chave_Nota_Fiscal(ANotaFiscal.NFe.infNFe.ID);
+  cliNfeCabCHAVE.AsString       := ANotaFiscal.NumID;
   cliNfeCabIDE_VERPROC.AsString := ANotaFiscal.NFe.Ide.verProc;
 
   Preencher_Emitente_Nota(GWCommerce.Emitente.Registro, ANotaFiscal);
   Preencher_Cliente(GWCommerce.Emitente.Registro, GWCommerce.Cliente);
 
-  cliNfeCabVPROD.AsFloat        := ANotaFiscal.NFe.Total.ICMSTot.vProd;//GWCommerce.Venda.Total;
-  cliNfeCabVDESC.AsFloat        := ANotaFiscal.NFe.Total.ICMSTot.vDesc; //GWCommerce.Venda.Desconto;
-  cliNfeCabVNF.AsFloat          := ANotaFiscal.NFe.Total.ICMSTot.vNF; //GWCommerce.Venda.Total - GWCommerce.Venda.Desconto;
+  cliNfeCabVPROD.AsFloat        := ANotaFiscal.NFe.Total.ICMSTot.vProd;
+  cliNfeCabVDESC.AsFloat        := ANotaFiscal.NFe.Total.ICMSTot.vDesc;
+  cliNfeCabVNF.AsFloat          := ANotaFiscal.NFe.Total.ICMSTot.vNF;
   cliNfeCabMODFRETE.AsLargeInt  := StrToInt(modFreteToStr(ANotaFiscal.NFe.Transp.modFrete));
   cliNfeCabVTOTTRIB.AsFloat     := ANotaFiscal.NFe.Total.ICMSTot.vTotTrib;
   cliNfeCabCD_STATUS.AsLargeInt := 0;
@@ -2024,7 +1799,6 @@ begin
   cliNfeCab.ApplyUpdates(0);
 
   Registrar_NFE_Itens(IdNFE, GWCommerce.Emitente.Registro, ANotaFiscal);
-  //Inserir_Pagamentos(IdNFE, AGWCommerce);
   Registrar_NFE_Pagamentos(IdNFE, GWCommerce.Emitente.Registro, ANotaFiscal);
 end;
 
@@ -2034,42 +1808,34 @@ var
 
   Item: TDetCollectionItem;
 
-//  Estoque: TEstoque;
-
-//  GWCommerce: TGWCommerce;
-
-//  Venda: TVenda;
-
 begin
-//  GWCommerce := AGWCommerce as TGWCommerce;
-
   for I := 0 to ANotaFiscal.NFe.Det.Count -1 do
   begin
     Item := ANotaFiscal.NFe.Det.Items[I];
 
     cliNfeItens.Append();
     cliNfeItensIDNFE_ITENS.AsLargeInt   := Gerar_Id('GEN_NFE_ITENS_ID');
-    cliNfeItensREGISTRO_EMIT.AsLargeInt := AIdRegistroEmitente;//GWCommerce.Emitente.Registro;//cliNfeCabREGISTRO_EMIT.AsLargeInt;
+    cliNfeItensREGISTRO_EMIT.AsLargeInt := AIdRegistroEmitente;
     cliNfeItensID_NFE.AsLargeInt        := AIdNFe;
-    cliNfeItensCPROD.AsLargeInt         := StrToInt64(Item.Prod.cProd);// Estoque.CodigoProduto;
-    cliNfeItensCEAN.AsString            := Item.Prod.cEAN;// Estoque.CodigoBarras;
-    cliNfeItensXPROD.AsString           := Item.Prod.xProd;//Estoque.Descricao;
-    cliNfeItensNCM.AsString             := Item.Prod.NCM;// Estoque.NCM;
-    cliNfeItensCEST.AsString            := Item.Prod.CEST;// Estoque.CEST;
+    cliNfeItensCPROD.AsLargeInt         := StrToInt64(Item.Prod.cProd);
+    cliNfeItensCEAN.AsString            := Item.Prod.cEAN;
+    cliNfeItensXPROD.AsString           := Item.Prod.xProd;
+    cliNfeItensNCM.AsString             := Item.Prod.NCM;
+    cliNfeItensCEST.AsString            := Item.Prod.CEST;
     cliNfeItensINDESCALA.AsString       := IfThen(Item.Prod.indEscala = ieRelevante, 'S', 'N');
-    cliNfeItensCNPJFAB.AsString         := Item.Prod.CNPJFab; //Estoque.CNPJFab;
-    cliNfeItensUCOM.AsString            := Item.Prod.uCom;//Estoque.Medida;
-    cliNfeItensQCOM.AsFloat             := Item.Prod.qCom;// Venda.Quantidade;
-    cliNfeItensVUNCOM.AsFloat           := Item.Prod.qCom;//Venda.Quantidade;
-    cliNfeItensVPROD.AsFloat            := Item.Prod.vProd;//Venda.ValorBruto;
-    cliNfeItensCEANTRIB.AsString        := Item.Prod.cEANTrib;//Estoque.CodigoBarras;
-    cliNfeItensUTRIB.AsString           := Item.Prod.uCom;//Estoque.Medida;
-    cliNfeItensQTRIB.AsFloat            := Item.Prod.qCom;//Venda.Quantidade;
-    cliNfeItensVUNTRIB.AsFloat          := Item.Prod.qCom;//Venda.Quantidade;
-    cliNfeItensVDESC.AsFloat            := Item.Prod.vDesc;//Venda.Desconto.Valor;
-    cliNfeItensINDTOT.AsLargeInt        := StrToInt(indTotToStr(Item.Prod.IndTot));// Ord(Item.Prod.IndTot); //1;
-    cliNfeItensNITEMPED.AsLargeInt      := Item.Prod.nItem; //Venda.Ordem;
-    cliNfeItensORIG.AsLargeInt          := StrToInt(OrigToStr(Item.Imposto.ICMS.orig));// Ord(Item.Imposto.ICMS.orig);
+    cliNfeItensCNPJFAB.AsString         := Item.Prod.CNPJFab;
+    cliNfeItensUCOM.AsString            := Item.Prod.uCom;
+    cliNfeItensQCOM.AsFloat             := Item.Prod.qCom;
+    cliNfeItensVUNCOM.AsFloat           := Item.Prod.qCom;
+    cliNfeItensVPROD.AsFloat            := Item.Prod.vProd;
+    cliNfeItensCEANTRIB.AsString        := Item.Prod.cEANTrib;
+    cliNfeItensUTRIB.AsString           := Item.Prod.uCom;
+    cliNfeItensQTRIB.AsFloat            := Item.Prod.qCom;
+    cliNfeItensVUNTRIB.AsFloat          := Item.Prod.qCom;
+    cliNfeItensVDESC.AsFloat            := Item.Prod.vDesc;
+    cliNfeItensINDTOT.AsLargeInt        := StrToInt(indTotToStr(Item.Prod.IndTot));
+    cliNfeItensNITEMPED.AsLargeInt      := Item.Prod.nItem;
+    cliNfeItensORIG.AsLargeInt          := StrToInt(OrigToStr(Item.Imposto.ICMS.orig));
     cliNfeItensCST_ICMS.AsString        := CSOSNIcmsToStr(Item.Imposto.ICMS.CSOSN);
     cliNfeItensVTOTTRIB.AsFloat         := Item.Imposto.vTotTrib;
 
@@ -2092,83 +1858,18 @@ begin
       cliNfeItensPGNI.AsFloat      := 0;
     end;
 
-    {if Trim(Estoque.Origem) <> '' then
-      cliNfeItensORIG.AsLargeInt        := StrToInt(Estoque.Origem)
-    else
-      cliNfeItensORIG.AsLargeInt        := 0;
-
-    case Item.Imposto.ICMS.CSOSN of
-      csosn101: cliNfeItensCST_ICMS.AsString := '101';
-      csosn102: cliNfeItensCST_ICMS.AsString := '102';
-      csosn103: cliNfeItensCST_ICMS.AsString := '103';
-      csosn201: cliNfeItensCST_ICMS.AsString := '201';
-      csosn202: cliNfeItensCST_ICMS.AsString := '202';
-      csosn203: cliNfeItensCST_ICMS.AsString := '203';
-      csosn300: cliNfeItensCST_ICMS.AsString := '300';
-      csosn400: cliNfeItensCST_ICMS.AsString := '400';
-      csosn500: cliNfeItensCST_ICMS.AsString := '500';
-      csosn900: cliNfeItensCST_ICMS.AsString := '900';
-    end;  }
-
-//    cliNfeItensCST_ICMS.AsString        := Item.Imposto.ICMS.CSOSN; //Estoque.CSOSN;
-    cliNfeItensMODBCST.AsLargeInt  := StrToInt(modBCSTToStr(Item.Imposto.ICMS.modBCST));//Ord(Item.Imposto.ICMS.modBCST);
+    cliNfeItensMODBCST.AsLargeInt  := StrToInt(modBCSTToStr(Item.Imposto.ICMS.modBCST));
 
     if Trim(Item.Prod.CFOP) <> '' then
-      cliNfeItensCFOP.AsLargeInt := StrToInt(Item.Prod.CFOP); //StrToInt64(Estoque.CFOPNfce);
+      cliNfeItensCFOP.AsLargeInt := StrToInt(Item.Prod.CFOP);
     cliNfeItens.Post();
     cliNfeItens.ApplyUpdates(0);
   end;
-
-{  GWCommerce := AGWCommerce as TGWCommerce;
-
-  for Venda in GWCommerce.Venda.Itens do
-  begin
-    Estoque := GWCommerce.Estoque.Buscar(Venda.CodigoProduto);
-
-    cliNfeItens.Append();
-
-    cliNfeItensIDNFE_ITENS.AsLargeInt   := Gerar_Id('GEN_NFE_ITENS_ID');
-    cliNfeItensREGISTRO_EMIT.AsLargeInt := cliNfeCabREGISTRO_EMIT.AsLargeInt;
-    cliNfeItensID_NFE.AsLargeInt        := AIdNFe;
-    cliNfeItensCPROD.AsLargeInt         := Estoque.CodigoProduto;
-    cliNfeItensCEAN.AsString            := Estoque.CodigoBarras;
-    cliNfeItensXPROD.AsString           := Estoque.Descricao;
-    cliNfeItensNCM.AsString             := Estoque.NCM;
-    cliNfeItensCEST.AsString            := Estoque.CEST;
-    cliNfeItensINDESCALA.AsString       := Estoque.IndEscala;
-    cliNfeItensCNPJFAB.AsString         := Estoque.CNPJFab;
-    cliNfeItensUCOM.AsString            := Estoque.Medida;
-    cliNfeItensQCOM.AsFloat             := Venda.Quantidade;
-    cliNfeItensVUNCOM.AsFloat           := Venda.Quantidade;
-    cliNfeItensVPROD.AsFloat            := Venda.ValorBruto;
-    cliNfeItensCEANTRIB.AsString        := Estoque.CodigoBarras;
-    cliNfeItensUTRIB.AsString           := Estoque.Medida;
-    cliNfeItensQTRIB.AsFloat            := Venda.Quantidade;
-    cliNfeItensVUNTRIB.AsFloat          := Venda.Quantidade;
-    cliNfeItensVDESC.AsFloat            := Venda.Desconto.Valor;
-    cliNfeItensINDTOT.AsLargeInt        := 1;
-    cliNfeItensNITEMPED.AsLargeInt      := Venda.Ordem;
-
-    if Trim(Estoque.Origem) <> '' then
-      cliNfeItensORIG.AsLargeInt        := StrToInt(Estoque.Origem)
-    else
-      cliNfeItensORIG.AsLargeInt        := 0;
-    cliNfeItensCST_ICMS.AsString        := Estoque.CSOSN;
-    cliNfeItensMODBCST.AsLargeInt       := 0;
-
-    if Trim(Estoque.CFOP) <> '' then
-      cliNfeItensCFOP.AsLargeInt := StrToInt64(Estoque.CFOPNfce);
-    cliNfeItens.Post();
-    cliNfeItens.ApplyUpdates(0);
-  end;  }
 end;
 
 procedure TdmDados.Registrar_NFE_Pagamentos(AIdNFe, AIdRegistroEmitente: Int64; ANotaFiscal: NotaFiscal);
 var
   I: Integer;
-//  GWCommerce: TGWCommerce;
-
-//  Pagamento: TPagamento;
 
   Pagamento:  TpagCollectionItem;
 
@@ -2179,7 +1880,7 @@ begin
     cliNfePagamento.Append();
     cliNfePagamentoID_NFE_PAG.AsLargeInt    := Gerar_Id('GEN_NFE_PAGAMENTO_ID');
     cliNfePagamentoID_NFE.AsLargeInt        := AIdNFe;
-    cliNfePagamentoREGISTRO_EMIT.AsLargeInt := AIdRegistroEmitente;//cliNfeCabREGISTRO_EMIT.AsLargeInt;
+    cliNfePagamentoREGISTRO_EMIT.AsLargeInt := AIdRegistroEmitente;
     cliNfePagamentoVPAG.AsFloat             := Pagamento.vPag;
     cliNfePagamentoVTROCO.AsFloat           := IfThen((Pagamento.tPag = fpDinheiro) and (ANotaFiscal.NFe.pag.vTroco > 0), ANotaFiscal.NFe.pag.vTroco, 0);
     cliNfePagamentoCAUT.AsString            := Pagamento.cAut;
@@ -2190,80 +1891,10 @@ begin
       cliNfePagamentoINDPAG.AsLargeInt := StrToInt(IndpagToStr(Pagamento.indPag))
     else
       cliNfePagamentoINDPAG.AsLargeInt := 0;
-{    case Pagamento.tBand of
-      bcVisa           : cliNfePagamentoTBAND.AsString := 'Visa';
-      bcMasterCard     : cliNfePagamentoTBAND.AsString := 'MasterCard';
-      bcAmericanExpress: cliNfePagamentoTBAND.AsString := 'American Express';
-      bcSorocred       : cliNfePagamentoTBAND.AsString := 'Sorocred';
-      bcDinersClub     : cliNfePagamentoTBAND.AsString := 'Diners Club';
-      bcElo            : cliNfePagamentoTBAND.AsString := 'Elo';
-      bcHipercard      : cliNfePagamentoTBAND.AsString := 'Hipercard';
-      bcAura           : cliNfePagamentoTBAND.AsString := 'Aura';
-      bcCabal          : cliNfePagamentoTBAND.AsString := 'Cabal';
-      bcOutros         : cliNfePagamentoTBAND.AsString := 'Outros';
-    else
-      cliNfePagamentoTBAND.AsString := '';
-    end;   }
-
-    {case Pagamento.tPag of
-      fpDinheiro          : cliNfePagamentoTPAG.AsString := 'Dinheiro';
-      fpCheque            : cliNfePagamentoTPAG.AsString := 'Cheque';
-      fpCartaoCredito     : cliNfePagamentoTPAG.AsString := 'Credito';
-      fpCartaoDebito      : cliNfePagamentoTPAG.AsString := 'Debito';
-      fpCreditoLoja       : cliNfePagamentoTPAG.AsString := 'Prazo';
-      fpValeAlimentacao   : cliNfePagamentoTPAG.AsString := 'Vale Alimentacao';
-      fpValeRefeicao      : cliNfePagamentoTPAG.AsString := 'Vale Refeicao';
-      fpValePresente      : cliNfePagamentoTPAG.AsString := 'Vale Presente';
-      fpValeCombustivel   : cliNfePagamentoTPAG.AsString := 'Vale Combustivel';
-      fpDuplicataMercantil: cliNfePagamentoTPAG.AsString := 'Duplicata Mercantil';
-      fpBoletoBancario    : cliNfePagamentoTPAG.AsString := 'Boleto';
-      fpSemPagamento      : cliNfePagamentoTPAG.AsString := 'Sem Pagameto';
-      fpOutro             : cliNfePagamentoTPAG.AsString := 'Outro';
-    else
-      cliNfePagamentoTPAG.AsString := '';
-    end;  }
-
-//    cliNfePagamentoTPAG.AsString            := Pagamento.Pegar_Tipo();
- //   cliNfePagamentoVPAG.AsFloat             := Pagamento.Pegar_Valor();
- //   cliNfePagamentoVTROCO.AsFloat           := GWCommerce.Venda.Troco;
-//    cliNfePagamentoINDPAG.AsLargeInt        := IfThen(Pagamento.Prazo > 0, 1, 0);
-
-{    if Pagamento.Tipo = fpCartaoCredito then
-    begin
-      cliNfePagamentoTBAND.AsString := Pagamento.Cartao.Pegar_Codigo_Bandeira();
-      cliNfePagamentoCAUT.AsString  := Pagamento.Cartao.CodigoAutorizacao
-    end;}
 
     cliNfePagamento.Post();
     cliNfePagamento.ApplyUpdates(0);
   end;
-{  GWCommerce := AGWCommerce as TGWCommerce;
-
-  for Pagamento in GWCommerce.Venda.Pagamentos do
-  begin
-    cliNfePagamento.Append();
-    cliNfePagamentoID_NFE_PAG.AsLargeInt    := Gerar_Id('GEN_NFE_PAGAMENTO_ID');
-    cliNfePagamentoID_NFE.AsLargeInt        := AIdNFe;
-    cliNfePagamentoREGISTRO_EMIT.AsLargeInt := cliNfeCabREGISTRO_EMIT.AsLargeInt;
-    cliNfePagamentoTPAG.AsString            := Pagamento.Pegar_Tipo();
-    cliNfePagamentoVPAG.AsFloat             := Pagamento.Pegar_Valor();
-    cliNfePagamentoVTROCO.AsFloat           := GWCommerce.Venda.Troco;
-    cliNfePagamentoINDPAG.AsLargeInt        := IfThen(Pagamento.Prazo > 0, 1, 0);
-
-    if Pagamento.Tipo = fpCartaoCredito then
-    begin
-      cliNfePagamentoTBAND.AsString := Pagamento.Cartao.Pegar_Codigo_Bandeira();
-      cliNfePagamentoCAUT.AsString  := Pagamento.Cartao.CodigoAutorizacao
-    end;
-
-    cliNfePagamento.Post();
-    cliNfePagamento.ApplyUpdates(0);
-  end;  }
 end;
-
-{function TdmDados.Tratar_Chave_Nota_Fiscal(AChaveGerada: String): String;
-begin
-  Result := StringReplace(UpperCase(AChaveGerada), 'NFE', '', [rfReplaceAll]);
-end;}
 
 end.

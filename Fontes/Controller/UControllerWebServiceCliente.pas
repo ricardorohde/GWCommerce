@@ -13,7 +13,6 @@ type
     protected
       function Montar_URL(): String; override;
       function Pegar_Parametro_Body(): String; override;
-//      function Pegar_Servico(): String; override;
 
     public
       constructor Create(AIdEmitente: Int64);
@@ -86,10 +85,5 @@ function TControllerWebServiceCliente.Pegar_Parametro_Body: String;
 begin
   Result := '';
 end;
-
-{function TControllerWebServiceCliente.Pegar_Servico: String;
-begin
-  Result := 'envia_clientes';
-end;}
 
 end.

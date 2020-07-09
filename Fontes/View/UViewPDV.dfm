@@ -14,7 +14,6 @@ object ViewPDV: TViewPDV
   KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
-  OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyUp = FormKeyUp

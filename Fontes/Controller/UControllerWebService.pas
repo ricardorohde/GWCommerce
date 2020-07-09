@@ -21,7 +21,6 @@ type
     function Pegar_ApiToken_Emitente(): String;
     function Pegar_CNPJ_Emitente(): String;
     function Pegar_Parametro_Body(): String; virtual; abstract;
-//    function Pegar_Servico(): String; virtual; abstract;
 
   public
     const
@@ -55,26 +54,13 @@ end;
 
 function TControllerWebService.Executar(AModoGet: Boolean = True): String;
 var
-  //CNPJ,
-  Retorno{,
-  TokenApi,
-  Url}: String;
+  Retorno: String;
 
   Parametro1: TStringList;
 
   Parametro2: TStringStream;
 
 begin
-{  CNPJ := Pegar_CNPJ_Emitente();
-
-  if Trim(CNPJ) = '' then
-    raise Exception.Create('CNPJ do Emitente não encontrado.');
-
-  TokenApi := Pegar_ApiToken_Emitente();
-
-  if Trim(TokenApi) = '' then
-    raise Exception.Create('Token da API não encontrado.');}
-
   Retorno    := '';
   Parametro1 := TStringList.Create();
   try

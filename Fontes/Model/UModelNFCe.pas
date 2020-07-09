@@ -50,9 +50,6 @@ type
     procedure Gerar_XML_Envio_Total_NotaFiscal(AXML: IXMLDocument);
 
   public
-//    function Enviar_Nota(AGWCommerce: TGWCommerce): Boolean;
-
-//    procedure Gerar_XML(AGWCommerce: TGWCommerce);
     procedure Cancelar_Nota_Fiscal(AChave, AJustificativa: String; AGWCommerce: TGWCommerce);
     procedure Enviar_Nota_Api(AGerarArquivoEnvio: Boolean);
     procedure Enviar_OffLine(AGWCommerce: TGWCommerce; AXML: String);
@@ -194,8 +191,8 @@ begin
   NFCe.Configuracoes.WebServices.Ambiente     := FGWCommerce.Emitente.Ambiente;
   NFCe.Configuracoes.WebServices.SSLType      := LT_TLSv1_2;
   NFCe.Configuracoes.WebServices.UF           := FGWCommerce.Emitente.Estado;
-  NFCe.Configuracoes.Certificados.NumeroSerie := FGWCommerce.Emitente.CertificadoSerie;//'0e470484de697d98418fb164f0b49f60';
-  NFCe.Configuracoes.Certificados.Senha       := AnsiString( FGWCommerce.Emitente.CertificadoSenha );//1234
+  NFCe.Configuracoes.Certificados.NumeroSerie := FGWCommerce.Emitente.CertificadoSerie;
+  NFCe.Configuracoes.Certificados.Senha       := AnsiString( FGWCommerce.Emitente.CertificadoSenha );
   NFCe.Configuracoes.Arquivos.Salvar          := True;
   NFCe.Configuracoes.Arquivos.PathSalvar      := Format('%s\%s', [ExtractFilePath(ParamStr(0)), 'XML']);
   NFCe.Configuracoes.Geral.SSLCryptLib        := cryWinCrypt;
@@ -203,8 +200,8 @@ begin
   NFCe.Configuracoes.Geral.SSLLib             := libWinCrypt;
   NFCe.Configuracoes.Geral.SSLXmlSignLib      := xsMsXml;
   NFCe.Configuracoes.Geral.Salvar             := False;
-  NFCe.Configuracoes.Geral.IdCSC              := FGWCommerce.Emitente.NFCeTokenCSCId;//'000001';
-  NFCe.Configuracoes.Geral.CSC                := FGWCommerce.Emitente.NFCeTokenCSC;// 'cc06ad48ed249572b0f90385725b5c20';
+  NFCe.Configuracoes.Geral.IdCSC              := FGWCommerce.Emitente.NFCeTokenCSCId;
+  NFCe.Configuracoes.Geral.CSC                := FGWCommerce.Emitente.NFCeTokenCSC;
   NFCe.Configuracoes.Geral.FormaEmissao       := teNormal;
   NFCe.Configuracoes.Geral.VersaoQRCode       := veqr200;
   NFCe.Configuracoes.Geral.ModeloDF           := moNFCe;
@@ -223,8 +220,6 @@ end;
 
 procedure TdmNFCe.Enviar_Nota_Api(AGerarArquivoEnvio: Boolean);
 var
-//  I: Integer;
-
   Consulta: TControllerWebServiceConsultaEnvioNota;
 
   Envio: TControllerWebServiceEnvioNotas;
@@ -234,16 +229,6 @@ var
   XMLEnvio: IXMLDocument;
 
 begin
-{  dmDados.qryConsultaNotasFiscais.Close();
-  dmDados.qryConsultaNotasFiscais.SQL.Clear();
-//  dmDados.qryConsultaNotasFiscais.SQL.Add(Sql);
-  dmDados.qryConsultaNotasFiscais.Open();
-  dmDados.qryConsultaNotasFiscais.First();}
-
-//  while not dmDados.qryConsultaNotasFiscais.Eof do
-//  begin
-//    dmDados.Consulta_Nota_Integrada(dmDados.qryConsultaNotasFiscaisREGISTRO_EMIT.AsLargeInt,
-//      dmDados.qryConsultaNotasFiscaisID_NFE.AsLargeInt);
     dmDados.Consulta_Nota_Integrada(dmDados.cliConsultaNotasEnviarApiREGISTRO_EMIT.AsLargeInt, dmDados.cliConsultaNotasEnviarApiID_NFE.AsLargeInt);
 
       if dmDados.cliNfeIntegracaoApiSTATUS.AsLargeInt <> 1 then
@@ -260,16 +245,9 @@ begin
             XMLEnvio := TXMLDocument.Create(nil);
             try
               FNota.NFe.SetXMLString( AnsiString( base64.DecodeString(dmDados.cliConsultaNotasEnviarApiXML_APROVADO.AsString)));
-
-//              XMLEnvio.DocumentElement.XML := '';
-//              XMLEnvio.DocumentElement.Text:= '';
-
               XMLEnvio.Active := True;
 
-//              while XMLEnvio.ChildNodes.Count > 1 do
-//                XMLEnvio.ChildNodes.Delete(0);
               XMLEnvio.AddChild('Nota');
-              //XMLEnvio.DocumentElement.AddChild('Nota');
               Gerar_XML_Envio_Cabecalho(XMLEnvio);
               Gerar_XML_Envio_Emitente(XMLEnvio);
               Gerar_XML_Envio_Destinatario(XMLEnvio);
@@ -284,7 +262,6 @@ begin
               try
                 Envio.XML        := ToBase64.EncodeString(XMLEnvio.XML.Text);
                 Envio.NumeroNota := dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt;
-  //              I := XMLEnvio.ChildNodes.Count ;
                 if Envio.Integrar() then
                   dmDados.Inserir_Nota_Integrada(dmDados.cliConsultaNotasEnviarApiREGISTRO_EMIT.AsLargeInt,
                     dmDados.cliConsultaNotasEnviarApiID_NFE.AsLargeInt);
@@ -304,12 +281,9 @@ begin
 
                 XMLEnvio.SaveToFile(Format('C:\GWCommerce\EnvioLayoutXML_IdNFe_%d.xml', [dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt]));
               end;
-//              XMLEnvio.Active := False;
             finally
               NFCe.NotasFiscais.Clear();
               XMLEnvio.Active := False;
-//              XMLEnvio.Free();
-//              FreeAndNil(XMLEnvio);
             end;
           end;
 
@@ -317,9 +291,6 @@ begin
           Consulta.Free();
         end;
       end;
-
-//    dmDados.qryConsultaNotasFiscais.Next();
- // end;
 end;
 
 procedure TdmNFCe.Enviar_OffLine(AGWCommerce: TGWCommerce; AXML: String);
@@ -355,85 +326,7 @@ begin
     ViewAviso.Close();
     FreeAndNil(ViewAviso);
   end;
-{  NFCe.Configuracoes.Geral.VersaoDF := ve400;
-  FNota.NFe.Transp.modFrete         := mfSemFrete;
-
-  Gerar_Tag_Ide(AModelo);
-  Gerar_Tag_Emitente();
-  Gerar_Tag_Destinatario();
-  Gerar_Tag_Produto();
-  Gerar_Tag_Total();
-  Gerar_Tag_Pagamento();
-  FNota.NFe.InfAdic.infCpl := 'Obrigado pela preferência e volte Sempre.';
-
-  if Trim(String(FNota.GerarXML())) <> '' then
-  begin
-    dmDados.Registrar_NFE_CAB(AGWCommerce, FNota);
-
-    //if NFCe.Enviar(FNota.NFe.Ide.nNF, True, True) then
-    if FNota.NFe.Ide.modelo = 65 then
-    begin
-      ViewAviso := TViewAviso.Create(nil);
-      try
-        try
-          ViewAviso.Exibir('Enviando Nota Fiscal');
-          NFCe.Enviar(FNota.NFe.Ide.nNF, False, True);
-          dmDados.Atualizar_Status_Nota_Fiscal(FNota.NumID, NFCe.WebServices.Enviar.cStat);
-          dmDados.Atualizar_Dados_Apos_Emitir_Nota_Fiscal(FNota);
-        except on E: Exception do
-          if ((FNota.NFe.Ide.modelo = 65) and (NFCe.WebServices.Enviar.cStat <> 100)) then
-          begin
-            dmDados.Atualizar_Status_Nota_Fiscal(FNota.NumID, NFCe.WebServices.Enviar.cStat);
-            Gerar_NFCe_Em_Contingencia(NFCe.WebServices.Enviar.cStat);
-          end;
-        end;
-      finally
-        ViewAviso.Close();
-        FreeAndNil(ViewAviso);
-      end;
-    end;
-
-    if ((FNota.NFe.Ide.modelo = 90) or ((FNota.NFe.Ide.modelo = 65) and (NFCe.WebServices.Enviar.cStat = 100))) then
-      if Application.MessageBox('Deseja imprimir a Nota Fiscal?', 'Confirme', MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON1) = ID_YES then
-      begin
-        LayoutFiscal.ModoNaoFiscal := (FNota.NFe.Ide.modelo = 90);
-        LayoutFiscal.ImprimirDANFE();
-      end;
-  end
-  else
-    raise Exception.Create('Não foi possível gerar o xml da Nota Fiscal.');}
 end;
-
-{function TdmNFCe.Enviar_Nota(AGWCommerce: TGWCommerce): Boolean;
-//var
-//  Xml: String;
-
-begin
-  FGWCommerce := AGWCommerce;
-
-  Carregar_Configuracoes();
-
-  FNota := NFCe.NotasFiscais.Add();
-
-  NFCe.Configuracoes.Geral.VersaoDF := ve400;
-  Gerar_Tag_Ide();
-  Gerar_Tag_Emitente();
-  Gerar_Tag_Destinatario();
-
-//  Processar();
-  Gerar_Tag_Produto();
-  Gerar_Tag_Total();
-  Gerar_Tag_Pagamento();
-  FNota.NFe.Transp.modFrete := mfSemFrete;
-//  Gerar_Tag_Informacao_Complementar();
-  Xml := string( FNota.GerarXML() );
-
-  dmDados.Gerar_Nota_Fiscal(AGWCommerce, NFCe);
-
-  Result := NFCe.Enviar(FNota.NFe.Ide.nNF, True, True);
-
-  NFCe.NotasFiscais.Clear();
-end;}
 
 procedure TdmNFCe.Finalizar_Venda(AGWCommerce: TGWCommerce; AModelo: Int64);
 var
@@ -468,7 +361,6 @@ begin
     if FNota.NFe.Ide.modelo = 90 then
       dmDados.Atualizar_Dados_Apos_Emitir_Nota_Fiscal(FNota);
 
-    //if NFCe.Enviar(FNota.NFe.Ide.nNF, True, True) then
     if FNota.NFe.Ide.modelo = 65 then
     begin
       ViewAviso := TViewAviso.Create(nil);
@@ -524,7 +416,7 @@ begin
     end;
   end
   else
-    raise Exception.Create('Não foi possível gerar o xml da Nota Fiscal.');    
+    raise Exception.Create('Não foi possível gerar o xml da Nota Fiscal.');
 end;
 
 procedure TdmNFCe.Gerar_Tag_Destinatario;
@@ -653,42 +545,6 @@ begin
 
   if FGWCommerce.Venda.Troco > 0 then
     FNota.NFe.pag.vTroco := FGWCommerce.Venda.Troco;
-
-{  if FGWCommerce.Venda.Pagamento.Cartao.Valor > 0 then
-  begin
-    with FNota.NFe.pag.New do
-    begin
-      tPag := fpCartaoCredito;
-      vPag := FGWCommerce.Venda.Pagamento.Cartao.Valor;
-    end;
-  end;
-
-  if FGWCommerce.Venda.Pagamento.Cheque > 0 then
-  begin
-    with FNota.NFe.pag.New do
-    begin
-      tPag := fpCheque;
-      vPag := FGWCommerce.Venda.Pagamento.Cheque;
-    end;
-  end;
-
-  if FGWCommerce.Venda.Pagamento.Dinheiro > 0 then
-  begin
-    with FNota.NFe.pag.New do
-    begin
-      tPag := fpDinheiro;
-      vPag := FGWCommerce.Venda.Pagamento.Dinheiro;
-    end;
-  end;
-
-  if FGWCommerce.Venda.Pagamento.Prazo > 0 then
-  begin
-    with FNota.NFe.pag.New do
-    begin
-      tPag := fpOutro;
-      vPag := FGWCommerce.Venda.Pagamento.Prazo;
-    end;
-  end;}
 end;
 
 procedure TdmNFCe.Gerar_Tag_Produto;
@@ -805,8 +661,6 @@ begin
   AXML.DocumentElement.ChildNodes['procEmi'].Text  := procEmiToStr(FNota.NFe.Ide.procEmi);
   AXML.DocumentElement.ChildNodes['verProc'].Text  := FNota.NFe.Ide.verProc;
 
-//if FNota.NFe.Ide.modelo = 65 then
-//  AXML.DocumentElement.ChildNodes['xmlBD'].Text :=  dmDados.cliConsultaNotasEnviarApiXML_APROVADO.AsString;
   AXML.DocumentElement.ChildNodes['xmlBD'].Text := IfThen(FNota.NFe.Ide.modelo = 90, '',  dmDados.cliConsultaNotasEnviarApiXML_APROVADO.AsString);
 end;
 
@@ -926,7 +780,6 @@ begin
 
   for I := 0 to FNota.NFe.Det.Count -1 do
   begin
-    //Node.AddChild(Format('Item%d', [I + 1]));
     Node.AddChild('Item');
     Indice := Node.ChildNodes.Count -1;
 
@@ -991,41 +844,6 @@ begin
   AXML.DocumentElement.ChildNodes['vOutro'].Text     := StringReplace(FormatFloat('#,##0.00', FNota.NFe.Total.ICMSTot.vOutro), ',', '.', [rfReplaceAll]);
   AXML.DocumentElement.ChildNodes['vNF'].Text        := StringReplace(FormatFloat('#,##0.00', FNota.NFe.Total.ICMSTot.vNF), ',', '.', [rfReplaceAll]);
 end;
-
-{procedure TdmNFCe.Gerar_XML(AGWCommerce: TGWCommerce);
-begin
-  FNota       := NFCe.NotasFiscais.Add();
-  FGWCommerce := AGWCommerce;
-
-  NFCe.Configuracoes.Geral.VersaoDF := ve400;
-
-  Gerar_Tag_Ide();
-//  Gerar_Tag_Emitente();
-//  Gerar_Tag_Destinatario();
-  Gerar_Tag_Produto();
-  Gerar_Tag_Total();
-
-  FNota.NFe.Transp.modFrete := mfSemFrete;
-
-  Gerar_Tag_Pagamento();
-
-//    InfAdic.infCpl     :=  '';
- //   InfAdic.infAdFisco :=  '';
-
-    with InfAdic.obsCont.New do
-    begin
-      xCampo := 'ObsCont';
-      xTexto := 'Texto';
-    end;
-
-  with FNota.NFe.InfAdic.obsFisco.New do
-  begin
-    xCampo := 'ObsFisco';
-    xTexto := 'Texto';
-  end;
-
-  FNota.Imprimir();
-end;  }
 
 function TdmNFCe.Pegar_Valor_Base_Calculo(AProduto: TDetCollectionItem): Double;
 begin

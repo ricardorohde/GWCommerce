@@ -81,7 +81,6 @@ type
     procedure btnEscClick(Sender: TObject);
     procedure btnOpcoesClick(Sender: TObject);
     procedure btnFecharCupomClick(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
     procedure btnConsultaPrecoClick(Sender: TObject);
     procedure btnCancelarNotaClick(Sender: TObject);
     procedure btnFinalizarVendaClick(Sender: TObject);
@@ -90,11 +89,9 @@ type
     { Private declarations }
     FGWCommerce: TGWCommerce;
 
-//    procedure Arredondar_Controle(AControle: TWinControl);
     procedure Excluir_Item(ASender: TObject);
     procedure Pegar_Fator_Multiplicador(ASender: TObject; AParametro: String);
     procedure Sair_Da_Aplicacao();
-//    procedure Verificar_Venda_Pendente();
 
   public
     { Public declarations }
@@ -109,24 +106,6 @@ implementation
     UModelBase;
 
 {$R *.dfm}
-
-{procedure TViewPDV.Arredondar_Controle(AControle: TWinControl);
-var
-   Rect: TRect;
-   Rgn: HRGN;
-
-begin
-  with AControle do
-  begin
-    Rect:= ClientRect;
-    rgn := CreateRoundRectRgn(Rect.Left, Rect.Top, Rect.Right, Rect.Bottom, 30, 30) ;
-    Perform(EM_GETRECT, 0, lParam(@Rect)) ;
-    InflateRect(Rect, - 10, - 10) ;
-    Perform(EM_SETRECTNP, 0, lParam(@Rect)) ;
-    SetWindowRgn(Handle, rgn, True) ;
-    Invalidate;
-  end;
-end;}
 
 procedure TViewPDV.btnCancelarNotaClick(Sender: TObject);
 begin
@@ -181,7 +160,6 @@ end;
 
 procedure TViewPDV.btnIniciarVendaClick(Sender: TObject);
 begin
-//  Limpar_Valores_Tela();
   FGWCommerce.Iniciar();
 end;
 
@@ -203,11 +181,7 @@ begin
     Estoque := FGWCommerce.Estoque.Pegar_Selecionado();
 
     if Estoque <> nil then
-//    begin
-//      if Estoque.LancamentoPorPeso.LancouPorPeso then
-//        FGWCommerce.FatorMultiplicador := (Estoque.LancamentoPorPeso.Total / 100) * Estoque.PrecoVenda;
       ValorUnitario := Estoque.PrecoVenda
-//    end
     else
       ValorUnitario := 0;
 
@@ -239,7 +213,6 @@ begin
       begin
         if Estoque.LancamentoPorPeso.LancouPorPeso then
           FGWCommerce.FatorMultiplicador := (Estoque.LancamentoPorPeso.Total / 100) / Estoque.PrecoVenda;
-//          FGWCommerce.FatorMultiplicador := (Estoque.LancamentoPorPeso.Total / 100) * Estoque.PrecoVenda;
         ValorUnitario := Estoque.PrecoVenda;
       end
       else
@@ -280,21 +253,6 @@ begin
   except on E: Exception do
     MessageDlg(Format('Erro: %s', [E.Message]), mtError, [mbOK], 0);
   end;
-end;
-
-procedure TViewPDV.FormActivate(Sender: TObject);
-begin
-{  if (not FGWCommerce.VendaIniciada) and (FGWCommerce.Verificar_Tem_Venda_Pendente()) then
-//    if Application.MessageBox('O sistema identificou venda em aberto'#13#10 +
-//      'Deseja recarregar os itens?', 'Confirme', MB_YESNO + MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON1) = ID_YES then
-    begin
-      FGWCommerce.Iniciar();
-      FGWCommerce.Venda.Carregar(FGWCommerce.Emitente.Registro);
-      CupomFiscal.Exibir_Venda(FGWCommerce);
-      cbbPesquisa.SetFocus();
-    end
-  else
-    pnlRodape.SetFocus(); }
 end;
 
 procedure TViewPDV.FormCreate(Sender: TObject);
@@ -363,8 +321,6 @@ begin
   Limpar_Valores_Tela();
 
   if (not FGWCommerce.VendaIniciada) and (FGWCommerce.Verificar_Tem_Venda_Pendente()) then
-//    if Application.MessageBox('O sistema identificou venda em aberto'#13#10 +
-//      'Deseja recarregar os itens?', 'Confirme', MB_YESNO + MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON1) = ID_YES then
     begin
       FGWCommerce.Iniciar();
       FGWCommerce.Venda.Carregar(FGWCommerce.Emitente.Registro);

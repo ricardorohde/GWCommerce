@@ -13,7 +13,6 @@ type
     protected
       function Montar_URL(): String; override;
       function Pegar_Parametro_Body(): String; override;
-//      function Pegar_Servico(): String; override;
 
     public
       constructor Create(AIdEmitente: Int64);
@@ -43,7 +42,6 @@ procedure TControllerWebServiceEstoque.Integrar;
 var
   I: Integer;
 
-  //CampoChave,
   Estoques: String;
 
   Json: TlkJSONobject;
@@ -64,22 +62,13 @@ begin
     dmDados.Apagar_Estoque_Antes_Integrar(IdEmitente);
     dmDados.Abrir_Tabela_Estoque(IdEmitente);
 
-//    Estoques   := StringReplace(Estoques, '<BR/>', ',"Lista":', [rfReplaceAll]);
-//    Estoques   := StringReplace(Estoques, 'TotalProdutos', '"TotalProdutos"', [rfReplaceAll]);
-//    Estoques   := '{' + Estoques + '}';
     Lista := TlkJSON.ParseText(Estoques) as TlkJSONList;
-//    CampoChave := 'Lista';
 
-  //  if not Assigned(Json.Field[CampoChave]) then
-  //  raise Exception.Create(Format('Erro ao integrar os estoques. Campo %s não encontrado.', [CampoChave]));
-
- //   Lista := Json.Field[CampoChave] as TlkJSONlist;
     for I := 0 to Lista.Count -1 do
     begin
       Aviso.Exibir(Format('Integração de Produtos %d%% concluídos.', [Trunc((I * 100) / Lista.Count)]));
       Json := Lista.Child[I] as TlkJSONobject;
       dmDados.Integrar_Estoque(Json, IdEmitente);
-//      Estoques := Json.Field['codigo'].Value;
     end;
   finally
     FreeAndNil(Aviso);
@@ -95,10 +84,5 @@ function TControllerWebServiceEstoque.Pegar_Parametro_Body: String;
 begin
   Result := '';
 end;
-
-{function TControllerWebServiceEstoque.Pegar_Servico: String;
-begin
-  Result := 'envia_estoque';
-end;}
 
 end.

@@ -215,8 +215,6 @@ begin
       FreeAndNil(Selecao);
     end;
   end;
-
-//  FPagamento.Cartao.Valor := Pegar_Valor(Sender);
   edtTroco.Text  := Formatar(Exibir_Troco());
 end;
 
@@ -379,8 +377,7 @@ begin
   edtFinalizar.Left := -50;
   Arredondar_Controle(pnlCancelar);
   Arredondar_Controle(pnlFinalizar);
-//  pnlBotoes.Top       := pnlValores.Top + pnlValores.Height + 5;
-//  pnlBotoes.Left      := Screen.Width - pnlBotoes.Width - 5;
+
   CupomFiscal.Width   := Trunc((Screen.Width * 60) / 100);
   CupomFiscal.Caption := '';
 

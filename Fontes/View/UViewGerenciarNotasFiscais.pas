@@ -173,16 +173,8 @@ begin
     QuotedStr(FormatDateTime('yyyy-MM-dd', dtpDataEmissao.DateTime)),
     IfThen(FAcao = taCancelar, 'CD_STATUS IN (100, 150)',
       'CD_STATUS NOT IN (128, 135)')]);
-//      '((CD_STATUS in [128, 135) AND (IDE_TPEMIS = 9))')]);
 
   Consultar_Notas(Sql);
-{  dmDados.qryConsultaNotasFiscais.Close();
-  dmDados.qryConsultaNotasFiscais.SQL.Clear();
-  dmDados.qryConsultaNotasFiscais.SQL.Add(Sql);
-  dmDados.qryConsultaNotasFiscais.Open();
-
-  dmDados.cliConsultaNotasFiscais.Close();
-  dmDados.cliConsultaNotasFiscais.Open();}
 end;
 
 procedure TViewGerenciarNotasFiscais.Consultar_Notas(ASql: String);
@@ -226,7 +218,6 @@ begin
   FGWCommerce         := AGWCommerce;
   Self.Width          := Trunc((Screen.Width * 90) / 100);
   Self.Height         := Trunc((Screen.Height * 90) / 100);
-//  btnExecutar.Caption := IfThen(FAcao = taCancelar, 'Cancelar Nota', 'Enviar Off-Line');
 
   Definir_Titulo_Tela(Format('(%s Notas Fiscais)', [IfThen(AAcao = taCancelar, 'Cancelar', 'Gerenciar')]));
 

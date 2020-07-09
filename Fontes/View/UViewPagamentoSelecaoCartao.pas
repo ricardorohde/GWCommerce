@@ -77,16 +77,16 @@ begin
     edtCodigoAutorizacao.Text, '0');
 
   case IndiceBandeira of
-    1:  FCartao.TipoBandeira := bcVisa;//tbVisa;
-    2:  FCartao.TipoBandeira := bcMasterCard;//tbMastercard;
-    3:  FCartao.TipoBandeira := bcAmericanExpress;//tbAmericanExpress;
-    4:  FCartao.TipoBandeira := bcSorocred;// tbSorocred;
-    5:  FCartao.TipoBandeira := bcDinersClub; //tbDinersClub;
-    6:  FCartao.TipoBandeira := bcElo;//tbElo;
-    7:  FCartao.TipoBandeira := bcHipercard;//tbHipercard;
-    8:  FCartao.TipoBandeira := bcAura;//tbAura;
-    9:  FCartao.TipoBandeira := bcCabal;//tbCabal;
-    10: FCartao.TipoBandeira := bcOutros;//tbOutros;
+    1:  FCartao.TipoBandeira := bcVisa;
+    2:  FCartao.TipoBandeira := bcMasterCard;
+    3:  FCartao.TipoBandeira := bcAmericanExpress;
+    4:  FCartao.TipoBandeira := bcSorocred;
+    5:  FCartao.TipoBandeira := bcDinersClub;
+    6:  FCartao.TipoBandeira := bcElo;
+    7:  FCartao.TipoBandeira := bcHipercard;
+    8:  FCartao.TipoBandeira := bcAura;
+    9:  FCartao.TipoBandeira := bcCabal;
+    10: FCartao.TipoBandeira := bcOutros;
   else
     FCartao.TipoBandeira := bcOutros;
   end;
@@ -145,13 +145,6 @@ begin
   begin
     lstBandeira.ItemIndex := 0;
     lstBandeira.SetFocus();
-    {if TListBox(Sender).ItemIndex = 1 then
-    begin
-      lstBandeira.ItemIndex := 0;
-      lstBandeira.SetFocus();
-    end
-    else
-      btnConfirmarClick(Sender);}
   end;
 end;
 

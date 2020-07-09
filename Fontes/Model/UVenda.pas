@@ -29,7 +29,6 @@ type
     FDesconto: TDesconto;
 
     function GetValorBruto: Double;
-//    function GetMD5: String;
 
   public
     constructor Create(); overload;
@@ -114,21 +113,6 @@ begin
   dmDados.cliVenda.Filter   := AFiltro;
   dmDados.cliVenda.Filtered := True;
 end;
-
-{function TVenda.GetMD5: String;
-var
-  Gerador: TACBrEAD;
-
-begin
-  Gerador := TACBrEAD.Create(nil);
-  try
-    Result := String( Gerador.CalcularHash(
-      AnsiString(Format('%d|%d|%s', [FCodigoProduto, FRegistroEmitente,
-        FormatDateTime('dd/MM/yyyy hh:MM:ss.zzz', FDataHora)])), dgstMD5));
-  finally
-    Gerador.Free();
-  end;
-end;}
 
 function TVenda.Gerar_MD5: String;
 var
