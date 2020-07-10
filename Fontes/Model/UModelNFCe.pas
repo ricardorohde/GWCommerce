@@ -274,12 +274,14 @@ begin
                 temp := TStringList.Create();
                 try
                   temp.Add(ToBase64.EncodeString(XMLEnvio.XML.Text));
-                  temp.SaveToFile(Format('C:\GWCommerce\EnvioLayoutTXT_IdNFe_%d.txt', [dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt]));
+                  temp.SaveToFile(Format('%s\EnvioLayoutTXT_IdNFe_%d.txt',
+                    [ExtractFilePath(ParamStr(0)), dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt]));
                 finally
                   temp.Free();
                 end;
 
-                XMLEnvio.SaveToFile(Format('C:\GWCommerce\EnvioLayoutXML_IdNFe_%d.xml', [dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt]));
+                XMLEnvio.SaveToFile(Format('%s\EnvioLayoutXML_IdNFe_%d.xml',
+                  [ExtractFilePath(ParamStr(0)), dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt]));
               end;
             finally
               NFCe.NotasFiscais.Clear();

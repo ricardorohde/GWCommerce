@@ -16,6 +16,8 @@ type
 
     FWebService: TIdHTTP;
 
+    function Pegar_Url(): String;
+
   protected
     function Montar_URL(): String; virtual; abstract;
     function Pegar_ApiToken_Emitente(): String;
@@ -54,7 +56,8 @@ end;
 
 function TControllerWebService.Executar(AModoGet: Boolean = True): String;
 var
-  Retorno: String;
+  Retorno,
+  Url: String;
 
   Parametro1: TStringList;
 
@@ -64,6 +67,8 @@ begin
   Retorno    := '';
   Parametro1 := TStringList.Create();
   try
+    Url := Pegar_Url();
+
     if not AModoGet then
     begin
       FWebService.Request.Accept      := 'application/json';
@@ -71,13 +76,13 @@ begin
       FWebService.Request.CharSet     := 'utf-8';
 
       Parametro2 := TStringStream.Create(Pegar_Parametro_Body(), TEncoding.UTF8);
-      Retorno    := FWebService.Post(Montar_URL(), Parametro2);
+      Retorno    := FWebService.Post(Url, Parametro2);
       Parametro2.Free();
     end
     else
     begin
       Parametro2 := TStringStream.Create('');
-      FWebService.Post(Montar_URL(), Parametro1, Parametro2);
+      FWebService.Post(Url, Parametro1, Parametro2);
       Retorno := Parametro2.DataString;
       Parametro2.Free();
     end;
@@ -111,6 +116,31 @@ begin
 
   if Trim(Result) = '' then
     raise Exception.Create('CNPJ do Emitente não encontrado.');
+end;
+
+function TControllerWebService.Pegar_Url: String;
+var
+ NomeArquivo: String;
+
+ Arquivo: TextFile;
+
+begin
+  Result := Montar_URL();
+
+  try
+    NomeArquivo := Format('%s\Requisicoes.log', [ExtractFilePath(ParamStr(0))]);
+    AssignFile(Arquivo, NomeArquivo);
+
+    if FileExists(NomeArquivo) then
+      Append(Arquivo)
+    else
+      Rewrite(Arquivo);
+
+    WriteLn(Arquivo, Result);
+    Writeln(Arquivo, '');
+    CloseFile(Arquivo);
+  except
+  end;
 end;
 
 end.
