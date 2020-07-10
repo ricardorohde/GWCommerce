@@ -237,6 +237,7 @@ begin
         try
           Consulta.NFCe     := dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt;
           Consulta.Serie    := dmDados.cliConsultaNotasEnviarApiIDE_SERIE.AsString;
+          Consulta.Modelo   := dmDados.cliConsultaNotasEnviarApiIDE_MOD.AsLargeInt;
           Consulta.Registro := dmDados.cliConsultaNotasEnviarApiREGISTRO_EMIT.AsLargeInt;
 
           if not Consulta.Consultar_API() then

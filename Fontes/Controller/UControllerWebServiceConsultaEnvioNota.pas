@@ -9,6 +9,7 @@ interface
 type
   TControllerWebServiceConsultaEnvioNota = class(TControllerWebService)
   private
+    FModelo,
     FNFCe,
     FRegistro: Int64;
 
@@ -28,6 +29,7 @@ type
       function Consultar_API(): Boolean;
 
       property Integrado: Integer read FIntegrado;
+      property Modelo: Int64 read FModelo write FModelo;
       property NFCe: Int64 read FNFCe write FNFCe;
       property Registro: Int64 read FRegistro write FRegistro;
       property Serie: String read FSerie write FSerie;
@@ -58,6 +60,7 @@ end;
 constructor TControllerWebServiceConsultaEnvioNota.Create(AIdEmitente: Int64);
 begin
   inherited Create(AIdEmitente);
+  Modelo   := -1;
   NFCe     := -1;
   Serie    := '';
   Registro := -1;
@@ -70,8 +73,8 @@ end;
 
 function TControllerWebServiceConsultaEnvioNota.Montar_URL: String;
 begin
-  Result := Format('%s/verifica_nfce/index.php?cnpjEmit=%s&Token=%s&NFCe=%d&SerieNFC=%s&Registro=%d',
-    [URL_BASE, Pegar_CNPJ_Emitente(), Pegar_ApiToken_Emitente(), FNFCe, FSerie, FRegistro]);
+  Result := Format('%s/verifica_nfce/index.php?cnpjEmit=%s&Token=%s&NFCe=%d&SerieNFC=%s&ModNFC=%d&Registro=%d',
+    [URL_BASE, Pegar_CNPJ_Emitente(), Pegar_ApiToken_Emitente(), FNFCe, FSerie, FModelo, FRegistro]);
 end;
 
 function TControllerWebServiceConsultaEnvioNota.Pegar_Parametro_Body: String;

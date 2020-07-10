@@ -80,7 +80,7 @@
         <DCC_MapFile>3</DCC_MapFile>
         <DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
         <VerInfo_Build>1</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.1;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=DBF1498E78F164A20102513F5EC168E0;ProductVersion=1.0.0.1;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.1;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=8F71F71D75226CCC9F37F8AC1C435DA5;ProductVersion=1.0.0.1;Comments=</VerInfo_Keys>
         <Debugger_DebugSourcePath>C:\GWCommerce\Fontes\View\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
         <DCC_ExeOutput>C:\GWCommerce\</DCC_ExeOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
