@@ -90,6 +90,7 @@ type
     FGWCommerce: TGWCommerce;
 
     procedure Excluir_Item(ASender: TObject);
+    procedure Ocultar_Barra_Tarefas(AOcultar: Boolean);
     procedure Pegar_Fator_Multiplicador(ASender: TObject; AParametro: String);
     procedure Sair_Da_Aplicacao();
 
@@ -288,8 +289,9 @@ var
 
 begin
   Maximizar();
+  Ocultar_Barra_Tarefas(True);
 
-  cbbPesquisa.Width       := Trunc((Self.Width * 98) / 100);
+  cbbPesquisa.Width       := Trunc((Self.Width * 60) / 100);
   pnlDisplayValores.Width := Trunc((Self.Width * 35) / 100);
   CupomFiscal.Width       := Trunc((Self.Width * 60) / 100);
 
@@ -341,6 +343,20 @@ begin
   cbbPesquisa.Enabled       := False;
 end;
 
+procedure TViewPDV.Ocultar_Barra_Tarefas(AOcultar: Boolean);
+var
+  Janela: HWND;
+
+begin
+  Janela := FindWindow('Shell_TrayWnd', nil);
+
+  if Janela > 0 then
+    if AOcultar then
+      ShowWindow(Janela, SW_HIDE)
+    else
+      ShowWindow(Janela, SW_RESTORE)
+end;
+
 procedure TViewPDV.Pegar_Fator_Multiplicador(ASender: TObject; AParametro: String);
 var
   Fator: Double;
@@ -366,7 +382,10 @@ end;
 procedure TViewPDV.Sair_Da_Aplicacao;
 begin
   if Application.MessageBox('Deseja realmente fechar o sistema?', 'Confirme', MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2) = ID_YES then
+  begin
+    Ocultar_Barra_Tarefas(False);
     Application.Terminate();
+  end;
 end;
 
 end.
