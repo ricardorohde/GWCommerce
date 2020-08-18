@@ -29,6 +29,7 @@ type
     function Finalizar_Pagamento(): Boolean;
     function Pegar_IdVendedor(): Int64;
 
+    procedure Validar_Antes_Pagar();
     procedure Validar_Limite_Venda();
 
   public
@@ -228,9 +229,7 @@ begin
   try
     Validar_Venda_Aberta();
     Validar_Limite_Venda();
-
-    if not FVenda.Tem_Consumo then
-      raise Exception.Create('Não há itens para fechar a venda.');
+    Validar_Antes_Pagar();
 
     FVenda.Liberar_Pagamentos();
 
@@ -265,6 +264,7 @@ var
 
 begin
   Validar_Venda_Aberta();
+  Validar_Antes_Pagar();
   Finalizou := False;
   Selecao   := TViewPagamentoSelecao.Create(nil);
   try
@@ -420,6 +420,12 @@ begin
   finally
     FreeAndNil(ViewFuncionario);
   end;
+end;
+
+procedure TGWCommerce.Validar_Antes_Pagar;
+begin
+  if not FVenda.Tem_Consumo then
+    raise Exception.Create('Não há itens para fechar a venda.');
 end;
 
 procedure TGWCommerce.Validar_Limite_Venda;
