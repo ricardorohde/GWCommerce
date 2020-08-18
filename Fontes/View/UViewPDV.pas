@@ -294,6 +294,7 @@ begin
   cbbPesquisa.Width       := Trunc((Self.Width * 60) / 100);
   pnlDisplayValores.Width := Trunc((Self.Width * 35) / 100);
   CupomFiscal.Width       := Trunc((Self.Width * 60) / 100);
+  pnl2.Width              := edtItemQuantidade.Width;
 
   Arredondar_Controle(cbbPesquisa);
   Arredondar_Controle(edtItemQuantidade);
