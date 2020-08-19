@@ -24,27 +24,29 @@ object ViewPDV: TViewPDV
     Left = 0
     Top = 0
     Width = 886
-    Height = 81
+    Height = 66
     Align = alTop
     BevelOuter = bvNone
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
     object cbbPesquisa: TComboBox
-      Left = 8
-      Top = 8
-      Width = 870
-      Height = 62
+      AlignWithMargins = True
+      Left = 11
+      Top = 11
+      Width = 864
+      Height = 41
       Align = alClient
       CharCase = ecUpperCase
       Color = 15908714
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
-      Font.Height = -45
+      Font.Height = -27
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 0
+      StyleElements = [seFont, seBorder]
       OnChange = cbbPesquisaChange
       OnKeyPress = cbbPesquisaKeyPress
       OnKeyUp = cbbPesquisaKeyUp
@@ -53,28 +55,29 @@ object ViewPDV: TViewPDV
       Left = 878
       Top = 8
       Width = 8
-      Height = 65
+      Height = 50
       Align = alRight
       BevelOuter = bvNone
       Color = clWhite
       ParentBackground = False
       TabOrder = 1
-      ExplicitLeft = 866
+      ExplicitHeight = 65
     end
     object pnl3: TPanel
       Left = 0
       Top = 8
       Width = 8
-      Height = 65
+      Height = 50
       Align = alLeft
       BevelOuter = bvNone
       Color = clWhite
       ParentBackground = False
       TabOrder = 2
+      ExplicitHeight = 65
     end
     object pnl4: TPanel
       Left = 0
-      Top = 73
+      Top = 58
       Width = 886
       Height = 8
       Align = alBottom
@@ -82,7 +85,7 @@ object ViewPDV: TViewPDV
       Color = clWhite
       ParentBackground = False
       TabOrder = 3
-      ExplicitTop = 91
+      ExplicitTop = 73
     end
     object pnl5: TPanel
       Left = 0
@@ -537,16 +540,16 @@ object ViewPDV: TViewPDV
   end
   object pnlDisplayValores: TPanel
     Left = 654
-    Top = 81
+    Top = 66
     Width = 224
-    Height = 365
+    Height = 380
     Align = alRight
     BevelOuter = bvNone
     Color = clWhite
     ParentBackground = False
     TabOrder = 2
-    ExplicitTop = 99
-    ExplicitHeight = 347
+    ExplicitTop = 81
+    ExplicitHeight = 365
     object pnlQuantidade: TPanel
       Left = 0
       Top = 0
@@ -697,42 +700,42 @@ object ViewPDV: TViewPDV
   end
   object CupomFiscal: TPanelCupomFiscal
     Left = 8
-    Top = 81
+    Top = 66
     Width = 185
-    Height = 365
+    Height = 380
     Align = alLeft
     BevelOuter = bvNone
     Caption = 'CupomFiscal'
     Color = clWhite
     ParentBackground = False
     TabOrder = 4
-    ExplicitTop = 99
-    ExplicitHeight = 347
+    ExplicitTop = 81
+    ExplicitHeight = 365
   end
   object pnl6: TPanel
     Left = 878
-    Top = 81
+    Top = 66
     Width = 8
-    Height = 365
+    Height = 380
     Align = alRight
     BevelOuter = bvNone
     Color = clWhite
     ParentBackground = False
     TabOrder = 5
-    ExplicitTop = 99
-    ExplicitHeight = 347
+    ExplicitTop = 81
+    ExplicitHeight = 365
   end
   object pnl7: TPanel
     Left = 0
-    Top = 81
+    Top = 66
     Width = 8
-    Height = 365
+    Height = 380
     Align = alLeft
     BevelOuter = bvNone
     Color = clWhite
     ParentBackground = False
     TabOrder = 6
-    ExplicitTop = 99
-    ExplicitHeight = 347
+    ExplicitTop = 81
+    ExplicitHeight = 365
   end
 end

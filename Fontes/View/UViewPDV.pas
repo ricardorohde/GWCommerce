@@ -371,19 +371,23 @@ procedure TViewPDV.Pegar_Fator_Multiplicador(ASender: TObject; AParametro: Strin
 var
   Fator: Double;
 
+  Combo: TComboBox;
+
 begin
   try
-    TComboBox(ASender).Tag := 1;
+    Combo     := ASender as TComboBox;
+    Combo.Tag := 1;
     FGWCommerce.Validar_Venda_Aberta();
     Fator := 1;
 
-    if (not TryStrToFloat(StringReplace(TComboBox(ASender).Text, AParametro, '', [rfReplaceAll]),
+    if (not TryStrToFloat(StringReplace(Combo.Text, AParametro, '', [rfReplaceAll]),
      Fator)) or (Fator <= 0) then
        raise Exception.Create('Valor informado incorreto para o item.');
 
-    TComboBox(ASender).Tag         := 0;
+    Combo.Tag                      := 0;
     FGWCommerce.FatorMultiplicador := Fator;
-    TComboBox(ASender).Text        := '';
+    Combo.Text                     := '';
+    edtItemQuantidade.Text := FloatToStr(Fator);
   except on E: Exception do
     MessageDlg(Format('Erro: %s', [E.Message]), mtError, [mbOK], 0);
   end;
