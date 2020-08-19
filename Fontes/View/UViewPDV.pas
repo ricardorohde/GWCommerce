@@ -196,14 +196,18 @@ end;
 
 procedure TViewPDV.cbbPesquisaKeyPress(Sender: TObject; var Key: Char);
 var
+  Esc: Boolean;
+
   ValorUnitario: Double;
 
   Estoque: TEstoque;
 
 begin
-  TComboBox(Sender).DroppedDown := (TComboBox(Sender).Items.Count > 0) and (Key <> #27);
+  Esc := Key = #27;
 
-  if Key = #13 then
+  if Esc and not TComboBox(Sender).DroppedDown then
+    Sair_Da_Aplicacao()
+  else if Key = #13 then
   begin
     try
       FGWCommerce.Validar_Venda_Aberta();
@@ -228,6 +232,8 @@ begin
       MessageDlg(Format('Erro ao inserir o item na venda: %s', [Ex.Message]), mtError, [mbOK], 0);
     end;
   end;
+
+  TComboBox(Sender).DroppedDown := (TComboBox(Sender).Items.Count > 0) and not Esc;
 end;
 
 procedure TViewPDV.cbbPesquisaKeyUp(Sender: TObject; var Key: Word;
@@ -279,7 +285,10 @@ begin
     VK_F8     : FGWCommerce.Aplicar_Desconto();
     VK_F10    : FGWCommerce.Acessar_Opcoes();
     VK_F12    : FGWCommerce.Fechar_No_F12();
-    VK_ESCAPE : Sair_Da_Aplicacao();
+    VK_ESCAPE : begin
+                  if ActiveControl.Name <> cbbPesquisa.Name then
+                    Sair_Da_Aplicacao();
+                end;
   end;
 end;
 
