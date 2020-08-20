@@ -268,7 +268,7 @@ begin
     VK_F10    : FGWCommerce.Acessar_Opcoes();
     VK_F12    : FGWCommerce.Fechar_No_F12();
     VK_ESCAPE : begin
-                  if ActiveControl.Name <> cbbPesquisa.Name then
+                  if (FGWCommerce.VendaIniciada and (ActiveControl.Name <> cbbPesquisa.Name)) or not FGWCommerce.VendaIniciada then
                     Sair_Da_Aplicacao();
                 end;
   end;
