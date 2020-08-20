@@ -501,6 +501,9 @@ begin
 end;
 
 procedure TdmNFCe.Gerar_Tag_Imposto(AProduto: TDetCollectionItem; AEstoque: TEstoque);
+var
+  ValorItem: Double;
+
 begin
   if FGWCommerce.Emitente.Verificar_Se_Simples_Nacional() then
     AProduto.Imposto.ICMS.CSOSN := AEstoque.Pegar_CST_ICMS_Simples_Nacional()
@@ -516,7 +519,12 @@ begin
   Calcular_Pis(AProduto, AEStoque);
   Calcular_Cofins(AProduto, AEstoque);
 
-  AProduto.Imposto.vTotTrib := AProduto.Imposto.ICMS.vICMS + AProduto.Imposto.PIS.vPIS + AProduto.Imposto.COFINS.vCOFINS;
+  ValorItem := AProduto.Prod.vProd - AProduto.Prod.vDesc;
+
+  AProduto.Imposto.vTotTrib := RoundABNT((ValorItem * AEstoque.IBPTFI) / 100, -2) +
+    RoundABNT((ValorItem * AEstoque.IBPTF) / 100, -2) +
+    RoundABNT((ValorItem * AEstoque.IBPTEST) / 100, -2) +
+    RoundABNT((ValorItem * AEstoque.IBPTMun) / 100, -2);
 end;
 
 procedure TdmNFCe.Gerar_Tag_Pagamento;
