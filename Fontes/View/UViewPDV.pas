@@ -91,6 +91,7 @@ type
 
     procedure Excluir_Item(ASender: TObject);
     procedure Ocultar_Barra_Tarefas(AOcultar: Boolean);
+    procedure Lancar_Item();
     procedure Pegar_Fator_Multiplicador(ASender: TObject; AParametro: String);
     procedure Sair_Da_Aplicacao();
 
@@ -198,42 +199,23 @@ procedure TViewPDV.cbbPesquisaKeyPress(Sender: TObject; var Key: Char);
 var
   Esc: Boolean;
 
-  ValorUnitario: Double;
-
-  Estoque: TEstoque;
+  Combo: TComboBox;
 
 begin
-  Esc := Key = #27;
+  Combo := Sender as TComboBox;
+  Esc   := Key = #27;
 
-  if Esc and not TComboBox(Sender).DroppedDown then
-    Sair_Da_Aplicacao()
-  else if Key = #13 then
+  if Esc then
   begin
-    try
-      FGWCommerce.Validar_Venda_Aberta();
+    if Combo.DroppedDown then
+      Combo.Text := ''
+    else
+      Sair_Da_Aplicacao();
+  end
+  else if Key = #13 then
+    Lancar_Item();
 
-      Estoque := FGWCommerce.Estoque.Pegar_Selecionado();
-
-      if Estoque <> nil then
-      begin
-        if Estoque.LancamentoPorPeso.LancouPorPeso then
-          FGWCommerce.FatorMultiplicador := (Estoque.LancamentoPorPeso.Total / 100) / Estoque.PrecoVenda;
-        ValorUnitario := Estoque.PrecoVenda;
-      end
-      else
-        ValorUnitario := 0;
-
-      edtItemQuantidade.Text    := FloatToStr(FGWCommerce.FatorMultiplicador);
-      edtItemPrecoUnitario.Text := FormatFloat('#0.00', ValorUnitario);
-      edtItemValorTotal.Text    := FormatFloat('#0.00', RoundABNT(FGWCommerce.FatorMultiplicador * ValorUnitario, -2));
-
-      FGWCommerce.Inserir_Item();
-    except on Ex: Exception do
-      MessageDlg(Format('Erro ao inserir o item na venda: %s', [Ex.Message]), mtError, [mbOK], 0);
-    end;
-  end;
-
-  TComboBox(Sender).DroppedDown := (TComboBox(Sender).Items.Count > 0) and not Esc;
+  Combo.DroppedDown := (Combo.Items.Count > 0) and not Esc;
 end;
 
 procedure TViewPDV.cbbPesquisaKeyUp(Sender: TObject; var Key: Word;
@@ -341,6 +323,35 @@ begin
     end
   else
     pnlRodape.SetFocus();
+end;
+
+procedure TViewPDV.Lancar_Item;
+var
+  ValorUnitario: Double;
+
+  Estoque: TEstoque;
+
+begin
+  try
+    FGWCommerce.Validar_Venda_Aberta();
+
+    Estoque := FGWCommerce.Estoque.Pegar_Selecionado();
+
+    if Estoque <> nil then
+    begin
+      if Estoque.LancamentoPorPeso.LancouPorPeso then
+        FGWCommerce.FatorMultiplicador := (Estoque.LancamentoPorPeso.Total / 100) / Estoque.PrecoVenda;
+      ValorUnitario := Estoque.PrecoVenda;
+    end
+    else
+      ValorUnitario := 0;
+    edtItemQuantidade.Text    := FloatToStr(FGWCommerce.FatorMultiplicador);
+    edtItemPrecoUnitario.Text := FormatFloat('#0.00', ValorUnitario);
+    edtItemValorTotal.Text    := FormatFloat('#0.00', RoundABNT(FGWCommerce.FatorMultiplicador * ValorUnitario, -2));
+    FGWCommerce.Inserir_Item();
+  except on Ex: Exception do
+    MessageDlg(Format('Erro ao inserir o item na venda: %s', [Ex.Message]), mtError, [mbOK], 0);
+  end;
 end;
 
 procedure TViewPDV.Limpar_Valores_Tela;

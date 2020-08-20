@@ -61,7 +61,6 @@ object ViewPDV: TViewPDV
       Color = clWhite
       ParentBackground = False
       TabOrder = 1
-      ExplicitHeight = 65
     end
     object pnl3: TPanel
       Left = 0
@@ -73,7 +72,6 @@ object ViewPDV: TViewPDV
       Color = clWhite
       ParentBackground = False
       TabOrder = 2
-      ExplicitHeight = 65
     end
     object pnl4: TPanel
       Left = 0
@@ -85,7 +83,6 @@ object ViewPDV: TViewPDV
       Color = clWhite
       ParentBackground = False
       TabOrder = 3
-      ExplicitTop = 73
     end
     object pnl5: TPanel
       Left = 0
@@ -548,8 +545,6 @@ object ViewPDV: TViewPDV
     Color = clWhite
     ParentBackground = False
     TabOrder = 2
-    ExplicitTop = 81
-    ExplicitHeight = 365
     object pnlQuantidade: TPanel
       Left = 0
       Top = 0
@@ -709,8 +704,6 @@ object ViewPDV: TViewPDV
     Color = clWhite
     ParentBackground = False
     TabOrder = 4
-    ExplicitTop = 81
-    ExplicitHeight = 365
   end
   object pnl6: TPanel
     Left = 878
@@ -722,8 +715,6 @@ object ViewPDV: TViewPDV
     Color = clWhite
     ParentBackground = False
     TabOrder = 5
-    ExplicitTop = 81
-    ExplicitHeight = 365
   end
   object pnl7: TPanel
     Left = 0
@@ -735,7 +726,5 @@ object ViewPDV: TViewPDV
     Color = clWhite
     ParentBackground = False
     TabOrder = 6
-    ExplicitTop = 81
-    ExplicitHeight = 365
   end
 end
