@@ -100,7 +100,8 @@ begin
     Codigo := -1;
 
   Filtro := Format('(DESCRICAO LIKE %s)', [QuotedStr('%' + Busca + '%')]);
-  Filtro := Filtro + IfThen(Codigo > 0, Format('OR (CODIGO = %d)', [Codigo]), '');
+  Filtro := Filtro + IfThen(Codigo > 0, Format('OR (CODIGO = %d) OR (CODIGO_BARRAs like %s)',
+    [Codigo, QuotedStr('%' + IntToStr(Codigo) + '%')]), '');
 
   dmDados.cliEstoque.Filter   := Filtro;
   dmDados.cliEstoque.Filtered := Busca <> '';
