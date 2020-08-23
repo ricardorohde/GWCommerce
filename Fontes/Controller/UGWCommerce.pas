@@ -7,7 +7,8 @@ interface
     Vcl.Forms, Vcl.Dialogs, pcnConversao, Winapi.Windows,
 
     UEstoque, UModelBase, UVenda, UControllerEstoque, UControllerVenda,
-    UViewGerenciarNotasFiscais, UViewOpcoes, UEmitente, UCliente, UViewFuncionarios;
+    UViewGerenciarNotasFiscais, UViewOpcoes, UEmitente, UCliente, UViewFuncionarios,
+    UViewAviso;
 
 type
   TGWCommerce = class(TPersistent)
@@ -320,31 +321,44 @@ end;
 
 procedure TGWCommerce.Iniciar;
 var
+  Estoque: TEstoque;
+
+  Aviso: TViewAviso;
+
   View: TViewPDV;
 
 begin
+  Aviso := TViewAviso.Create(nil);
   try
-    if FVendaIniciada then
-      raise Exception.Create('Venda já Iniciada');
+    try
+      if FVendaIniciada then
+        raise Exception.Create('Venda já Iniciada');
 
-    FEstoque.Carregar(FEmitente.Registro);
-    FVenda.Liberar();
-    FVenda.Liberar_Pagamentos();
-    FCliente.Cadastrado := True;
+      Aviso.Exibir('Abrindo Venda');
+      FEstoque.Carregar(FEmitente.Registro);
+      Aviso.Close();
 
-    dmDados.Abrir_Tabela_Venda(FEmitente.Registro);
+      for Estoque in FEstoque.Lista do
+        ViewPdv.cbbPesquisa.Items.AddObject(Estoque.Descricao, Estoque);
 
-    View := Screen.ActiveForm as TViewPDV;
+      FVenda.Liberar();
+      FVenda.Liberar_Pagamentos();
+      FCliente.Cadastrado := True;
 
-    View.CupomFiscal.Abrir_Cupom();
-    View.cbbPesquisa.Enabled := True;
-    View.cbbPesquisa.Text    := '';
-    View.cbbPesquisa.Color   := View.edtItemQuantidade.Color;
-    View.cbbPesquisa.SetFocus();
+      dmDados.Abrir_Tabela_Venda(FEmitente.Registro);
+      View := Screen.ActiveForm as TViewPDV;
 
-    FVendaIniciada := True;
-  except on E: Exception do
-    MessageDlg(Format('Erro: %s', [E.Message]), mtError, [mbOK], 0);
+      View.CupomFiscal.Abrir_Cupom();
+      View.cbbPesquisa.Enabled := True;
+      View.cbbPesquisa.Text    := '';
+      View.cbbPesquisa.Color   := View.edtItemQuantidade.Color;
+      View.cbbPesquisa.SetFocus();
+      FVendaIniciada := True;
+    except on E: Exception do
+      MessageDlg(Format('Erro: %s', [E.Message]), mtError, [mbOK], 0);
+    end;
+  finally
+    FreeAndNil(Aviso);
   end;
 end;
 

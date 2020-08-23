@@ -58,15 +58,11 @@ procedure TControllerEstoque.Carregar(ARegistroEmitente: Int64);
 var
   Estoque: TEstoque;
 
-  ViewPdv: TViewPDV;
-
 begin
   if FProdutos.Count > 0 then
     Exit();
 
   dmDados.Abrir_Tabela_Estoque(ARegistroEmitente);
-
-  ViewPdv := Screen.ActiveForm as TViewPDV;
 
   dmDados.cliEstoque.First();
   while not dmDados.cliEstoque.Eof do
@@ -122,7 +118,6 @@ begin
       Estoque.PGLP          := dmDados.cliEstoquePGLP.AsFloat;
       Estoque.PGNN          := dmDados.cliEstoquePGNN.AsFloat;
       Estoque.PGNI          := dmDados.cliEstoquePGNI.AsFloat;
-      ViewPdv.cbbPesquisa.Items.AddObject(Estoque.Descricao, Estoque);
       FProdutos.Add(Estoque);
     end;
     dmDados.cliEstoque.Next();
