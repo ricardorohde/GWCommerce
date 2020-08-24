@@ -68,6 +68,7 @@ type
     spl6: TSplitter;
     btnIdentificarCliente: TSpeedButton;
     edtAbrirVendaViaLeitor: TEdit;
+    lbl4: TLabel;
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -97,6 +98,7 @@ type
     procedure Lancar_Item();
     procedure Pegar_Fator_Multiplicador(ASender: TObject; AParametro: String);
     procedure Sair_Da_Aplicacao();
+    procedure Tratar_Rodape();
 
   public
     { Public declarations }
@@ -300,9 +302,6 @@ begin
 end;
 
 procedure TViewPDV.FormShow(Sender: TObject);
-var
-  I: Integer;
-
 begin
   Maximizar();
   Ocultar_Barra_Tarefas(True);
@@ -311,6 +310,7 @@ begin
   cbbPesquisa.Width           := Trunc((Self.Width * 60) / 100);
   pnlDisplayValores.Width     := Trunc((Self.Width * 35) / 100);
   CupomFiscal.Width           := Trunc((Self.Width * 60) / 100);
+  CupomFiscal.Caption         := '';
   pnl2.Width                  := edtItemQuantidade.Width;
 
   Arredondar_Controle(cbbPesquisa);
@@ -318,24 +318,7 @@ begin
   Arredondar_Controle(edtItemPrecoUnitario);
   Arredondar_Controle(edtItemValorTotal);
 
-  for I := 0 to pnlRodape.ControlCount -1 do
-    if pnlRodape.Controls[I] is TPanel then
-    begin
-      if pnlRodape.Controls[I].Tag = 1 then
-        TWinControl(pnlRodape.Controls[I]).Width := 90;
-
-      Arredondar_Controle(TWinControl(pnlRodape.Controls[I]));
-    end;
-
-  CupomFiscal.Caption := '';
-
-  if Screen.Width > 1366 then
-    pnlRodapeEsquerdo1.Width := 180
-  else
-    pnlRodapeEsquerdo1.Width := Screen.Width - 100 - (12 * pnlIniciarVenda.Width) - (11 * Splitter1.Width);
-
-  if pnlRodapeEsquerdo1.Width <= 0 then
-    pnlRodapeEsquerdo1.Width := 25;
+  Tratar_Rodape();
 
   Definir_Titulo_Tela('(Caixa)');
   Limpar_Valores_Tela();
@@ -438,6 +421,29 @@ begin
     Ocultar_Barra_Tarefas(False);
     Application.Terminate();
   end;
+end;
+
+procedure TViewPDV.Tratar_Rodape;
+var
+  I: Integer;
+
+begin
+  for I := 0 to pnlRodape.ControlCount -1 do
+    if pnlRodape.Controls[I] is TPanel then
+    begin
+      if pnlRodape.Controls[I].Tag = 1 then
+        TWinControl(pnlRodape.Controls[I]).Width := 90;
+
+      Arredondar_Controle(TWinControl(pnlRodape.Controls[I]));
+    end;
+
+  if Screen.Width > 1366 then
+    pnlRodapeEsquerdo1.Width := 180
+  else
+    pnlRodapeEsquerdo1.Width := Screen.Width - 100 - (12 * pnlIniciarVenda.Width) - (11 * Splitter1.Width);
+
+  if pnlRodapeEsquerdo1.Width <= 0 then
+    pnlRodapeEsquerdo1.Width := 25;
 end;
 
 end.

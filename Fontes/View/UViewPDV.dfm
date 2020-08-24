@@ -545,6 +545,20 @@ object ViewPDV: TViewPDV
     Color = clWhite
     ParentBackground = False
     TabOrder = 2
+    object lbl4: TLabel
+      Left = 6
+      Top = 325
+      Width = 151
+      Height = 16
+      Caption = 'Abrir Venda pelo Leitor'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
     object pnlQuantidade: TPanel
       Left = 0
       Top = 0
@@ -578,6 +592,7 @@ object ViewPDV: TViewPDV
         Width = 224
         Height = 79
         Align = alTop
+        BorderStyle = bsNone
         Color = 15908714
         Enabled = False
         Font.Charset = DEFAULT_CHARSET
@@ -621,6 +636,7 @@ object ViewPDV: TViewPDV
         Width = 224
         Height = 79
         Align = alTop
+        BorderStyle = bsNone
         Color = 15908714
         Enabled = False
         Font.Charset = DEFAULT_CHARSET
@@ -664,6 +680,7 @@ object ViewPDV: TViewPDV
         Width = 224
         Height = 79
         Align = alTop
+        BorderStyle = bsNone
         Color = 15908714
         Enabled = False
         Font.Charset = DEFAULT_CHARSET
@@ -677,8 +694,8 @@ object ViewPDV: TViewPDV
       end
     end
     object edtAbrirVendaViaLeitor: TEdit
-      Left = 8
-      Top = 328
+      Left = 0
+      Top = 344
       Width = 210
       Height = 21
       Color = clSkyBlue
