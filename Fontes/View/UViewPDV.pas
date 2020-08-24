@@ -67,6 +67,7 @@ type
     pnlIdentificarCliente: TPanel;
     spl6: TSplitter;
     btnIdentificarCliente: TSpeedButton;
+    edtAbrirVendaViaLeitor: TEdit;
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -85,6 +86,8 @@ type
     procedure btnCancelarNotaClick(Sender: TObject);
     procedure btnFinalizarVendaClick(Sender: TObject);
     procedure btnIdentificarClienteClick(Sender: TObject);
+    procedure edtAbrirVendaViaLeitorKeyPress(Sender: TObject; var Key: Char);
+    procedure edtAbrirVendaViaLeitorEnter(Sender: TObject);
   private
     { Private declarations }
     FGWCommerce: TGWCommerce;
@@ -227,6 +230,28 @@ begin
   end;
 end;
 
+procedure TViewPDV.edtAbrirVendaViaLeitorEnter(Sender: TObject);
+begin
+  TEdit(Sender).Clear();
+end;
+
+procedure TViewPDV.edtAbrirVendaViaLeitorKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if Key = #13 then
+    if not FGWCommerce.VendaIniciada then
+    begin
+      try
+        FGWCommerce.Iniciar();
+        cbbPesquisa.Text := TEdit(Sender).Text;
+        cbbPesquisaKeyPress(cbbPesquisa, Key);
+        cbbPesquisa.DroppedDown := False;
+      except on Ex: Exception do
+        MessageDlg(Format('Erro ao iniciar a venda: %s', [Ex.Message]), mtError, [mbOK], 0);
+      end;
+    end;
+end;
+
 procedure TViewPDV.Excluir_Item(ASender: TObject);
 begin
   cbbPesquisa.DroppedDown := False;
@@ -282,10 +307,11 @@ begin
   Maximizar();
   Ocultar_Barra_Tarefas(True);
 
-  cbbPesquisa.Width       := Trunc((Self.Width * 60) / 100);
-  pnlDisplayValores.Width := Trunc((Self.Width * 35) / 100);
-  CupomFiscal.Width       := Trunc((Self.Width * 60) / 100);
-  pnl2.Width              := edtItemQuantidade.Width;
+  edtAbrirVendaViaLeitor.Left := -300;
+  cbbPesquisa.Width           := Trunc((Self.Width * 60) / 100);
+  pnlDisplayValores.Width     := Trunc((Self.Width * 35) / 100);
+  CupomFiscal.Width           := Trunc((Self.Width * 60) / 100);
+  pnl2.Width                  := edtItemQuantidade.Width;
 
   Arredondar_Controle(cbbPesquisa);
   Arredondar_Controle(edtItemQuantidade);
@@ -322,7 +348,7 @@ begin
       cbbPesquisa.SetFocus();
     end
   else
-    pnlRodape.SetFocus();
+    edtAbrirVendaViaLeitor.SetFocus();
 end;
 
 procedure TViewPDV.Lancar_Item;
@@ -362,6 +388,7 @@ begin
   cbbPesquisa.Text          := 'CAIXA LIVRE';
   cbbPesquisa.Color         := clSilver;
   cbbPesquisa.Enabled       := False;
+  edtAbrirVendaViaLeitor.SetFocus();
 end;
 
 procedure TViewPDV.Ocultar_Barra_Tarefas(AOcultar: Boolean);

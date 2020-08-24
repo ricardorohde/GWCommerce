@@ -579,6 +579,7 @@ object ViewPDV: TViewPDV
         Height = 79
         Align = alTop
         Color = 15908714
+        Enabled = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWhite
         Font.Height = -59
@@ -621,6 +622,7 @@ object ViewPDV: TViewPDV
         Height = 79
         Align = alTop
         Color = 15908714
+        Enabled = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWhite
         Font.Height = -59
@@ -663,6 +665,7 @@ object ViewPDV: TViewPDV
         Height = 79
         Align = alTop
         Color = 15908714
+        Enabled = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWhite
         Font.Height = -59
@@ -672,6 +675,16 @@ object ViewPDV: TViewPDV
         ReadOnly = True
         TabOrder = 0
       end
+    end
+    object edtAbrirVendaViaLeitor: TEdit
+      Left = 8
+      Top = 328
+      Width = 210
+      Height = 21
+      Color = clSkyBlue
+      TabOrder = 3
+      OnEnter = edtAbrirVendaViaLeitorEnter
+      OnKeyPress = edtAbrirVendaViaLeitorKeyPress
     end
   end
   object pnlPreRodape: TPanel
