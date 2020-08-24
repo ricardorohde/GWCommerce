@@ -12,11 +12,9 @@ type
   TLancamentoPorPeso = record
     LancouPorPeso: Boolean;
 
-    Peso,
-    Total: Double;
+    Peso: Double;
 
     CodigoProduto,
-    Indicador,
     Verificador: Int64;
 
     Busca: String;
@@ -303,12 +301,10 @@ end;
 
 procedure TLancamentoPorPeso.Copiar_Valores(APeso: TLancamentoPorPeso);
 begin
-  Total         := APeso.Total;
   CodigoProduto := APeso.CodigoProduto;
-  Indicador     := APeso.Indicador;
   Busca         := APeso.Busca;
   Verificador   := APeso.Verificador;
-  Peso          := APeso.Peso;
+  Peso          := APeso.Peso / 1000;
   LancouPorPeso := APeso.LancouPorPeso;
 end;
 
@@ -316,26 +312,28 @@ procedure TLancamentoPorPeso.Inicializar;
 begin
   LancouPorPeso := False;
   Peso          := 0;
-  Total         := 0;
   CodigoProduto := -1;
-  Indicador     := -1;
   Busca         := '';
   Verificador   := -1;
 end;
 
 procedure TLancamentoPorPeso.Tratar_Lancamento(ABusca: String);
 var
-  Peso: Double;
+  Indicador1,
+  Indicador2: Integer;
+
+  Valor: Double;
 
 begin
   if Length(Trim(ABusca)) = 13 then
-    if TryStrToFloat(ABusca, Peso) then
+    if TryStrToFloat(ABusca, Valor) then
     begin
-      Indicador     := StrToInt64(Copy(ABusca, 1, 1));
-      CodigoProduto := StrToInt64(Copy(ABusca, 2, 5));
-      Total         := StrToFloat(Copy(ABusca, 7, 6));
+      Indicador1    := StrToInt64(Copy(ABusca, 1, 1));
+      Indicador2    := StrToInt64(Copy(ABusca, 2, 1));
+      CodigoProduto := StrToInt64(Copy(ABusca, 3, 5));
+      Peso          := StrToFloat(Copy(ABusca, 8, 5));
       Verificador   := StrToInt64(Copy(ABusca, 13, 1));
-      LancouPorPeso := Indicador = 2;
+      LancouPorPeso := (Indicador1 = 2) and (Indicador2 = 0);
     end;
 end;
 

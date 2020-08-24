@@ -349,7 +349,7 @@ begin
     if Estoque <> nil then
     begin
       if Estoque.LancamentoPorPeso.LancouPorPeso then
-        FGWCommerce.FatorMultiplicador := (Estoque.LancamentoPorPeso.Total / 100) / Estoque.PrecoVenda;
+        FGWCommerce.FatorMultiplicador := Estoque.LancamentoPorPeso.Peso;
       ValorUnitario := Estoque.PrecoVenda;
     end
     else
