@@ -87,7 +87,8 @@ end;
 
 procedure TViewConsultaPreco.edtPesquisaChange(Sender: TObject);
 var
-  Codigo: Int64;
+  Codigo,
+  ProdutoPesado: Int64;
 
   Busca,
   Filtro: String;
@@ -99,9 +100,16 @@ begin
   if not TryStrToInt64(Busca, Codigo) then
     Codigo := -1;
 
+  if (Length(Busca) = 13) and (Codigo > 0) then
+  begin
+    ProdutoPesado := StrToInt64(Copy(Busca, 1, 2));
+
+    if ProdutoPesado = 20 then
+      Codigo := StrToInt64(Copy(Busca, 3, 5));
+  end;
+
   Filtro := Format('(DESCRICAO LIKE %s)', [QuotedStr('%' + Busca + '%')]);
-  Filtro := Filtro + IfThen(Codigo > 0, Format('OR (CODIGO = %d) OR (CODIGO_BARRAs like %s)',
-    [Codigo, QuotedStr('%' + IntToStr(Codigo) + '%')]), '');
+  Filtro := Filtro + IfThen(Codigo > 0, Format('OR (CODIGO = %0:d) OR (CODIGO_BARRAS = %0:d)', [Codigo]), '');
 
   dmDados.cliEstoque.Filter   := Filtro;
   dmDados.cliEstoque.Filtered := Busca <> '';
