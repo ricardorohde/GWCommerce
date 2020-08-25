@@ -102,6 +102,8 @@ begin
   FGrid.Options            := [];
   FGrid.TabStop            := False;
   FGrid.Width              := Self.Width;
+  FGrid.ReadOnly           := True;
+  FGrid.Enabled            := False;
   FGrid.Height             := Trunc((Self.Height * 95) / 100);
   FGrid.Columns[0].Width   := Trunc((FGrid.Width * 98) / 100);
   FGrid.OnDrawColumnCell   := DataDrawColumnCell;

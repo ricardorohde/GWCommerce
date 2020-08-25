@@ -426,7 +426,6 @@ object ViewPDV: TViewPDV
       Color = 8180311
       ParentBackground = False
       TabOrder = 8
-      TabStop = True
       object btnFinalizarVenda: TSpeedButton
         Left = 0
         Top = 0
@@ -576,7 +575,7 @@ object ViewPDV: TViewPDV
         Height = 16
         Align = alTop
         Caption = 'Quantidade'
-        Color = clFuchsia
+        Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
