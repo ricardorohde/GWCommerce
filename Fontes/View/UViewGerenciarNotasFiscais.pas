@@ -162,6 +162,7 @@ begin
     '     AND CAST(IDE_DHEMI AS DATE) = %1:s '#13#10 +
     '     AND %2:s                           '#13#10 +
     '     AND IDE_MOD = 65                   '#13#10 +
+    '     AND IDE_TPEMIS = 1                 '#13#10 +
     'UNION                                   '#13#10 +
     '  SELECT *                              '#13#10 +
     '    FROM NFE_CAB                        '#13#10 +

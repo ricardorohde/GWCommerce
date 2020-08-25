@@ -647,6 +647,9 @@ begin
 end;
 
 procedure TdmNFCe.Gerar_XML_Envio_Cabecalho(AXML: IXMLDocument);
+var
+  EnviarConteudoXML: Boolean;
+
 begin
   AXML.DocumentElement.ChildNodes['cUF'].Text := IntToStr(FNota.NFe.Ide.cUF);
 
@@ -672,7 +675,10 @@ begin
   AXML.DocumentElement.ChildNodes['procEmi'].Text  := procEmiToStr(FNota.NFe.Ide.procEmi);
   AXML.DocumentElement.ChildNodes['verProc'].Text  := FNota.NFe.Ide.verProc;
 
-  AXML.DocumentElement.ChildNodes['xmlBD'].Text := IfThen(FNota.NFe.Ide.modelo = 90, '',  dmDados.cliConsultaNotasEnviarApiXML_APROVADO.AsString);
+  EnviarConteudoXML := (FNota.NFe.Ide.modelo = 65) and (FNota.NFe.Ide.tpEmis = teNormal);
+
+  AXML.DocumentElement.ChildNodes['xmlBD'].Text := IfThen(EnviarConteudoXML,
+    dmDados.cliConsultaNotasEnviarApiXML_APROVADO.AsString, '');
 end;
 
 procedure TdmNFCe.Gerar_XML_Envio_Destinatario(AXML: IXMLDocument);

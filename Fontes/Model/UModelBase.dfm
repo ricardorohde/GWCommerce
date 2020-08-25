@@ -4298,8 +4298,8 @@ object dmDados: TdmDados
       '                FROM NFE_CAB                                    '
       '              WHERE REGISTRO_EMIT = :PREGISTRO_EMITENTE'
       
-        '                   AND CD_STATUS IN (100, 150, 128, 135)        ' +
-        '  '
+        '                   AND ((CD_STATUS IN (100, 150, 128, 135) AND (' +
+        'IDE_TPEMIS = 1)) OR ((CD_STATUS = 0) AND (IDE_TPEMIS = 9)))'
       
         '                   AND IDE_MOD = 65                             ' +
         '  '
