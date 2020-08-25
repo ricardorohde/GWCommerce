@@ -70,9 +70,10 @@ end;
 
 procedure TViewBase.Maximizar;
 begin
-  Self.Width  := Screen.Width;
-  Self.Height := Screen.Height;
-  WindowState := wsMaximized;
+  Self.Width     := Screen.Width;
+  Self.Height    := Screen.Height;
+  WindowState    := wsMaximized;
+  DefaultMonitor := dmMainForm;
 end;
 
 procedure TViewBase.Tirar_Barra_DBGrid(ASender: TObject; AField: TField; AGrid: TDBGrid);
