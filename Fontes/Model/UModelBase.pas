@@ -1838,6 +1838,8 @@ begin
     cliNfeItensORIG.AsLargeInt          := StrToInt(OrigToStr(Item.Imposto.ICMS.orig));
     cliNfeItensCST_ICMS.AsString        := CSOSNIcmsToStr(Item.Imposto.ICMS.CSOSN);
     cliNfeItensVTOTTRIB.AsFloat         := Item.Imposto.vTotTrib;
+    cliNfeItensCST_PIS.AsString         := CSTPISToStr(Item.Imposto.PIS.CST);
+    cliNfeItensCST_COFINS.AsString      := CSTCOFINSToStr(Item.Imposto.COFINS.CST);
 
     if Item.Prod.comb.cProdANP > 0 then
     begin
