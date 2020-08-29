@@ -580,7 +580,6 @@ begin
     Produto                := FNota.NFe.Det.New();
     Produto.Prod.nItem     := Venda.Ordem;
     Produto.Prod.cProd     := Copy(IntToStr(Venda.CodigoProdutoExibicao), 1, 60);
-    Produto.Prod.cEANTrib  := Produto.Prod.cEAN;
     Produto.Prod.xProd     := Copy(Estoque.Descricao, 1, 120);
     Produto.Prod.NCM       := IfThen(Trim(Estoque.NCM) = '', '19059090', Estoque.NCM);
     Produto.Prod.CFOP      := IfThen(Trim(Estoque.CFOPNfce) = '', '5102', Estoque.CFOPNfce);
@@ -602,7 +601,8 @@ begin
     if Length(Ean) > 2 then
       Ean := Copy(Ean, 1, 2);
 
-    Produto.Prod.cEAN := IfThen((Ean <> '') and (Ean <> '20'), Estoque.CodigoBarras, 'SEM GTIN');
+    Produto.Prod.cEAN      := IfThen((Ean <> '') and (Ean <> '20'), Estoque.CodigoBarras, 'SEM GTIN');
+    Produto.Prod.cEANTrib  := Produto.Prod.cEAN;
 
     if FNota.NFe.Ide.modelo = 90 then
       Produto.Prod.CNPJFab := Estoque.CNPJFab;
