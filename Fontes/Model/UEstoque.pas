@@ -2,7 +2,7 @@ unit UEstoque;
 
 interface
   uses
-    Classes, System.SysUtils,
+    Classes, System.SysUtils, System.Math,
 
     pcnConversao,
 
@@ -17,9 +17,10 @@ type
     CodigoProduto,
     Verificador: Int64;
 
-    Busca: String;
+    Busca,
+    Unidade: String;
 
-    procedure Copiar_Valores(APeso: TLancamentoPorPeso);
+    procedure Copiar_Valores(APeso: TLancamentoPorPeso; AUnidadeMedida: String);
     procedure Inicializar;
     procedure Tratar_Lancamento(ABusca: String);
   end;
@@ -299,12 +300,12 @@ end;
 
 { TLancamentoPorPeso }
 
-procedure TLancamentoPorPeso.Copiar_Valores(APeso: TLancamentoPorPeso);
+procedure TLancamentoPorPeso.Copiar_Valores(APeso: TLancamentoPorPeso; AUnidadeMedida: String);
 begin
   CodigoProduto := APeso.CodigoProduto;
   Busca         := APeso.Busca;
   Verificador   := APeso.Verificador;
-  Peso          := APeso.Peso / 1000;
+  Peso          := IfThen(Trim(UpperCase(AUnidadeMedida)) = 'KU', APeso.Peso, APeso.Peso / 1000);
   LancouPorPeso := APeso.LancouPorPeso;
 end;
 
@@ -314,6 +315,7 @@ begin
   Peso          := 0;
   CodigoProduto := -1;
   Busca         := '';
+  Unidade       := 'KG';
   Verificador   := -1;
 end;
 

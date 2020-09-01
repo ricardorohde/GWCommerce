@@ -173,7 +173,7 @@ begin
       if (Trim(UpperCase(Estoque.Descricao)) = Busca) or (Estoque.Codigo = Codigo) or (Estoque.CodigoBarras = Busca) then
       begin
         EstoqueSelecionado := Estoque;
-        EstoqueSelecionado.LancamentoPorPeso.Copiar_Valores(EstoquePorPeso);
+        EstoqueSelecionado.LancamentoPorPeso.Copiar_Valores(EstoquePorPeso, Estoque.Medida);
         Break;
       end;
 
