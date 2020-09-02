@@ -13252,7 +13252,7 @@ create table venda(
   descricao_produto varchar(90) not null,
   medida varchar(10) default null,
   valor_unitario decimal(12, 2) not null,
-  quantidade decimal(10, 2) not null,
+  quantidade decimal(10, 4) not null,
   desconto decimal(12, 2) default 0.00 not null,
   data_hora_venda timestamp not null,
   md5 varchar(32) not null,

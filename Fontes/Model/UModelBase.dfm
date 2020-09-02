@@ -588,7 +588,7 @@ object dmDados: TdmDados
       FieldName = 'QUANTIDADE'
       Required = True
       Precision = 18
-      Size = 2
+      Size = 4
     end
     object qryVendaDESCONTO: TFMTBCDField
       FieldName = 'DESCONTO'
@@ -649,7 +649,7 @@ object dmDados: TdmDados
     object cliVendaQUANTIDADE: TFMTBCDField
       FieldName = 'QUANTIDADE'
       Precision = 18
-      Size = 2
+      Size = 4
     end
     object cliVendaDESCONTO: TFMTBCDField
       FieldName = 'DESCONTO'
@@ -755,7 +755,7 @@ object dmDados: TdmDados
       FieldName = 'QUANTIDADE'
       Required = True
       Precision = 18
-      Size = 2
+      Size = 4
     end
     object qryVendaConsultaDESCONTO: TFMTBCDField
       FieldName = 'DESCONTO'
