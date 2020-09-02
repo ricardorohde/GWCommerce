@@ -1557,14 +1557,21 @@ begin
   cliEstoqueQTD_ATUAL.AsVariant       := StringReplace(AEstoque.Field['qtd_atual'].Value, '.', ',', [rfReplaceAll]);
   cliEstoqueQTD_MINIMA.AsVariant      := StringReplace(AEstoque.Field['qtd_minima'].Value, '.', ',', [rfReplaceAll]);
   cliEstoqueQTD_INICIO.AsVariant      := StringReplace(AEstoque.Field['qtd_inicio'].Value, '.', ',', [rfReplaceAll]);
-  cliEstoqueDATA_INICIO.AsVariant     := AEstoque.Field['data_inicio'].Value;
-  cliEstoqueULT_COMPRA.AsVariant      := AEstoque.Field['ult_compra'].Value;
-  cliEstoqueULT_VENDA.AsVariant       := AEstoque.Field['ult_venda'].Value;
+
+  if AEstoque.Field['data_inicio'].Value <> '0000-00-00' then
+    cliEstoqueDATA_INICIO.AsVariant := AEstoque.Field['data_inicio'].Value;
+
+  if AEstoque.Field['ult_compra'].Value <> '0000-00-00' then
+    cliEstoqueULT_COMPRA.AsVariant := AEstoque.Field['ult_compra'].Value;
+
+  if AEstoque.Field['ult_venda'].Value <> '0000-00-00' then
+    cliEstoqueULT_VENDA.AsVariant := AEstoque.Field['ult_venda'].Value;
+
   cliEstoqueLOCAL.AsString            := AEstoque.Field['local'].Value;
   cliEstoqueIPI.AsVariant             := StringReplace(AEstoque.Field['ipi'].Value, '.', ',', [rfReplaceAll]);
   cliEstoqueST.AsString               := AEstoque.Field['st'].Value;
-  cliEstoqueCOMISSAO.AsVariant        :=  StringReplace(AEstoque.Field['comissao'].Value, '.', ',', [rfReplaceAll]);
-  cliEstoqueMARGEM_LUCRO.AsVariant    :=  StringReplace(AEstoque.Field['margem_lucro'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueCOMISSAO.AsVariant        := StringReplace(AEstoque.Field['comissao'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueMARGEM_LUCRO.AsVariant    := StringReplace(AEstoque.Field['margem_lucro'].Value, '.', ',', [rfReplaceAll]);
   cliEstoqueFOTO.AsVariant            := AEstoque.Field['foto'].Value;
   cliEstoqueIAT.AsString              := AEstoque.Field['iat'].Value;
   cliEstoqueIPPT.AsString             := AEstoque.Field['ippt'].Value;
@@ -1576,10 +1583,10 @@ begin
   cliEstoqueCODIGO_BARRAS.AsString    := AEstoque.Field['codigo_barras'].Value;
   cliEstoqueNCM.AsString              := AEstoque.Field['ncm'].Value;
   cliEstoqueCEST.AsString             := AEstoque.Field['cest'].Value;
-  cliEstoqueIBPT_F.AsVariant          :=  StringReplace(AEstoque.Field['ibpt_f'].Value, '.', ',', [rfReplaceAll]);
-  cliEstoqueIBPT_FI.AsVariant         :=  StringReplace(AEstoque.Field['ibpt_fi'].Value, '.', ',', [rfReplaceAll]);
-  cliEstoqueIBPT_EST.AsVariant        :=  StringReplace(AEstoque.Field['ibpt_est'].Value, '.', ',', [rfReplaceAll]);
-  cliEstoqueIBPT_MUn.AsVariant        :=  StringReplace(AEstoque.Field['ibpt_mun'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueIBPT_F.AsVariant          := StringReplace(AEstoque.Field['ibpt_f'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueIBPT_FI.AsVariant         := StringReplace(AEstoque.Field['ibpt_fi'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueIBPT_EST.AsVariant        := StringReplace(AEstoque.Field['ibpt_est'].Value, '.', ',', [rfReplaceAll]);
+  cliEstoqueIBPT_MUn.AsVariant        := StringReplace(AEstoque.Field['ibpt_mun'].Value, '.', ',', [rfReplaceAll]);
   cliEstoqueORIGEM.AsString           := AEstoque.Field['origem'].Value;
   cliEstoqueGRUPO.AsLargeInt          := AEstoque.Field['grupo'].Value;
   cliEstoqueMARCA.AsLargeInt          := AEstoque.Field['marca'].Value;
