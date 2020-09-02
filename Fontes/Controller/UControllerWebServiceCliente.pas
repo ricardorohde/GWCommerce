@@ -2,7 +2,7 @@ unit UControllerWebServiceCliente;
 
 interface
  uses
-   System.SysUtils, System.Classes, Vcl.Dialogs,
+   System.SysUtils, System.Classes, Vcl.Dialogs, System.UITypes,
 
    UlkJson,
 
@@ -41,7 +41,8 @@ procedure TControllerWebServiceCliente.Integrar;
 var
   I: Integer;
 
-  Clientes: String;
+  Clientes,
+  CodigoCliente: String;
 
   Log: TControllerArquivos;
 
@@ -55,26 +56,32 @@ begin
   Aviso := TViewAviso.Create(nil);
   Log   := TControllerArquivos.Create();
   try
-    Aviso.Exibir('Iniciando Integração de Clientes.');
-    Clientes   := Executar();
+    CodigoCliente := '';
+    try
+      Aviso.Exibir('Iniciando Integração de Clientes.');
+      Clientes := Executar();
 
-    if Pos('SEM CLIENTE', UpperCase(Clientes)) > 0 then
-      raise Exception.Create('Nenhum cliente encontrado.');
+      if Pos('SEM CLIENTE', UpperCase(Clientes)) > 0 then
+        raise Exception.Create('Nenhum cliente encontrado.');
 
-    dmDados.Apagar_Cliente_Antes_Integrar(IdEmitente);
-    dmDados.Abrir_Tabela_Cliente(IdEmitente);
+      dmDados.Apagar_Cliente_Antes_Integrar(IdEmitente);
+      dmDados.Abrir_Tabela_Cliente(IdEmitente);
 
-    Lista := TlkJSON.ParseText(Clientes) as TlkJSONList;
+      Lista := TlkJSON.ParseText(Clientes) as TlkJSONList;
 
-    for I := 0 to Lista.Count -1 do
-    begin
-      Aviso.Exibir(Format('Integração de Clientes %d%% concluídos.', [Trunc((I * 100) / Lista.Count)]));
-      Json := Lista.Child[I] as TlkJSONobject;
+      for I := 0 to Lista.Count -1 do
+      begin
+        Aviso.Exibir(Format('Integração de Clientes %d%% concluídos.', [Trunc((I * 100) / Lista.Count)]));
+        Json          := Lista.Child[I] as TlkJSONobject;
+        CodigoCliente := Json.Field['codigo_cliente'].Value;
 
-      Log.Gerar_Log(Format('Integrando cliente com codigo_cliente = %s', [Json.Field['codigo_cliente'].Value]));
+        Log.Gerar_Log(Format('Integrando cliente com codigo_cliente = %s', [CodigoCliente]));
 
-      if (Json.Field['codigo_cliente'].Value <> '0') and (Json.Field['codigo_cliente'].Value <> '') then
-        dmDados.Integrar_Cliente(Json, IdEmitente);
+        if (CodigoCliente <> '0') and (CodigoCliente <> '') then
+          dmDados.Integrar_Cliente(Json, IdEmitente);
+      end;
+    except on E: Exception do
+      MessageDlg(Format('Erro ao integrar os clientes: %s.'#13#10 + 'Codigo do cliente: %s', [E.Message, CodigoCliente]), mtError, [mbOK], 0);
     end;
   finally
     FreeAndNil(Aviso);

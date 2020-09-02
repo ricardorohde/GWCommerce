@@ -2,7 +2,7 @@ unit UControllerWebServiceEstoque;
 
 interface
 uses
-  System.SysUtils, System.Classes, Vcl.Dialogs,
+  System.SysUtils, System.Classes, Vcl.Dialogs, System.UITypes,
 
   uLkJSON, UViewAviso,
 
@@ -40,6 +40,8 @@ end;
 
 procedure TControllerWebServiceEstoque.Integrar;
 var
+  IdProduto: Int64;
+
   I: Integer;
 
   Estoques: String;
@@ -56,24 +58,30 @@ begin
   Aviso := TViewAviso.Create(nil);
   Log   := TControllerArquivos.Create();
   try
-    Aviso.Exibir('Iniciando Integração de Produtos.');
-    Estoques   := Executar();
+    IdProduto := 0;
+    try
+      Aviso.Exibir('Iniciando Integração de Produtos.');
+      Estoques := Executar();
 
-    if Pos('SEM PRODUTO', UpperCase(Estoques)) > 0 then
-      raise Exception.Create('Nenhum produto encontrado.');
+      if Pos('SEM PRODUTO', UpperCase(Estoques)) > 0 then
+        raise Exception.Create('Nenhum produto encontrado.');
 
-    dmDados.Apagar_Estoque_Antes_Integrar(IdEmitente);
-    dmDados.Abrir_Tabela_Estoque(IdEmitente);
+      dmDados.Apagar_Estoque_Antes_Integrar(IdEmitente);
+      dmDados.Abrir_Tabela_Estoque(IdEmitente);
+      Lista := TlkJSON.ParseText(Estoques) as TlkJSONList;
 
-    Lista := TlkJSON.ParseText(Estoques) as TlkJSONList;
+      for I := 0 to Lista.Count -1 do
+      begin
+        Aviso.Exibir(Format('Integração de Produtos %d%% concluídos.', [Trunc((I * 100) / Lista.Count)]));
 
-    for I := 0 to Lista.Count -1 do
-    begin
-      Aviso.Exibir(Format('Integração de Produtos %d%% concluídos.', [Trunc((I * 100) / Lista.Count)]));
-      Json := Lista.Child[I] as TlkJSONobject;
-
-      Log.Gerar_Log(Format('Integrando Estoque com codigo_produto = %s', [Json.Field['codigo_produto'].Value]));
-      dmDados.Integrar_Estoque(Json, IdEmitente);
+        IdProduto := 0;
+        Json      := Lista.Child[I] as TlkJSONobject;
+        IdProduto := Json.Field['codigo_produto'].Value;
+        Log.Gerar_Log(Format('Integrando Estoque com codigo_produto = %d', [IdProduto]));
+        dmDados.Integrar_Estoque(Json, IdEmitente);
+      end;
+    except on E: Exception do
+      MessageDlg(Format('Erro ao integrar os estoques: %s.'#13#10 + 'Código do produto: %d', [E.Message, IdProduto]), mtError, [mbOK], 0);
     end;
   finally
     FreeAndNil(Aviso);

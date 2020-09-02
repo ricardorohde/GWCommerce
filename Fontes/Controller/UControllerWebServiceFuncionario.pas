@@ -2,7 +2,7 @@ unit UControllerWebServiceFuncionario;
 
 interface
  uses
-   System.SysUtils,
+   System.SysUtils, Vcl.Dialogs, System.UITypes,
 
    uLkJSON,
 
@@ -41,7 +41,8 @@ procedure TControllerWebServiceFuncionario.Integrar;
 var
   I: Integer;
 
-  Funcionarios: String;
+  Funcionarios,
+  IdFuncionario: String;
 
   Log: TControllerArquivos;
 
@@ -55,26 +56,32 @@ begin
   Aviso := TViewAviso.Create(nil);
   Log   := TControllerArquivos.Create();
   try
-    Aviso.Exibir('Iniciando Integração de Funcionários.');
-    Funcionarios := Executar();
+    IdFuncionario := '';
+    try
+      Aviso.Exibir('Iniciando Integração de Funcionários.');
+      Funcionarios := Executar();
 
-    if Pos('SEM FUNC', UpperCase(Funcionarios)) > 0 then
-      raise Exception.Create('Nenhum funcionário encontrado.');
+      if Pos('SEM FUNC', UpperCase(Funcionarios)) > 0 then
+        raise Exception.Create('Nenhum funcionário encontrado.');
 
-    dmDados.Apagar_Funcionario_Antes_Integrar(IdEmitente);
-    dmDados.Abrir_Tabela_Funcionario(IdEmitente);
+      dmDados.Apagar_Funcionario_Antes_Integrar(IdEmitente);
+      dmDados.Abrir_Tabela_Funcionario(IdEmitente);
 
-    Lista := TlkJSON.ParseText(Funcionarios) as TlkJSONList;
+      Lista := TlkJSON.ParseText(Funcionarios) as TlkJSONList;
 
-    for I := 0 to Lista.Count -1 do
-    begin
-      Aviso.Exibir(Format('Integração de Funcionarios %d%% concluídos.', [Trunc((I * 100) / Lista.Count)]));
-      Json := Lista.Child[I] as TlkJSONobject;
+      for I := 0 to Lista.Count -1 do
+      begin
+        Aviso.Exibir(Format('Integração de Funcionarios %d%% concluídos.', [Trunc((I * 100) / Lista.Count)]));
+        Json          := Lista.Child[I] as TlkJSONobject;
+        IdFuncionario := Json.Field['id_funcionario'].Value;
 
-      Log.Gerar_Log(Format('Integrando Funcionarios com id_funcionario = %s', [Json.Field['id_funcionario'].Value]));
+        Log.Gerar_Log(Format('Integrando Funcionario com id_funcionario = %s', [IdFuncionario]));
 
-      if (Json.Field['id_funcionario'].Value <> '0') and (Json.Field['id_funcionario'].Value <> '') then
-        dmDados.Integrar_Funcionarios(Json, IdEmitente);
+        if (IdFuncionario <> '0') and (IdFuncionario <> '') then
+          dmDados.Integrar_Funcionarios(Json, IdEmitente);
+      end;
+    except on E: Exception do
+      MessageDlg(Format('Erro ao integrar os funcionarios: %s.'#13#10 + 'Id do funcionario: %s', [E.Message, IdFuncionario]), mtError, [mbOK], 0);
     end;
   finally
     FreeAndNil(Aviso);
