@@ -44,7 +44,8 @@ uses
   UViewIdentificarCliente in 'View\UViewIdentificarCliente.pas' {ViewIdentificarCliente},
   UControllerWebServiceEnvioNotas in 'Controller\UControllerWebServiceEnvioNotas.pas',
   UControllerWebServiceConsultaEnvioNota in 'Controller\UControllerWebServiceConsultaEnvioNota.pas',
-  UViewEnvioNotasFiscais in 'View\UViewEnvioNotasFiscais.pas' {ViewEnvioNotasFiscais};
+  UViewEnvioNotasFiscais in 'View\UViewEnvioNotasFiscais.pas' {ViewEnvioNotasFiscais},
+  UControllerArquivos in 'Controller\UControllerArquivos.pas';
 
 {$R *.res}
 

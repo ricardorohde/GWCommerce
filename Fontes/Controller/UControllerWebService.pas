@@ -7,7 +7,7 @@ uses
 
   IdHTTP,
 
-  UModelBase;
+  UModelBase, UControllerArquivos;
 
 type
   TControllerWebService = class
@@ -120,26 +120,16 @@ end;
 
 function TControllerWebService.Pegar_Url: String;
 var
- NomeArquivo: String;
-
- Arquivo: TextFile;
+  Log: TControllerArquivos;
 
 begin
   Result := Montar_URL();
 
+  Log := TControllerArquivos.Create();
   try
-    NomeArquivo := Format('%s\Requisicoes.log', [ExtractFilePath(ParamStr(0))]);
-    AssignFile(Arquivo, NomeArquivo);
-
-    if FileExists(NomeArquivo) then
-      Append(Arquivo)
-    else
-      Rewrite(Arquivo);
-
-    WriteLn(Arquivo, Result);
-    Writeln(Arquivo, '');
-    CloseFile(Arquivo);
-  except
+    Log.Gerar_Log(Result, 'Requisicoes');
+  finally
+    Log.Free();
   end;
 end;
 
