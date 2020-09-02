@@ -6,7 +6,7 @@ uses
 
   uLkJSON, UViewAviso,
 
-  UControllerWebService, UModelBase;
+  UControllerWebService, UModelBase, UControllerArquivos;
 
 type
   TControllerWebServiceEstoque = class(TControllerWebService)
@@ -44,6 +44,8 @@ var
 
   Estoques: String;
 
+  Log: TControllerArquivos;
+
   Json: TlkJSONobject;
 
   Lista: TlkJSONlist;
@@ -52,6 +54,7 @@ var
 
 begin
   Aviso := TViewAviso.Create(nil);
+  Log   := TControllerArquivos.Create();
   try
     Aviso.Exibir('Iniciando Integração de Produtos.');
     Estoques   := Executar();
@@ -68,10 +71,13 @@ begin
     begin
       Aviso.Exibir(Format('Integração de Produtos %d%% concluídos.', [Trunc((I * 100) / Lista.Count)]));
       Json := Lista.Child[I] as TlkJSONobject;
+
+      Log.Gerar_Log(Format('Integrando Estoque com codigo_produto = %s', [Json.Field['codigo_produto'].Value]));
       dmDados.Integrar_Estoque(Json, IdEmitente);
     end;
   finally
     FreeAndNil(Aviso);
+    Log.Free();
   end;
 end;
 

@@ -6,7 +6,7 @@ interface
 
    UlkJson,
 
-   UControllerWebService, UViewAviso, UModelBase;
+   UControllerWebService, UViewAviso, UModelBase, UControllerArquivos;
 
 type
   TControllerWebServiceCliente = class(TControllerWebService)
@@ -43,6 +43,8 @@ var
 
   Clientes: String;
 
+  Log: TControllerArquivos;
+
   Json: TlkJSONobject;
 
   Lista: TlkJSONlist;
@@ -51,6 +53,7 @@ var
 
 begin
   Aviso := TViewAviso.Create(nil);
+  Log   := TControllerArquivos.Create();
   try
     Aviso.Exibir('Iniciando Integração de Clientes.');
     Clientes   := Executar();
@@ -68,11 +71,14 @@ begin
       Aviso.Exibir(Format('Integração de Clientes %d%% concluídos.', [Trunc((I * 100) / Lista.Count)]));
       Json := Lista.Child[I] as TlkJSONobject;
 
+      Log.Gerar_Log(Format('Integrando cliente com codigo_cliente = %s', [Json.Field['codigo_cliente'].Value]));
+
       if (Json.Field['codigo_cliente'].Value <> '0') and (Json.Field['codigo_cliente'].Value <> '') then
         dmDados.Integrar_Cliente(Json, IdEmitente);
     end;
   finally
     FreeAndNil(Aviso);
+    Log.Free();
   end;
 end;
 

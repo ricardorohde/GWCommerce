@@ -6,7 +6,7 @@ interface
 
    uLkJSON,
 
-   UControllerWebService, UViewAviso, UModelBase;
+   UControllerWebService, UViewAviso, UModelBase, UControllerArquivos;
 
 type
   TControllerWebServiceFuncionario = class(TControllerWebService)
@@ -43,6 +43,8 @@ var
 
   Funcionarios: String;
 
+  Log: TControllerArquivos;
+
   Json: TlkJSONobject;
 
   Lista: TlkJSONlist;
@@ -51,6 +53,7 @@ var
 
 begin
   Aviso := TViewAviso.Create(nil);
+  Log   := TControllerArquivos.Create();
   try
     Aviso.Exibir('Iniciando Integração de Funcionários.');
     Funcionarios := Executar();
@@ -68,11 +71,14 @@ begin
       Aviso.Exibir(Format('Integração de Funcionarios %d%% concluídos.', [Trunc((I * 100) / Lista.Count)]));
       Json := Lista.Child[I] as TlkJSONobject;
 
+      Log.Gerar_Log(Format('Integrando Funcionarios com id_funcionario = %s', [Json.Field['id_funcionario'].Value]));
+
       if (Json.Field['id_funcionario'].Value <> '0') and (Json.Field['id_funcionario'].Value <> '') then
         dmDados.Integrar_Funcionarios(Json, IdEmitente);
     end;
   finally
     FreeAndNil(Aviso);
+    Log.Free();
   end;
 end;
 
