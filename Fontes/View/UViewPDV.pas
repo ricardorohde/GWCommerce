@@ -330,6 +330,9 @@ begin
     end
   else
     edtAbrirVendaViaLeitor.SetFocus();
+
+  btnConsultaPreco.Caption := StringReplace(btnConsultaPreco.Caption, 'c', 'ç', [rfReplaceAll]);
+  btnOpcoes.Caption        := StringReplace(btnOpcoes.Caption, 'co', 'çõ', [rfReplaceAll]);
 end;
 
 procedure TViewPDV.Lancar_Item;

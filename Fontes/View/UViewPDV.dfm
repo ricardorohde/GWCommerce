@@ -241,7 +241,7 @@ object ViewPDV: TViewPDV
         Width = 80
         Height = 74
         Align = alClient
-        Caption = 'F5'#13'Consulta'#13'Preco'
+        Caption = 'F5'#13'Consulta'#13'Precos'
         Flat = True
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
