@@ -119,7 +119,7 @@ procedure TViewConsultaPreco.edtPesquisaKeyPress(Sender: TObject;
   var Key: Char);
 begin
   if Key = #13 then
-    gridEstoque.SetFocus();
+    edtPesquisa.SelectAll();
 end;
 
 procedure TViewConsultaPreco.Exibir(AConfirmar: Boolean);
