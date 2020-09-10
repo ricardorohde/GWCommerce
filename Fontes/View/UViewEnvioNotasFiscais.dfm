@@ -313,7 +313,7 @@ object ViewEnvioNotasFiscais: TViewEnvioNotasFiscais
           Title.Font.Height = -11
           Title.Font.Name = 'Tahoma'
           Title.Font.Style = [fsBold]
-          Width = 300
+          Width = 380
           Visible = True
         end
         item
