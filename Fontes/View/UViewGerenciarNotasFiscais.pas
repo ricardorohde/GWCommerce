@@ -212,13 +212,23 @@ end;
 
 procedure TViewGerenciarNotasFiscais.Exibir(AGWCommerce: TObject; AAcao: TTipoAcao);
 var
+  DescontarLargura,
+  I: Integer;
+
   Sql: String;
 
 begin
-  FAcao               := AAcao;
-  FGWCommerce         := AGWCommerce;
-  Self.Width          := Trunc((Screen.Width * 90) / 100);
-  Self.Height         := Trunc((Screen.Height * 90) / 100);
+  FAcao            := AAcao;
+  FGWCommerce      := AGWCommerce;
+  Self.Width       := Trunc((Screen.Width * 90) / 100);
+  Self.Height      := Trunc((Screen.Height * 90) / 100);
+  DescontarLargura := 0;
+
+  for I := 0 to gridNotasFiscais.Columns.Count -1 do
+    if I in [6, 9, 73] then
+      DescontarLargura := DescontarLargura + gridNotasFiscais.Columns[I].Width;
+
+  gridNotasFiscais.Columns[3].Width := Self.Width - DescontarLargura;
 
   Definir_Titulo_Tela(Format('(%s Notas Fiscais)', [IfThen(AAcao = taCancelar, 'Cancelar', 'Gerenciar')]));
 
