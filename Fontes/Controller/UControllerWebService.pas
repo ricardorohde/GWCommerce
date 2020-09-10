@@ -119,18 +119,8 @@ begin
 end;
 
 function TControllerWebService.Pegar_Url: String;
-var
-  Log: TControllerArquivos;
-
 begin
   Result := Montar_URL();
-
-  Log := TControllerArquivos.Create();
-  try
-    Log.Gerar_Log(Result, 'Requisicoes');
-  finally
-    Log.Free();
-  end;
 end;
 
 end.
