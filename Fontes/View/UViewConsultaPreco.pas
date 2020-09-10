@@ -132,8 +132,8 @@ begin
   gridEstoque.Columns[1].Width := 100;
   gridEstoque.Columns[2].Width := 270;
   gridEstoque.Columns[6].Width := 80;
-  gridEstoque.Columns[7].Width := 100;
-  gridEstoque.Columns[4].Width := Screen.Width  - 600;
+  gridEstoque.Columns[7].Width := 160;
+  gridEstoque.Columns[4].Width := Screen.Width  - 650;
 
   pnlBotao.Visible := AConfirmar;
 
