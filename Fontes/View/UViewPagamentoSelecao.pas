@@ -331,14 +331,14 @@ begin
     if (FPagamentos.Items[I].Tipo = fpCreditoLoja) then
     begin
       FPagamentos.Items[I].Prazo := Prazo;
-      Achou                     := True;
+      Achou                      := True;
       Break;
     end;
 
-  FGWCommerce.Cliente.CodigoCliente := -1;
-
   if Prazo > 0 then
   begin
+    FGWCommerce.Cliente.Inicializar();
+
     Cliente := TViewConsultaCliente.Create(nil);
     try
       Cliente.Exibir(FGWCommerce.Emitente.Registro);

@@ -453,7 +453,7 @@ begin
      raise Exception.Create(Format('Limite Máximo da NFC-e permitido é R$ 200.000,00.',
       [FormatFloat('#,##0.00', MAX_TOTAL)]));
 
-  if ((FVenda.Total - FVenda.Desconto) > MAX_SEM_IDENTIFICACAO) and (Cliente.CodigoCliente <= 0) then
+  if ((FVenda.Total - FVenda.Desconto) > MAX_SEM_IDENTIFICACAO) and (not Cliente.Identificado) then
     raise Exception.Create(Format('Vendas acima de R$ %s é obrigatório identificar o cliente.',
       [FormatFloat('#,##0.00', MAX_SEM_IDENTIFICACAO)]));
 end;
