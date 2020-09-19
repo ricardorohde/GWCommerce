@@ -266,7 +266,10 @@ begin
               NFCe.NotasFiscais.Clear();
               XMLEnvio.Active := False;
             end;
-          end;
+          end
+          else
+            dmDados.Inserir_Nota_Integrada(dmDados.cliConsultaNotasEnviarApiREGISTRO_EMIT.AsLargeInt,
+              dmDados.cliConsultaNotasEnviarApiID_NFE.AsLargeInt);
         finally
           Consulta.Free();
         end;
