@@ -49,6 +49,7 @@ type
     procedure Gerar_XML_Envio_Pagamento(AXML: IXMLDocument);
     procedure Gerar_XML_Envio_Produto(AXML: IXMLDocument);
     procedure Gerar_XML_Envio_Total_NotaFiscal(AXML: IXMLDocument);
+    procedure Integrar_Notas_Com_API(AXML: String; AEmitente, ANumeroNota, AId: Int64);
 
   public
     procedure Cancelar_Nota_Fiscal(AChave, AJustificativa: String; AGWCommerce: TGWCommerce);
@@ -223,8 +224,6 @@ procedure TdmNFCe.Enviar_Nota_Api(AGerarArquivoEnvio: Boolean);
 var
   Consulta: TControllerWebServiceConsultaEnvioNota;
 
-  Envio: TControllerWebServiceEnvioNotas;
-
   XMLEnvio: IXMLDocument;
 
 begin
@@ -258,16 +257,8 @@ begin
               Gerar_XML_Envio_Produto(XMLEnvio);
               Gerar_XML_Envio_Pagamento(XMLEnvio);
 
-              Envio := TControllerWebServiceEnvioNotas.Create(dmDados.cliConsultaNotasEnviarApiREGISTRO_EMIT.AsLargeInt);
-              try
-                Envio.XML        := ToBase64.EncodeString(XMLEnvio.XML.Text);
-                Envio.NumeroNota := dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt;
-                if Envio.Integrar() then
-                  dmDados.Inserir_Nota_Integrada(dmDados.cliConsultaNotasEnviarApiREGISTRO_EMIT.AsLargeInt,
-                    dmDados.cliConsultaNotasEnviarApiID_NFE.AsLargeInt);
-              finally
-                Envio.Free();
-              end;
+              Integrar_Notas_Com_API(XMLEnvio.XML.Text, dmDados.cliConsultaNotasEnviarApiREGISTRO_EMIT.AsLargeInt,
+                dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt, dmDados.cliConsultaNotasEnviarApiID_NFE.AsLargeInt);
 
               if AGerarArquivoEnvio then
                 Gerar_Arquivo_De_Auxilio_Integracao_Notas(XMLEnvio, dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt);
@@ -870,6 +861,23 @@ begin
   AXML.DocumentElement.ChildNodes['vCOFINS'].Text    := StringReplace(FormatFloat('#,##0.00', FNota.NFe.Total.ICMSTot.vCOFINS), ',', '.', [rfReplaceAll]);
   AXML.DocumentElement.ChildNodes['vOutro'].Text     := StringReplace(FormatFloat('#,##0.00', FNota.NFe.Total.ICMSTot.vOutro), ',', '.', [rfReplaceAll]);
   AXML.DocumentElement.ChildNodes['vNF'].Text        := StringReplace(FormatFloat('#,##0.00', FNota.NFe.Total.ICMSTot.vNF), ',', '.', [rfReplaceAll]);
+end;
+
+procedure TdmNFCe.Integrar_Notas_Com_API(AXML: String; AEmitente, ANumeroNota,
+  AId: Int64);
+var
+  Envio : TControllerWebServiceEnvioNotas;
+
+begin
+  Envio := TControllerWebServiceEnvioNotas.Create(AEmitente);
+  try
+    Envio.XML        := ToBase64.EncodeString(AXML);
+    Envio.NumeroNota := ANumeroNota;
+    if Envio.Integrar() then
+      dmDados.Inserir_Nota_Integrada(AEmitente, AId);
+  finally
+    Envio.Free();
+  end;
 end;
 
 function TdmNFCe.Pegar_Valor_Base_Calculo(AProduto: TDetCollectionItem): Double;
