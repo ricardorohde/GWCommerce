@@ -33,6 +33,7 @@ type
     procedure Calcular_Pis(AProduto: TDetCollectionItem; AEstoque: TEstoque);
     procedure Carregar_Configuracoes();
     procedure Carregar_Configuracoes_Impressao();
+    procedure Gerar_Arquivo_De_Auxilio_Integracao_Notas(AXMLEnvio: IXMLDocument; ANumeroNota: Int64);
     procedure Gerar_NFCe_Em_Contingencia(ACodigoStatus: Integer);
     procedure Gerar_Tag_Destinatario();
     procedure Gerar_Tag_Emitente();
@@ -224,8 +225,6 @@ var
 
   Envio: TControllerWebServiceEnvioNotas;
 
-  temp: TStringList;
-
   XMLEnvio: IXMLDocument;
 
 begin
@@ -271,25 +270,12 @@ begin
               end;
 
               if AGerarArquivoEnvio then
-              begin
-                temp := TStringList.Create();
-                try
-                  temp.Add(ToBase64.EncodeString(XMLEnvio.XML.Text));
-                  temp.SaveToFile(Format('%s\EnvioLayoutTXT_IdNFe_%d.txt',
-                    [ExtractFilePath(ParamStr(0)), dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt]));
-                finally
-                  temp.Free();
-                end;
-
-                XMLEnvio.SaveToFile(Format('%s\EnvioLayoutXML_IdNFe_%d.xml',
-                  [ExtractFilePath(ParamStr(0)), dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt]));
-              end;
+                Gerar_Arquivo_De_Auxilio_Integracao_Notas(XMLEnvio, dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt);
             finally
               NFCe.NotasFiscais.Clear();
               XMLEnvio.Active := False;
             end;
           end;
-
         finally
           Consulta.Free();
         end;
@@ -395,6 +381,22 @@ begin
   end
   else
     raise Exception.Create('Não foi possível gerar o xml da Nota Fiscal.');
+end;
+
+procedure TdmNFCe.Gerar_Arquivo_De_Auxilio_Integracao_Notas(AXMLEnvio: IXMLDocument; ANumeroNota: Int64);
+var
+  Envio: TStringList;
+
+begin
+  Envio := TStringList.Create();
+  try
+    Envio.Add(ToBase64.EncodeString(AXMLEnvio.XML.Text));
+    Envio.SaveToFile(Format('%s\EnvioLayoutTXT_IdNFe_%d.txt', [ExtractFilePath(ParamStr(0)), ANumeroNota]));
+  finally
+    Envio.Free();
+  end;
+
+  AXMLEnvio.SaveToFile(Format('%s\EnvioLayoutXML_IdNFe_%d.xml', [ExtractFilePath(ParamStr(0)), ANumeroNota]));
 end;
 
 procedure TdmNFCe.Gerar_NFCe_Em_Contingencia(ACodigoStatus: Integer);

@@ -91,9 +91,9 @@ begin
       dmDados.cliConsultaNotasEnviarApi.First();
       while not dmDados.cliConsultaNotasEnviarApi.Eof do
       begin
-       Aviso.Exibir(Format('Integrando Nota Nº %d', [dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt]));
-       dmNFCe.Enviar_Nota_Api(chkGerarArquivoEnvio.Checked);
-       dmDados.cliConsultaNotasEnviarApi.Next();
+        Aviso.Exibir(Format('Integrando Nota Nº %d', [dmDados.cliConsultaNotasEnviarApiIDE_NNF.AsLargeInt]));
+        dmNFCe.Enviar_Nota_Api(chkGerarArquivoEnvio.Checked);
+        dmDados.cliConsultaNotasEnviarApi.Next();
       end;
       btnConsultarClick(Sender);
     except on E: Exception do
