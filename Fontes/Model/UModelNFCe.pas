@@ -341,9 +341,6 @@ begin
   begin
     dmDados.Registrar_NFE_CAB(AGWCommerce, FNota);
 
-    if FNota.NFe.Ide.modelo = 90 then
-      dmDados.Atualizar_Dados_Apos_Emitir_Nota_Fiscal(FNota);
-
     if FNota.NFe.Ide.modelo = 65 then
     begin
       ViewAviso := TViewAviso.Create(nil);

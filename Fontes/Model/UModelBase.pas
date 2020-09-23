@@ -1112,6 +1112,8 @@ type
     procedure cliConsultaNotasEnviarApiVNFGetText(Sender: TField;
       var Text: string; DisplayText: Boolean);
   private
+    function Criptografar_XML(ANotaFiscal: NotaFiscal): String;
+
     procedure Abrir_Tabelas_NFe();
     procedure Apagar_Pagamento_Apos_Cancelar_Notas(AChave: String);
     procedure Consultar(AQuery: TSQLQuery; ASql: String);
@@ -1328,7 +1330,7 @@ begin
   uptAtualizaDadosNotaFiscal.Close();
   uptAtualizaDadosNotaFiscal.ParamByName('PINFORMACAO_COMPLEMENTAR').AsString := ANotaFiscal.NFe.InfAdic.infCpl;
   uptAtualizaDadosNotaFiscal.ParamByName('PPROTOCOLO').AsString               := ANotaFiscal.NFe.procNFe.nProt;
-  uptAtualizaDadosNotaFiscal.ParamByName('PXML').AsString                     := base64.EncodeString(ANotaFiscal.XMLAssinado);
+  uptAtualizaDadosNotaFiscal.ParamByName('PXML').AsString                     := Criptografar_XML( ANotaFiscal );
   uptAtualizaDadosNotaFiscal.ParamByName('PCHAVE').AsString                   := ANotaFiscal.NumID;
   uptAtualizaDadosNotaFiscal.ExecSQL();
 end;
@@ -1406,6 +1408,11 @@ begin
 
   cliNfeIntegracaoApi.Close();
   cliNfeIntegracaoApi.Open();
+end;
+
+function TdmDados.Criptografar_XML(ANotaFiscal: NotaFiscal): String;
+begin
+  Result := base64.EncodeString( ANotaFiscal.XMLAssinado );
 end;
 
 procedure TdmDados.DataModuleCreate(Sender: TObject);
@@ -1801,6 +1808,8 @@ begin
 
   if GWCommerce.IdVendedor > 0 then
     cliNfeCabID_VENDEDOR.AsLargeInt := GWCommerce.IdVendedor;
+
+  cliNfeCabXML_APROVADO.AsString := Criptografar_XML( ANotaFiscal );
 
   cliNfeCab.Post();
   cliNfeCab.ApplyUpdates(0);
