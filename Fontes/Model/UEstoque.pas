@@ -2,7 +2,7 @@ unit UEstoque;
 
 interface
   uses
-    Classes, System.SysUtils, System.Math,
+    Classes, System.SysUtils, System.Math, System.StrUtils,
 
     pcnConversao,
 
@@ -100,6 +100,7 @@ type
     function Pegar_Codigo_Cofins(): TpcnCstCofins;
     function Pegar_Codigo_PIS(): TpcnCstPis;
     function Pegar_CST_ICMS_Simples_Nacional(): TpcnCSOSNIcms;
+    function Verificar_Pode_Lancar_Fracionado(): Boolean;
 
     property CEST: String read FCEST write FCEST;
     property CodAnvisa: String read FCodAnvisa write FCodAnvisa;
@@ -296,6 +297,15 @@ begin
     Result := csosn500
   else
     Result := csosn900;
+end;
+
+function TEstoque.Verificar_Pode_Lancar_Fracionado: Boolean;
+begin
+  case AnsiIndexStr(Trim(UpperCase(FMedida)), ['KG', 'LITRO', 'M', 'MT', 'M2', 'M3', 'KU']) of
+    0, 1, 2, 3, 4, 5, 6: Result := True
+  else
+    Result := False;
+  end;
 end;
 
 { TLancamentoPorPeso }

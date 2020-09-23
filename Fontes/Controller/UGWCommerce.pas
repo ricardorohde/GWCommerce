@@ -387,7 +387,7 @@ begin
   if Estoque = nil then
     raise Exception.Create('Nenhum produto selecionado para venda.');
 
-  if (Trim(UpperCase(Estoque.Medida)) <> 'KG') and (Frac(FFatorMultiplicador) <> 0) then
+  if (Frac(FFatorMultiplicador) <> 0) and (not Estoque.Verificar_Pode_Lancar_Fracionado()) then
     raise Exception.Create(Format('O Produto %s não permite venda fracionada.', [Estoque.Descricao]));
 
   Venda                       := TVenda.Create();
